@@ -8,7 +8,8 @@ public:
 	typedef enum {
 		GAMEPAD_ARCADE = 0,
 		GAMEPAD_MAME,
-		GAMEPAD_SNES
+		GAMEPAD_SNES,
+		GAMEPAD_NONE
 	} GamepadType_e;
 
 	typedef enum {
