@@ -53,4 +53,4 @@ install:
 
 uninstall:
 	-rm $(DESTDIR)$(bindir)/$(TARGET)
-	-rm $(DESTDIR)/$(sysconfdir)/controlbl
+	-rm $(DESTDIR)/$(sysconfdir)/controlblockconfig.cfg
