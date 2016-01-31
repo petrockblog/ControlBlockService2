@@ -39,6 +39,8 @@ void ControlBlockConfiguration::initialize()
 			gamepadType = GAMEPAD_MAME;
 		} else if (configvalue.compare("snes") == 0) {
 			gamepadType = GAMEPAD_SNES;
+		} else if (configvalue.compare("none") == 0) {
+			gamepadType = GAMEPAD_NONE;
 		}
 		std::cout << "Read configuration: gamepadtype = " << gamepadType << std::endl;
 

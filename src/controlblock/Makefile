@@ -13,7 +13,8 @@ LIBBCM2835_LIBDIR=$(LIBBCM2835_DIR)/src
 LIBS=-ljsoncpp -lbcm2835 -L$(LIBJSONCPP_LIBDIR) -I$(LIBJSONCPP_INCDIR) -L$(LIBBCM2835_LIBDIR) -I$(LIBBCM2835_INCDIR) -lrt -lpthread
 CFLAGS=-c -Wall -std=c++11 -O3 -I$(LIBJSONCPP_INCDIR) -I$(LIBBCM2835_INCDIR)
 
-TARGET := $(BUILDDIR)/controlblock
+TARGETNAME := controlblock
+TARGET := $(BUILDDIR)/$(TARGETNAME)
 SRCEXT := cpp
 SOURCES := $(shell find $(SRCDIR) -type f -name "*.$(SRCEXT)")
 OBJECTS := $(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRCEXT)=.o))
@@ -52,5 +53,5 @@ install:
 	install -m 0755 ../../supplementary/controlblockconfig.cfg $(DESTDIR)/$(sysconfdir)
 
 uninstall:
-	-rm $(DESTDIR)$(bindir)/$(TARGET)
-	-rm $(DESTDIR)/$(sysconfdir)/controlbl
+	-rm $(DESTDIR)$(bindir)/$(TARGETNAME)
+	-rm $(DESTDIR)/$(sysconfdir)/controlblockconfig.cfg
