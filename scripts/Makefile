@@ -1,4 +1,5 @@
 installservice:
+	if [ ! -f /etc/modprobe.d/raspi-blacklist.conf ]; then touch /etc/modprobe.d/raspi-blacklist.conf; fi;
 	sed -i -e "s|^blacklist spi-bcm2708|#blacklist spi-bcm2708|g" /etc/modprobe.d/raspi-blacklist.conf
 	./insertLine.sh
 
