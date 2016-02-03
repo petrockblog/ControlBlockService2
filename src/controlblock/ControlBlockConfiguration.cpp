@@ -47,7 +47,7 @@ void ControlBlockConfiguration::initialize()
 		bool configboolean = root["powerswitch"]["activated"].asBool();
 		if (configboolean) {
 			doShutdown = SHUTDOWN_ACTIVATED;
-		} else if (configvalue.compare("snes") == 0) {
+		} else {
 			doShutdown = SHUTDOWN_DEACTIVATED;
 		}
 		std::cout << "Read configuration: doShutdown = " << doShutdown << std::endl;

@@ -12,16 +12,16 @@ public:
 	} PowerState_e;
 
 	typedef enum {
-	    SHUTDOWN_TRUE = 0,
-	    SHUTDOWN_FALSE
+	    SHUTDOWN_FALSE = 0,
+	    SHUTDOWN_TRUE
 	} ShutdownSignal_e;
 
 	typedef enum {
-		SHUTDOWN_ACTIVATED = 0,
-		SHUTDOWN_DEACTIVATED
+		SHUTDOWN_DEACTIVATED = 0,
+		SHUTDOWN_ACTIVATED
 	} ShutdownActivated_e;
 
-	PowerSwitch(ShutdownActivated_e doShutdown);
+	PowerSwitch(ShutdownActivated_e doShutdownValue);
 	~PowerSwitch();
 
 	void update();
