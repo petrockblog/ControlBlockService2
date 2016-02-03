@@ -7,15 +7,20 @@
 
 ControlBlock::ControlBlock() : configuration(new ControlBlockConfiguration())
 {
-    std::map <ControlBlockConfiguration::ShutdownType_e, PowerSwitch::ShutdownActivated_e>
-        switchMapping;
-    switchMapping[ControlBlockConfiguration::SHUTDOWN_ACTIVATED] = PowerSwitch::SHUTDOWN_ACTIVATED;
-    switchMapping[ControlBlockConfiguration::SHUTDOWN_DEACTIVATED] = PowerSwitch::SHUTDOWN_DEACTIVATED;
-
+    // read configuration
     configuration->initialize();
 
-    powerSwitch = new PowerSwitch(switchMapping[configuration->getShutdownActivation()]);
+    // initialize the power switch
+    if (configuration->getShutdownActivation() == ControlBlockConfiguration::SHUTDOWN_ACTIVATED)
+    {
+        powerSwitch = new PowerSwitch(PowerSwitch::SHUTDOWN_ACTIVATED);
+    }
+    else
+    {
+        powerSwitch = new PowerSwitch(PowerSwitch::SHUTDOWN_DEACTIVATED);
+    }
     
+    // initialize the controllers
     for(uint8_t counter = 0; counter < NUMGAMEPADS; counter++)
     {
         if(configuration->getGamepadType() == ControlBlockConfiguration::GAMEPAD_ARCADE)

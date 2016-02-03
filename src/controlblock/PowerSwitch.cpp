@@ -1,7 +1,8 @@
 #include <stdlib.h>
 #include "PowerSwitch.h"
 
-PowerSwitch::PowerSwitch(ShutdownActivated_e doShutdown) : doShutdown(SHUTDOWN_ACTIVATED)
+PowerSwitch::PowerSwitch(ShutdownActivated_e doShutdownValue) : 
+    doShutdown(doShutdownValue)
 {
     DigitalOut::getInstance().configureDevice(DigitalOut::DO_DEVICE_POWERSWITCH);
     setPowerSignal(PowerSwitch::STATE_ON);
