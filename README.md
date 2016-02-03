@@ -1,5 +1,5 @@
-ControlBlockService
-===================
+ControlBlockService2
+====================
 
 This is the driver for the petrockblock.com ControlBlock, which is an extension board for the Raspberry Pi (TM). The driver itself is denoted as _controlblock_ in the following. The driver provides a service for interacting with the power button signals as well as for mapping attached game controllers to corresponding game pad devices on the Raspberry Pi.
 
@@ -23,7 +23,7 @@ sudo apt-get install -y cmake g++-4.9
 
 To build _controlblock_ follow these commands:
 ```bash
-cd ControlBlockService
+cd ControlBlockService2
 make
 ```
 
