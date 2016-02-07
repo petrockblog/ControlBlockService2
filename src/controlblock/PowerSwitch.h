@@ -6,22 +6,26 @@
 
 class PowerSwitch {
 public:
-	typedef enum {
+	enum PowerState_e 
+	{
 	    STATE_OFF = 0,
 	    STATE_ON
-	} PowerState_e;
+	};
 
-	typedef enum {
+	enum ShutdownSignal_e
+	{
 	    SHUTDOWN_FALSE = 0,
 	    SHUTDOWN_TRUE
-	} ShutdownSignal_e;
+	};
 
-	typedef enum {
+	enum ShutdownActivated_e
+	{
 		SHUTDOWN_DEACTIVATED = 0,
 		SHUTDOWN_ACTIVATED
-	} ShutdownActivated_e;
+	};
 
 	PowerSwitch(ShutdownActivated_e doShutdownValue);
+	
 	~PowerSwitch();
 
 	void update();

@@ -73,6 +73,7 @@ void ArcadeGamepad::initialize(InputDevice::Channel_e channel)
 
     UInputcpp::setKeyState(uinp_fd, ABS_X, 2, EV_ABS);
     UInputcpp::setKeyState(uinp_fd, ABS_Y, 2, EV_ABS);
+    UInputcpp::sync(uinp_fd);
 }
 
 void ArcadeGamepad::update() {
@@ -119,6 +120,8 @@ void ArcadeGamepad::update() {
         UInputcpp::setKeyState(uinp_fd, BTN_SELECT, di.getLevel(DigitalIn::DI_CHANNEL_P1_COIN) == DigitalIn::DI_LEVEL_LOW ? 0 : 1, EV_KEY);
         UInputcpp::setKeyState(uinp_fd, BTN_TL2, di.getLevel(DigitalIn::DI_CHANNEL_P1_A) == DigitalIn::DI_LEVEL_LOW ? 0 : 1, EV_KEY);
         UInputcpp::setKeyState(uinp_fd, BTN_TR2, di.getLevel(DigitalIn::DI_CHANNEL_P1_B) == DigitalIn::DI_LEVEL_LOW ? 0 : 1, EV_KEY);   
+
+        UInputcpp::sync(uinp_fd);
     }
     else if (channel == InputDevice::CHANNEL_2) 
     {
@@ -135,6 +138,7 @@ void ArcadeGamepad::update() {
         {
             UInputcpp::setKeyState(uinp_fd, ABS_X, 2, EV_ABS);
         }
+        
         if(di.getLevel(DigitalIn::DI_CHANNEL_P2_UP) == DigitalIn::DI_LEVEL_HIGH)
         {
             UInputcpp::setKeyState(uinp_fd, ABS_Y, 0, EV_ABS);
@@ -161,6 +165,8 @@ void ArcadeGamepad::update() {
         UInputcpp::setKeyState(uinp_fd, BTN_SELECT, di.getLevel(DigitalIn::DI_CHANNEL_P2_COIN) == DigitalIn::DI_LEVEL_LOW ? 0 : 1, EV_KEY);
         UInputcpp::setKeyState(uinp_fd, BTN_TL2, di.getLevel(DigitalIn::DI_CHANNEL_P2_A) == DigitalIn::DI_LEVEL_LOW ? 0 : 1, EV_KEY);
         UInputcpp::setKeyState(uinp_fd, BTN_TR2, di.getLevel(DigitalIn::DI_CHANNEL_P2_B) == DigitalIn::DI_LEVEL_LOW ? 0 : 1, EV_KEY);   
+
+        UInputcpp::sync(uinp_fd);        
     }
     else 
     {

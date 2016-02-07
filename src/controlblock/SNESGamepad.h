@@ -22,16 +22,6 @@ public:
 	static const uint16_t GPAD_SNES_L =       0x400;
 	static const uint16_t GPAD_SNES_R =       0x800;
 
-	/* bit masks for checking the button states for NES controllers */
-	static const uint16_t GPAD_NES_B =       0x01;
-	static const uint16_t GPAD_NES_SELECT =  0x04;
-	static const uint16_t GPAD_NES_START =   0x08;
-	static const uint16_t GPAD_NES_UP =      0x10;
-	static const uint16_t GPAD_NES_DOWN =    0x20;
-	static const uint16_t GPAD_NES_LEFT =    0x40;
-	static const uint16_t GPAD_NES_RIGHT =   0x80;
-	static const uint16_t GPAD_NES_A =       0x100;
-
 	SNESGamepad();
 	~SNESGamepad();
 
@@ -39,7 +29,7 @@ public:
 	virtual void update();
 
 private:
-	static const uint32_t STROBEDELAY = 1;
+	static const uint32_t STROBEDELAY = 1u;
 
 	InputDevice::Channel_e channel;
 	uint32_t uinp_fd;

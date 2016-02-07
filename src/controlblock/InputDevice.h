@@ -9,12 +9,12 @@
 class InputDevice
 {
 public:
-    typedef enum
+    enum Channel_e
     {
         CHANNEL_1 = 0,
         CHANNEL_2,
         CHANNEL_UNDEFINED
-    } Channel_e;
+    };
 
     InputDevice() {};
     virtual ~InputDevice() {};

@@ -41,11 +41,17 @@ public:
 		if (write(uinp_fd, &event, sizeof(event)) < 0) {
 			printf("[UInputGamepad] Simulate key error\n");
 		}
+	}
+
+	static void sync(int32_t uinp_fd)
+	{
+		struct input_event event;
+		gettimeofday(&event.time, NULL);
 
 		event.type = EV_SYN;
 		event.code = SYN_REPORT;
 		event.value = 0;
-		write(uinp_fd, &event, sizeof(event));
+
 		if (write(uinp_fd, &event, sizeof(event)) < 0) {
 			printf("[UInputGamepad] Simulate key error\n");
 		}

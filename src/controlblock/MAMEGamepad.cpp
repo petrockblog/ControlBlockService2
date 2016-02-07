@@ -61,6 +61,8 @@ void MAMEGamepad::update() {
 		UInputcpp::setKeyState(uinp_fd, KEY_5, di.getLevel(DigitalIn::DI_CHANNEL_P1_COIN) == DigitalIn::DI_LEVEL_LOW ? 0 : 1, EV_KEY);
 		UInputcpp::setKeyState(uinp_fd, KEY_P, di.getLevel(DigitalIn::DI_CHANNEL_P1_A) == DigitalIn::DI_LEVEL_LOW ? 0 : 1, EV_KEY);
 		UInputcpp::setKeyState(uinp_fd, KEY_ENTER, di.getLevel(DigitalIn::DI_CHANNEL_P1_B) == DigitalIn::DI_LEVEL_LOW ? 0 : 1, EV_KEY);	
+
+	    UInputcpp::sync(uinp_fd);
 	} else if (channel == InputDevice::CHANNEL_2) {
 		// axes
 		UInputcpp::setKeyState(uinp_fd, KEY_D, di.getLevel(DigitalIn::DI_CHANNEL_P2_LEFT) == DigitalIn::DI_LEVEL_LOW ? 0 : 1, EV_KEY);
@@ -81,6 +83,8 @@ void MAMEGamepad::update() {
 		UInputcpp::setKeyState(uinp_fd, KEY_6, di.getLevel(DigitalIn::DI_CHANNEL_P2_COIN) == DigitalIn::DI_LEVEL_LOW ? 0 : 1, EV_KEY);
 		UInputcpp::setKeyState(uinp_fd, KEY_TAB, di.getLevel(DigitalIn::DI_CHANNEL_P2_A) == DigitalIn::DI_LEVEL_LOW ? 0 : 1, EV_KEY);
 		UInputcpp::setKeyState(uinp_fd, KEY_ESC, di.getLevel(DigitalIn::DI_CHANNEL_P2_B) == DigitalIn::DI_LEVEL_LOW ? 0 : 1, EV_KEY);	
+
+	    UInputcpp::sync(uinp_fd);
 	} else {
 		throw 3;
 	}

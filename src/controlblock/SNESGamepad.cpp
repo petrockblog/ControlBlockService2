@@ -28,7 +28,7 @@ void SNESGamepad::initialize(InputDevice::Channel_e channel)
 
     struct uinput_user_dev uinp;
     memset(&uinp, 0, sizeof(uinp));
-    strncpy(uinp.name, "ControlBlock Gamepad", strlen("ControlBlock Gamepad"));
+    strncpy(uinp.name, "ControlBlock SNES Gamepad", strlen("ControlBlock SNES Gamepad"));
     uinp.id.version = 4;
     uinp.id.bustype = BUS_USB;
     uinp.id.product = 1;
@@ -48,7 +48,13 @@ void SNESGamepad::initialize(InputDevice::Channel_e channel)
     ioctl(uinp_fd, UI_SET_KEYBIT, BTN_START);
     ioctl(uinp_fd, UI_SET_KEYBIT, BTN_SELECT);
 
-    // gamepad, directions
+    // Add Absolute (D-pad) type
+    ioctl(uinp_fd, UI_SET_EVBIT, EV_ABS);
+
+    ioctl(uinp_fd, UI_SET_ABSBIT, ABS_X);
+    ioctl(uinp_fd, UI_SET_ABSBIT, ABS_Y);
+
+    // AXIS_MIN for left/up, AXIS_MAX for right/down
     ioctl(uinp_fd, UI_SET_EVBIT, EV_ABS);
     ioctl(uinp_fd, UI_SET_ABSBIT, ABS_X);
     ioctl(uinp_fd, UI_SET_ABSBIT, ABS_Y);
@@ -59,78 +65,62 @@ void SNESGamepad::initialize(InputDevice::Channel_e channel)
 
     /* Create input device into input sub-system */
     write(uinp_fd, &uinp, sizeof(uinp));
-    if(ioctl(uinp_fd, UI_DEV_CREATE))
-    {
-        printf("[ArcadeGamepad] Unable to create UINPUT device.");
-        // throw -1;
+    if (ioctl(uinp_fd, UI_DEV_CREATE)) {
+      printf("[SNESGamepad] Unable to create UINPUT device.");
+      // throw -1;
     }
 
     UInputcpp::setKeyState(uinp_fd, ABS_X, 2, EV_ABS);
     UInputcpp::setKeyState(uinp_fd, ABS_Y, 2, EV_ABS);
+    UInputcpp::sync(uinp_fd);
 
     DigitalOut dout = DigitalOut::getInstance();
-    if(channel == InputDevice::CHANNEL_1)
+    if (channel == InputDevice::CHANNEL_1)
     {
-        dout.setLevel(DigitalOut::DO_CHANNEL_P1_STROBE, DigitalOut::DO_LEVEL_LOW);
-        dout.setLevel(DigitalOut::DO_CHANNEL_P1_CLOCK, DigitalOut::DO_LEVEL_LOW);
+        dout.setLevel(DigitalOut::DO_CHANNEL_P1P2_STROBE, DigitalOut::DO_LEVEL_LOW);
+        dout.setLevel(DigitalOut::DO_CHANNEL_P1P2_CLOCK, DigitalOut::DO_LEVEL_LOW);
         dout.setLevel(DigitalOut::DO_CHANNEL_P1_VCC, DigitalOut::DO_LEVEL_HIGH);
     }
     else
     {
-        dout.setLevel(DigitalOut::DO_CHANNEL_P2_STROBE, DigitalOut::DO_LEVEL_LOW);
-        dout.setLevel(DigitalOut::DO_CHANNEL_P2_CLOCK, DigitalOut::DO_LEVEL_LOW);
         dout.setLevel(DigitalOut::DO_CHANNEL_P2_VCC, DigitalOut::DO_LEVEL_HIGH);
+        // strobe and clock were already initialized with player 1 initialization.
     }
 }
 
 uint16_t SNESGamepad::getSNESControllerState()
 {
-    uint16_t state = 0;
+    uint16_t state = 0u;
 
     DigitalIn din = DigitalIn::getInstance();
     DigitalOut dout = DigitalOut::getInstance();
 
-    if(channel == InputDevice::CHANNEL_1)
+    dout.setLevel(DigitalOut::DO_CHANNEL_P1P2_STROBE, DigitalOut::DO_LEVEL_HIGH);
+    delayMicroseconds(2u * STROBEDELAY);
+    dout.setLevel(DigitalOut::DO_CHANNEL_P1P2_STROBE, DigitalOut::DO_LEVEL_LOW);
+    delayMicroseconds(STROBEDELAY);
+
+    for(uint8_t i = 0u; i < 16u; i++)
     {
-        dout.setLevel(DigitalOut::DO_CHANNEL_P1_STROBE, DigitalOut::DO_LEVEL_HIGH);
-        delayMicroseconds(STROBEDELAY);
-        dout.setLevel(DigitalOut::DO_CHANNEL_P1_STROBE, DigitalOut::DO_LEVEL_LOW);
-        delayMicroseconds(STROBEDELAY);
-
-        for(uint8_t i = 0; i < 16; i++)
+        DigitalIn::DI_Level_e curpin;
+        if (channel == InputDevice::CHANNEL_1)
         {
-            DigitalIn::DI_Level_e curpin = din.getLevel(DigitalIn::DI_CHANNEL_P1_DATA);
-            if(curpin == DigitalIn::DI_LEVEL_LOW)
-            {
-                state |= (1 << i);
-            }
-
-            dout.setLevel(DigitalOut::DO_CHANNEL_P1_CLOCK, DigitalOut::DO_LEVEL_HIGH);
-            delayMicroseconds(STROBEDELAY);
-            dout.setLevel(DigitalOut::DO_CHANNEL_P1_CLOCK, DigitalOut::DO_LEVEL_LOW);
-            delayMicroseconds(STROBEDELAY);
+            curpin = din.getLevel(DigitalIn::DI_CHANNEL_P1_DATA);
         }
-    }
-    else
-    {
-        dout.setLevel(DigitalOut::DO_CHANNEL_P2_STROBE, DigitalOut::DO_LEVEL_HIGH);
-        delayMicroseconds(STROBEDELAY);
-        dout.setLevel(DigitalOut::DO_CHANNEL_P2_STROBE, DigitalOut::DO_LEVEL_LOW);
-        delayMicroseconds(STROBEDELAY);
-
-        for(uint8_t i = 0; i < 16; i++)
+        else
         {
-            DigitalIn::DI_Level_e curpin = din.getLevel(DigitalIn::DI_CHANNEL_P2_DATA);
-            if(curpin == DigitalIn::DI_LEVEL_LOW)
-            {
-                state |= (1 << i);
-            }
-
-            dout.setLevel(DigitalOut::DO_CHANNEL_P2_CLOCK, DigitalOut::DO_LEVEL_HIGH);
-            delayMicroseconds(STROBEDELAY);
-            dout.setLevel(DigitalOut::DO_CHANNEL_P2_CLOCK, DigitalOut::DO_LEVEL_LOW);
-            delayMicroseconds(STROBEDELAY);
+            curpin = din.getLevel(DigitalIn::DI_CHANNEL_P2_DATA);
         }
+
+        if(curpin == DigitalIn::DI_LEVEL_HIGH)
+        {
+            state |= (1u << i);
+        }
+
+        dout.setLevel(DigitalOut::DO_CHANNEL_P1P2_CLOCK, DigitalOut::DO_LEVEL_HIGH);
+        delayMicroseconds(STROBEDELAY);
+        dout.setLevel(DigitalOut::DO_CHANNEL_P1P2_CLOCK, DigitalOut::DO_LEVEL_LOW);
+        delayMicroseconds(STROBEDELAY);
     }
 
     return state;
@@ -142,7 +132,7 @@ void SNESGamepad::update()
 
     uint16_t state = getSNESControllerState();
 
-    // axes
+    // left-right axis
     if((state & GPAD_SNES_LEFT) == GPAD_SNES_LEFT)
     {
         UInputcpp::setKeyState(uinp_fd, ABS_X, 0, EV_ABS);
@@ -155,6 +145,8 @@ void SNESGamepad::update()
     {
         UInputcpp::setKeyState(uinp_fd, ABS_X, 2, EV_ABS);
     }
+
+    // up-down axis
     if((state & GPAD_SNES_UP) == GPAD_SNES_UP)
     {
         UInputcpp::setKeyState(uinp_fd, ABS_Y, 0, EV_ABS);
@@ -169,14 +161,16 @@ void SNESGamepad::update()
     }
 
     // buttons
-    UInputcpp::setKeyState(uinp_fd, BTN_A, (state & GPAD_SNES_A) == GPAD_SNES_A ? 0 : 1, EV_KEY);
-    UInputcpp::setKeyState(uinp_fd, BTN_B, (state & GPAD_SNES_B) == GPAD_SNES_B ? 0 : 1, EV_KEY);
-    UInputcpp::setKeyState(uinp_fd, BTN_X, (state & GPAD_SNES_X) == GPAD_SNES_X ? 0 : 1, EV_KEY);
-    UInputcpp::setKeyState(uinp_fd, BTN_Y, (state & GPAD_SNES_Y) == GPAD_SNES_Y ? 0 : 1, EV_KEY);
-    UInputcpp::setKeyState(uinp_fd, BTN_TL, (state & GPAD_SNES_L) == GPAD_SNES_L ? 0 : 1, EV_KEY);
-    UInputcpp::setKeyState(uinp_fd, BTN_TR, (state & GPAD_SNES_R) == GPAD_SNES_R ? 0 : 1, EV_KEY);
-    UInputcpp::setKeyState(uinp_fd, BTN_START, (state & GPAD_SNES_START) == GPAD_SNES_START ? 0 : 1,
+    UInputcpp::setKeyState(uinp_fd, BTN_A, (state & GPAD_SNES_A) == GPAD_SNES_A ? 1 : 0, EV_KEY);
+    UInputcpp::setKeyState(uinp_fd, BTN_B, (state & GPAD_SNES_B) == GPAD_SNES_B ? 1 : 0, EV_KEY);
+    UInputcpp::setKeyState(uinp_fd, BTN_X, (state & GPAD_SNES_X) == GPAD_SNES_X ? 1 : 0, EV_KEY);
+    UInputcpp::setKeyState(uinp_fd, BTN_Y, (state & GPAD_SNES_Y) == GPAD_SNES_Y ? 1 : 0, EV_KEY);
+    UInputcpp::setKeyState(uinp_fd, BTN_TL, (state & GPAD_SNES_L) == GPAD_SNES_L ? 1 : 0, EV_KEY);
+    UInputcpp::setKeyState(uinp_fd, BTN_TR, (state & GPAD_SNES_R) == GPAD_SNES_R ? 1 : 0, EV_KEY);
+    UInputcpp::setKeyState(uinp_fd, BTN_START, (state & GPAD_SNES_START) == GPAD_SNES_START ? 1 : 0,
                            EV_KEY);
-    UInputcpp::setKeyState(uinp_fd, BTN_SELECT, (state & GPAD_SNES_SELECT) == GPAD_SNES_SELECT ? 0 : 1,
+    UInputcpp::setKeyState(uinp_fd, BTN_SELECT, (state & GPAD_SNES_SELECT) == GPAD_SNES_SELECT ? 1 : 0,
                            EV_KEY);
+
+    UInputcpp::sync(uinp_fd);
 }

@@ -21,7 +21,7 @@ ControlBlock::ControlBlock() : configuration(new ControlBlockConfiguration())
     }
     
     // initialize the controllers
-    for(uint8_t counter = 0; counter < NUMGAMEPADS; counter++)
+    for(uint8_t counter = 0u; counter < NUMGAMEPADS; counter++)
     {
         if(configuration->getGamepadType() == ControlBlockConfiguration::GAMEPAD_ARCADE)
         {
@@ -44,16 +44,16 @@ ControlBlock::ControlBlock() : configuration(new ControlBlockConfiguration())
             std::cout << "Error while configuring gamepad type ..." << std::cout;
             throw 1;
         }
-        gamepads[counter]->initialize(counter == 0 ? InputDevice::CHANNEL_1 : InputDevice::CHANNEL_2);
+        gamepads[counter]->initialize(counter == 0u ? InputDevice::CHANNEL_1 : InputDevice::CHANNEL_2);
     }
 }
 
 ControlBlock::~ControlBlock()
 {
-    for(uint8_t counter = 0; counter < NUMGAMEPADS; counter++)
+    for(uint8_t counter = 0u; counter < NUMGAMEPADS; counter++)
     {
         delete gamepads[counter];
-        gamepads[counter] = 0;
+        gamepads[counter] = NULL;
     }
     delete powerSwitch;
     delete configuration;
@@ -63,7 +63,7 @@ void ControlBlock::update()
 {
     try
     {
-        for(uint8_t counter = 0; counter < NUMGAMEPADS; counter++)
+        for(uint8_t counter = 0u; counter < NUMGAMEPADS; counter++)
         {
             gamepads[counter]->update();
         }
