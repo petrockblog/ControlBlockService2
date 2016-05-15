@@ -1,0 +1,20 @@
+language: generic
+sudo: true
+dist: trusty
+
+before_install:
+    - sudo apt-get update
+    - sudo apt-get install qemu-system-arm wget xz-utils sshpass
+
+install:
+    - wget "http://www.texwriting.com/2016-05-10-raspbian-jessie.img.xz"
+    - unxz "2016-05-10-raspbian-jessie.img.xz"
+    - git clone https://github.com/petrockblog/raspberry-qemu.git
+
+before_script:
+    - qemu-system-arm -kernel raspberry-qemu/kernel-qemu -cpu arm1176 -m 256 -M versatilepb -no-reboot -serial stdio -append "root=/dev/sda2 panic=1 rootfstype=ext4 rw" -net user,hostfwd=tcp::10022-:22 -net nic -display none -hda 2015-11-21-raspbian-jessie-lite.img &
+    - ./test/wait-for-ssh
+
+script:
+    - sshpass -p raspberry ssh localhost -o StrictHostKeyChecking=no -p 10022 -l pi "cat /etc/os-release"
+    # whatever you want to test here
