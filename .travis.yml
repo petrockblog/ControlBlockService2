@@ -7,7 +7,7 @@ before_install:
     - sudo apt-get install qemu-system-arm wget xz-utils sshpass
 
 install:
-    - wget "https://texwriting.com/2016-05-10-raspbian-jessie.img.xz"
+    - wget "$JESSIE_IMAGE_URL"
     - unxz "2016-05-10-raspbian-jessie.img.xz"
     - git clone https://github.com/petrockblog/raspberry-qemu.git
 
