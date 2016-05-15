@@ -4,17 +4,45 @@ dist: trusty
 
 before_install:
     - sudo apt-get update
-    - sudo apt-get install qemu-system-arm wget xz-utils sshpass
+    - sudo apt-get install qemu-system-arm wget qemu qemu-user-static binfmt-support
 
 install:
-    - wget --quiet "$JESSIE_IMAGE_URL"
-    - unxz "2016-05-10-raspbian-jessie.img.xz"
-    - git clone https://github.com/petrockblog/raspberry-qemu.git
+    - # Download Raspbian image
+    - wget http://director.downloads.raspberrypi.org/raspbian_lite/images/raspbian_lite-2016-05-13/2016-05-10-raspbian-jessie-lite.zip
+    - # Unzip image
+    - unzip 2016-05-10-raspbian-jessie-lite.zip
+    - # Add 1 GB space to the image
+    - dd if=/dev/zero bs=1M count=1024 >> 2016-05-10-raspbian-jessie-lite.img
+    - # Make a loopback device for the whole image, and one for the raspbian root. Might want to use fdisk -lu to get partition size
+    - losetup -f --show 2016-05-10-raspbian-jessie-lite.img
+    - losetup -f --show -o $((137216*512)) 2016-05-10-raspbian-jessie-lite.img
+    - # Remove the second partition, resize it to be the full size of /dev/loop0
+    - sudo parted /dev/loop0
+    - rm 2
+    - mkpart primary 70.3 2316
+    - quit
+    - # Check and resize the new partition
+    - e2fsck -f /dev/loop1
+    - resize2fs /dev/loop1
+    - # Clean up the loopback devices
+    - losetup -d /dev/loop0 /dev/loop1
+    - mkdir ~/rpi_mnt
+    - mount 2016-05-10-raspbian-jessie-lite.img -o loop,offset=$((137216*512)),rw ~/rpi_mnt
+    - cp /usr/bin/qemu-arm-static ~/rpi_mnt/usr/bin
+    - echo "# /usr/lib/arm-linux-gnueabihf/libarmmem.so" > ~/rpi_mnt/etc/ld.so.preload
 
 before_script:
-    - qemu-system-arm -kernel raspberry-qemu/kernel-qemu -cpu arm1176 -m 256 -M versatilepb -no-reboot -serial stdio -append "root=/dev/sda2 panic=1 rootfstype=ext4 rw" -net user,hostfwd=tcp::10022-:22 -net nic -display none -hda 2016-05-10-raspbian-jessie.img &
-    - ./test/wait-for-ssh.sh
-
+    - # prepare script to be run in chroot environment
+    - cat >> ~/rpi_mnt/toBeExecuted.sh <<EOF
+    - apt-get update
+    - apt-get install git cmake g++-4.8
+    - git clone git://github.com/petrockblog/ControlBlockService2
+    - cd ControlBlockService2
+    - make
+    - EOF
+    
 script:
-    - sshpass -p raspberry ssh localhost -o StrictHostKeyChecking=no -p 10022 -l pi "cat /etc/os-release"
-    # whatever you want to test here
+    - chmod +x ~/rpi_mnt/toBeExecuted.sh
+    - # run chroot environment and execute script
+    - cd ~/rpi_mnt
+    - chroot . bin/bash -c "./toBeExecuted.sh"
