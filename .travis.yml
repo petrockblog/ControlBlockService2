@@ -1,20 +1,8 @@
-language: generic
-sudo: true
-dist: trusty
+language: erlang
 
-before_install:
-    - sudo apt-get update
-    - sudo apt-get install qemu-system-arm wget xz-utils sshpass
-
-install:
-    - wget --quiet "$JESSIE_IMAGE_URL"
-    - unxz "2016-05-10-raspbian-jessie.img.xz"
-    - git clone https://github.com/dhruvvyas90/qemu-rpi-kernel.git
-
-before_script:
-    - qemu-system-arm -kernel qemu-rpi-kernel/kernel-qemu-4.1.13-jessie -cpu arm1176 -m 256 -M versatilepb -no-reboot -serial stdio -append "root=/dev/sda2 panic=1 rootfstype=ext4 rw" -net user,hostfwd=tcp::10022-:22 -net nic -display none -hda 2016-05-10-raspbian-jessie.img &
-    - ./test/wait-for-ssh.sh
+env:
+  - ARCH=x64
+  - ARCH=arm
 
 script:
-    - sshpass -p raspberry ssh localhost -o StrictHostKeyChecking=no -p 10022 -l pi "cat /etc/os-release"
-    # whatever you want to test here
+  - "bash -ex ./test/travis-ci.sh"
