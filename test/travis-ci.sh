@@ -10,10 +10,10 @@ CHROOT_ARCH=armhf
 HOST_DEPENDENCIES="debootstrap qemu-user-static binfmt-support sbuild"
 
 # Debian package dependencies for the chrooted environment
-GUEST_DEPENDENCIES="build-essential git m4 sudo python"
+GUEST_DEPENDENCIES="build-essential git m4 sudo cmake g++-4.9"
 
 # Command used to run the tests
-TEST_COMMAND="make"
+TEST_COMMAND="make; make install; make installservice"
 
 function setup_arm_chroot {
     # Host dependencies
@@ -47,7 +47,7 @@ function setup_arm_chroot {
     sudo touch ${CHROOT_DIR}/.chroot_is_done
 
     # Call ourselves again which will cause tests to run
-    sudo chroot ${CHROOT_DIR} bash -c "cd ${TRAVIS_BUILD_DIR} && ./.travis-ci.sh"
+    sudo chroot ${CHROOT_DIR} bash -c "cd ${TRAVIS_BUILD_DIR} && ./test/travis-ci.sh"
 }
 
 if [ -e "/.chroot_is_done" ]; then
