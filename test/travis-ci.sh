@@ -69,4 +69,3 @@ echo "Environment: $(uname -a)"
 # Commands used to run the tests
 make
 make install
-make installservice
