@@ -23,6 +23,7 @@ function setup_arm_chroot {
 
     # Create chrooted environment
     sudo mkdir ${CHROOT_DIR}
+    pushd /usr/share/debootstrap/scripts; sudo ln -s sid jessie; popd
     sudo debootstrap --foreign --no-check-gpg --include=fakeroot,build-essential \
         --arch=${CHROOT_ARCH} ${VERSION} ${CHROOT_DIR} ${MIRROR}
     sudo cp /usr/bin/qemu-arm-static ${CHROOT_DIR}/usr/bin/
