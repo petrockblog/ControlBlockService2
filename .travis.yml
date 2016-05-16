@@ -3,6 +3,13 @@ sudo: required
 dist: precise
 language: cpp
 
+cache:
+  directories:
+    - /tmp/arm-chroot
+
+before_cache:
+  - rm -rf /tmp/arm-chroot/${TRAVIS_BUILD_DIR}/ControlBlockService2
+
 matrix:
   include:
     - compiler: gcc
