@@ -1,5 +1,5 @@
-CC=gcc
-CXX=g++
+CC=gcc-4.9
+CXX=g++-4.9
 SRCDIR=.
 BUILDDIR=../../build
 
