@@ -22,11 +22,11 @@ OBJECTS := $(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRCEXT)=.o))
 DEPS := $(OBJECTS:.o=.deps)
 
 all $(TARGET): $(LIBJSONCPP_LIBDIR)/libjsoncpp.a $(LIBBCM2835_LIBDIR)/libbcm2835.a $(OBJECTS)
-	@echo " Linking..."; g++-4.9 $^ $(LIBS) -o $(TARGET)
+	@echo " Linking..."; $(CXX) $^ $(LIBS) -o $(TARGET)
 
 $(BUILDDIR)/%.o: $(SRCDIR)/%.$(SRCEXT)
 	@mkdir -p $(BUILDDIR)
-	@echo " CXX $<"; g++-4.9 $(CFLAGS) -MD -MF $(@:.o=.deps) -c -o $@ $<
+	@echo " CXX $<"; $(CXX) $(CFLAGS) -MD -MF $(@:.o=.deps) -c -o $@ $<
 	
 $(LIBJSONCPP_LIBDIR)/libjsoncpp.a:
 	@tar -zxvf $(LIBJSONCPP_DIR).tar.gz -C ../lib
