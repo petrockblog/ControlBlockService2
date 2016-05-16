@@ -12,7 +12,7 @@ CHROOT_ARCH=armhf
 HOST_DEPENDENCIES="debootstrap qemu-user-static binfmt-support sbuild"
 
 # Debian package dependencies for the chrooted environment
-GUEST_DEPENDENCIES="build-essential git m4 sudo cmake g++-4.9"
+GUEST_DEPENDENCIES="build-essential git m4 sudo cmake g++-4.9 gcc-4.9"
 
 function setup_arm_chroot {
     # Host dependencies
@@ -66,7 +66,7 @@ fi
 echo "Running tests"
 echo "Environment: $(uname -a)"
 
-# Command used to run the tests
+# Commands used to run the tests
 make
 make install
 make installservice
