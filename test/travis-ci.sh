@@ -14,9 +14,6 @@ HOST_DEPENDENCIES="debootstrap qemu-user-static binfmt-support sbuild"
 # Debian package dependencies for the chrooted environment
 GUEST_DEPENDENCIES="build-essential git m4 sudo cmake g++-4.9"
 
-# Command used to run the tests
-TEST_COMMAND="make; make install; make installservice"
-
 function setup_arm_chroot {
     # Host dependencies
     sudo apt-get install -qq -y ${HOST_DEPENDENCIES}
@@ -69,4 +66,7 @@ fi
 echo "Running tests"
 echo "Environment: $(uname -a)"
 
-${TEST_COMMAND}
+# Command used to run the tests
+make
+make install
+make installservice
