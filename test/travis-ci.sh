@@ -4,7 +4,7 @@
 
 CHROOT_DIR=/tmp/arm-chroot
 MIRROR=http://archive.raspbian.org/raspbian
-#VERSION=wheezy
+
 VERSION=jessie
 CHROOT_ARCH=armhf
 
