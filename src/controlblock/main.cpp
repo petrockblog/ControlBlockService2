@@ -54,7 +54,7 @@ int main(int argc, char** argv)
     {
         register_signalhandlers();
 
-        ControlBlock controlBlock;
+        ControlBlock controlBlock = ControlBlock();
         while(doRun)
         {
             controlBlock.update();
