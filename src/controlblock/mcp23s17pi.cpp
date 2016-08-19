@@ -4,15 +4,15 @@
 #include <stdio.h>
 
 MCP23S17PI::MCP23S17PI(ChipSelectPin chipSelectPin, uint8_t deviceID) :
-    _deviceID(deviceID),
-    _GPIOA(0),
-    _GPIOB(0),
-    _IODIRA(0),
-    _IODIRB(0),
-    _GPPUA(0),
-    _GPPUB(0)
+                _deviceID(deviceID),
+                _GPIOA(0),
+                _GPIOB(0),
+                _IODIRA(0),
+                _IODIRB(0),
+                _GPPUA(0),
+                _GPPUB(0)
 {
-    if(chipSelectPin == CHIPSELECT_0)
+    if (chipSelectPin == CHIPSELECT_0)
     {
         _chipSelectPin = BCM2835_SPI_CS0;
     }
@@ -26,9 +26,9 @@ bool MCP23S17PI::isBCM2835Initialized = false;
 
 void MCP23S17PI::begin()
 {
-    if(!isBCM2835Initialized)
+    if (!isBCM2835Initialized)
     {
-        if(!bcm2835_init())
+        if (!bcm2835_init())
         {
             printf("Error initializing GPIO.");
             throw 1;
@@ -36,7 +36,7 @@ void MCP23S17PI::begin()
 
         bcm2835_spi_begin();
 
-        bcm2835_spi_setClockDivider(BCM2835_SPI_CLOCK_DIVIDER_32);    // 3.9 MHz
+        bcm2835_spi_setClockDivider (BCM2835_SPI_CLOCK_DIVIDER_32);    // 3.9 MHz
         bcm2835_spi_chipSelect(_chipSelectPin);                      // The default
 
         writeRegister(MCP23S17PI_IOCON, IOCON_INIT);
@@ -47,12 +47,12 @@ void MCP23S17PI::begin()
 
 void MCP23S17PI::setPinMode(uint8_t pin, Direction dir)
 {
-    uint8_t reg;
-    uint8_t* data;
-
-    if(pin < 16)
+    if (pin < 16)
     {
-        if(pin < 8)
+        uint8_t reg;
+        uint8_t* data;
+
+        if (pin < 8)
         {
             reg = MCP23S17PI_IODIRA;
             data = &_IODIRA;
@@ -64,7 +64,7 @@ void MCP23S17PI::setPinMode(uint8_t pin, Direction dir)
             data = &_IODIRB;
         }
 
-        if(DIR_INPUT == dir)
+        if (DIR_INPUT == dir)
         {
             *data |= (1 << pin);
         }
@@ -78,12 +78,12 @@ void MCP23S17PI::setPinMode(uint8_t pin, Direction dir)
 
 void MCP23S17PI::setPullupMode(uint8_t pin, Pullup mode)
 {
-    uint8_t reg;
-    uint8_t* data;
-
-    if(pin < 16)
+    if (pin < 16)
     {
-        if(pin < 8)
+        uint8_t reg;
+        uint8_t* data;
+
+        if (pin < 8)
         {
             reg = MCP23S17PI_GPPUA;
             data = &_GPPUA;
@@ -95,7 +95,7 @@ void MCP23S17PI::setPullupMode(uint8_t pin, Pullup mode)
             data = &_GPPUB;
         }
 
-        if(PULLUP_ENABLED == mode)
+        if (PULLUP_ENABLED == mode)
         {
             *data |= (1 << pin);
         }
@@ -109,10 +109,10 @@ void MCP23S17PI::setPullupMode(uint8_t pin, Pullup mode)
 
 MCP23S17PI::Level MCP23S17PI::digitalRead(uint8_t pin)
 {
-    if(pin < 8)
+    if (pin < 8)
     {
         _GPIOA = readRegister(MCP23S17PI_GPIOA);
-        if((_GPIOA & (1 << pin)) != 0)
+        if ((_GPIOA & (1 << pin)) != 0)
         {
             return LEVEL_HIGH;
         }
@@ -121,11 +121,11 @@ MCP23S17PI::Level MCP23S17PI::digitalRead(uint8_t pin)
             return LEVEL_LOW;
         }
     }
-    else if(pin < 16)
+    else if (pin < 16)
     {
         _GPIOB = readRegister(MCP23S17PI_GPIOB);
         pin &= 0x07;
-        if((_GPIOB & (1 << pin)) != 0)
+        if ((_GPIOB & (1 << pin)) != 0)
         {
             return LEVEL_HIGH;
         }
@@ -136,20 +136,19 @@ MCP23S17PI::Level MCP23S17PI::digitalRead(uint8_t pin)
     }
     else
     {
-        std::cout << "Error while MCP23S17PI::digitalRead call. pin="
-                  << static_cast<int>(pin) << std::endl;
+        std::cout << "Error while MCP23S17PI::digitalRead call. pin=" << static_cast<int>(pin) << std::endl;
         throw 11;
     }
 }
 
 void MCP23S17PI::digitalWrite(uint8_t pin, Level level)
 {
-    uint8_t reg;
-    uint8_t* data;
-
-    if(pin < 16)
+    if (pin < 16)
     {
-        if(pin < 8)
+        uint8_t reg;
+        uint8_t* data;
+
+        if (pin < 8)
         {
             reg = MCP23S17PI_GPIOA;
             data = &_GPIOA;
@@ -161,7 +160,7 @@ void MCP23S17PI::digitalWrite(uint8_t pin, Level level)
             data = &_GPIOB;
         }
 
-        if(LEVEL_HIGH == level)
+        if (LEVEL_HIGH == level)
         {
             *data |= 1 << pin;
         }
@@ -214,7 +213,7 @@ uint16_t MCP23S17PI::readRegisterWord(uint8_t regAddress)
     buffer[0] = readRegister(regAddress);
     buffer[1] = readRegister(regAddress + 1);
 
-    return (uint16_t)(((uint16_t)(buffer[1]) << 8) | (uint16_t)buffer[0]);
+    return (uint16_t) (((uint16_t) (buffer[1]) << 8) | (uint16_t) buffer[0]);
 }
 
 void MCP23S17PI::end()

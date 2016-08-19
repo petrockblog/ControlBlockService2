@@ -24,7 +24,7 @@ public:
 		SHUTDOWN_ACTIVATED
 	};
 
-	PowerSwitch(ShutdownActivated_e doShutdownValue);
+	explicit PowerSwitch(ShutdownActivated_e doShutdownValue);
 	
 	~PowerSwitch();
 
