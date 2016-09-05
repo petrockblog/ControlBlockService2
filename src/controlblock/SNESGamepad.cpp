@@ -37,9 +37,6 @@ void SNESGamepad::initialize(InputDevice::Channel_e channel)
     // Setup the uinput device
     ioctl(uinp_fd, UI_SET_EVBIT, EV_KEY);
     ioctl(uinp_fd, UI_SET_EVBIT, EV_REL);
-	for (int i = 0; i < 256; i++) {
-		ioctl(uinp_fd, UI_SET_KEYBIT, i);
-	}
 
     // gamepad, buttons
     ioctl(uinp_fd, UI_SET_KEYBIT, BTN_A);
