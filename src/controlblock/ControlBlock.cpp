@@ -73,6 +73,7 @@ void ControlBlock::update()
     {
         std::cout << "Error while updating the gamepad devices. Error number: " << errno << std::endl;
     }
+
     try
     {
         powerSwitch->update();

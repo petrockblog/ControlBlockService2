@@ -5,17 +5,17 @@
 
 class ControlBlockConfiguration {
 public:
-	typedef enum {
+	enum GamepadType_e {
 		GAMEPAD_ARCADE = 0,
 		GAMEPAD_MAME,
 		GAMEPAD_SNES,
 		GAMEPAD_NONE
-	} GamepadType_e;
+	};
 
-	typedef enum {
+	enum ShutdownType_e {
 		SHUTDOWN_DEACTIVATED = 0,
 		SHUTDOWN_ACTIVATED
-	} ShutdownType_e;
+	};
 
 	ControlBlockConfiguration();
 	~ControlBlockConfiguration();

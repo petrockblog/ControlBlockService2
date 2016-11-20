@@ -37,6 +37,7 @@ void DigitalIn::configureDevice(DI_Device device)
             expander[0]->setPinMode(10, MCP23S17PI::DIR_INPUT);
             expander[0]->setPullupMode(10, MCP23S17PI::PULLUP_ENABLED);
 
+            // for reset button
             expander[1]->setPinMode(8, MCP23S17PI::DIR_INPUT);
             expander[1]->setPullupMode(8, MCP23S17PI::PULLUP_ENABLED);
             break;
@@ -155,6 +156,9 @@ DigitalIn::DI_Level_e DigitalIn::getLevel(DigitalIn::DI_Channel_e channel)
             break;
         case DI_CHANNEL_P2_DATA:
             returnLevel = expander[0]->digitalRead(10) == MCP23S17PI::LEVEL_HIGH ? DI_LEVEL_LOW : DI_LEVEL_HIGH;
+            break;
+        case DI_CHANNEL_SNES_RESET:
+            returnLevel = expander[1]->digitalRead(8) == MCP23S17PI::LEVEL_HIGH ? DI_LEVEL_LOW : DI_LEVEL_HIGH;
             break;
     }
 

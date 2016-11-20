@@ -31,7 +31,7 @@ public:
     /**
      * @brief Logical signal level identifiers
      */
-    enum Level 
+    enum Level
     { 
         LEVEL_LOW = 0,  //!< Logical low
         LEVEL_HIGH      //!< Logical high

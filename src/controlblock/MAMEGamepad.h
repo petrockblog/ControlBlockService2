@@ -2,23 +2,22 @@
 #define MAMEGAMEPAD_H
 
 #include <stdint.h>
-#include <linux/uinput.h>
 #include "InputDevice.h"
 #include "DigitalIn.h"
-#include "uinputcpp.h"
+#include "UInputKeyboard.h"
 
-class MAMEGamepad : public InputDevice {
+class MAMEGamepad: public InputDevice
+{
 public:
-	MAMEGamepad();
-	~MAMEGamepad();
+    MAMEGamepad();
+    ~MAMEGamepad();
 
-	virtual void initialize(InputDevice::Channel_e channel);
-	virtual void update();
+    virtual void initialize(InputDevice::Channel_e channel);
+    virtual void update();
 
 private:
-	InputDevice::Channel_e channel;
-	uint32_t uinp_fd;
-
+    InputDevice::Channel_e channel;
+    UInputKeyboard keyboard;
 };
 
 #endif
