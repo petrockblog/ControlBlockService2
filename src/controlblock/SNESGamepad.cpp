@@ -43,21 +43,34 @@ uint16_t SNESGamepad::getSNESControllerState()
     DigitalIn din = DigitalIn::getInstance();
     DigitalOut dout = DigitalOut::getInstance();
 
-    dout.setLevel(DigitalOut::DO_CHANNEL_P1P2_STROBE, DigitalOut::DO_LEVEL_HIGH);
+    DigitalIn::BoardNumber_e boardIn = DigitalIn::BOARD_0;
+    DigitalOut::BoardNumber_e boardOut = DigitalOut::BOARD_0;
+    if ((channel == InputDevice::CHANNEL_1) || (channel == InputDevice::CHANNEL_2))
+    {
+        boardIn = DigitalIn::BOARD_0;
+        boardOut = DigitalOut::BOARD_0;
+    }
+    else
+    {
+        boardIn = DigitalIn::BOARD_1;
+        boardOut = DigitalOut::BOARD_1;
+    }
+
+    dout.setLevel(DigitalOut::DO_CHANNEL_P1P2_STROBE, DigitalOut::DO_LEVEL_HIGH, boardOut);
     delayMicroseconds(2u * STROBEDELAY);
-    dout.setLevel(DigitalOut::DO_CHANNEL_P1P2_STROBE, DigitalOut::DO_LEVEL_LOW);
-    delayMicroseconds (STROBEDELAY);
+    dout.setLevel(DigitalOut::DO_CHANNEL_P1P2_STROBE, DigitalOut::DO_LEVEL_LOW, boardOut);
+    delayMicroseconds(STROBEDELAY);
 
     for (uint8_t i = 0u; i < 12u; i++)
     {
         DigitalIn::DI_Level_e curpin;
         if (channel == InputDevice::CHANNEL_1)
         {
-            curpin = din.getLevel(DigitalIn::DI_CHANNEL_P1_DATA);
+            curpin = din.getLevel(DigitalIn::DI_CHANNEL_P1_DATA, boardIn);
         }
         else
         {
-            curpin = din.getLevel(DigitalIn::DI_CHANNEL_P2_DATA);
+            curpin = din.getLevel(DigitalIn::DI_CHANNEL_P2_DATA, boardIn);
         }
 
         if (curpin == DigitalIn::DI_LEVEL_HIGH)
@@ -65,9 +78,9 @@ uint16_t SNESGamepad::getSNESControllerState()
             state |= (1u << i);
         }
 
-        dout.setLevel(DigitalOut::DO_CHANNEL_P1P2_CLOCK, DigitalOut::DO_LEVEL_HIGH);
+        dout.setLevel(DigitalOut::DO_CHANNEL_P1P2_CLOCK, DigitalOut::DO_LEVEL_HIGH, boardOut);
         delayMicroseconds(STROBEDELAY);
-        dout.setLevel(DigitalOut::DO_CHANNEL_P1P2_CLOCK, DigitalOut::DO_LEVEL_LOW);
+        dout.setLevel(DigitalOut::DO_CHANNEL_P1P2_CLOCK, DigitalOut::DO_LEVEL_LOW, boardOut);
         delayMicroseconds(STROBEDELAY);
     }
 
@@ -76,10 +89,6 @@ uint16_t SNESGamepad::getSNESControllerState()
 
 void SNESGamepad::update()
 {
-    DigitalIn di = DigitalIn::getInstance();
-    DigitalIn::DI_Level_e resetLevel = di.getLevel(DigitalIn::DI_CHANNEL_P2_B);
-    gamepad.setKeyState(KEY_ESC, resetLevel == DigitalIn::DI_LEVEL_LOW ? 0 : 1, EV_KEY);
-
     uint16_t state = getSNESControllerState();
 
     // left-right axis
@@ -119,12 +128,12 @@ void SNESGamepad::update()
     gamepad.setKeyState(BTN_TR, (state & GPAD_SNES_R) == GPAD_SNES_R ? 1 : 0, EV_KEY);
     gamepad.setKeyState(BTN_START, (state & GPAD_SNES_START) == GPAD_SNES_START ? 1 : 0, EV_KEY);
     gamepad.setKeyState(BTN_SELECT, (state & GPAD_SNES_SELECT) == GPAD_SNES_SELECT ? 1 : 0, EV_KEY);
-
     gamepad.sync();
 
-    if (channel == InputDevice::CHANNEL_1)
+    if (channel == InputDevice::CHANNEL_2)
     {
-        keyboard.setKeyState(KEY_ESC,
-                di.getLevel(DigitalIn::DI_CHANNEL_SNES_RESET) == DigitalIn::DI_LEVEL_LOW ? 0 : 1, EV_KEY);
+        DigitalIn di = DigitalIn::getInstance();
+        DigitalIn::DI_Level_e resetLevel = di.getLevel(DigitalIn::DI_CHANNEL_P2_B, DigitalIn::BOARD_0);
+        keyboard.setKeyState(KEY_ESC, resetLevel == DigitalIn::DI_LEVEL_LOW ? 0 : 1, EV_KEY);
     }
 }

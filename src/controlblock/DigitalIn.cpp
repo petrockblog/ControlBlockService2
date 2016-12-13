@@ -218,10 +218,6 @@ DigitalIn::DI_Level_e DigitalIn::getLevel(DigitalIn::DI_Channel_e channel, Board
                 expander[0 + offset]->digitalRead(10) == MCP23S17PI::LEVEL_HIGH ?
                         DI_LEVEL_LOW : DI_LEVEL_HIGH;
         break;
-    case DI_CHANNEL_SNES_RESET:
-        returnLevel =
-                expander[1 + offset]->digitalRead(8) == MCP23S17PI::LEVEL_HIGH ? DI_LEVEL_LOW : DI_LEVEL_HIGH;
-        break;
     }
 
     return returnLevel;

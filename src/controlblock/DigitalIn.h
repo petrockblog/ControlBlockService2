@@ -54,8 +54,7 @@ public:
         DI_CHANNEL_P2_A,
         DI_CHANNEL_P2_B,
         DI_CHANNEL_P1_DATA,
-        DI_CHANNEL_P2_DATA,
-        DI_CHANNEL_SNES_RESET
+        DI_CHANNEL_P2_DATA
     };
 
     /**
