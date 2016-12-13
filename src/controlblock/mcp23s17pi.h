@@ -22,8 +22,8 @@ public:
     /**
      * Port direction identifiers
      */
-    enum Direction 
-    { 
+    enum Direction
+    {
         DIR_INPUT = 0,  //!< Input direction
         DIR_OUTPUT      //!< Output direction
     };
@@ -31,8 +31,8 @@ public:
     /**
      * @brief Logical signal level identifiers
      */
-    enum Level 
-    { 
+    enum Level
+    {
         LEVEL_LOW = 0,  //!< Logical low
         LEVEL_HIGH      //!< Logical high
     };
@@ -40,8 +40,8 @@ public:
     /**
      * Pullup mode identifiers
      */
-    enum Pullup 
-    { 
+    enum Pullup
+    {
         PULLUP_ENABLED = 0,  //!< Pullup enabled
         PULLUP_DISABLED      //!< Pullup disabled
     };
@@ -115,7 +115,7 @@ public:
      * 
      * @param pin The pin number
      * @return The signal level
-     */    
+     */
     Level digitalRead(uint8_t pin);
 
     /**
@@ -160,15 +160,18 @@ private:
     static const uint8_t MCP23S08_CMD_WRITE = 0x40;
     static const uint8_t MCP23S08_CMD_READ = 0x41;
 
-    // Default initialisation mode
+    // Default initialization mode
     static const uint8_t IOCON_INIT = 0x28; // IOCON_SEQOP and IOCON_HAEN from above
 
     bcm2835SPIChipSelect _chipSelectPin;
     uint8_t _deviceID;
 
-    uint8_t _GPIOA, _GPIOB;
-    uint8_t _IODIRA, _IODIRB;
-    uint8_t _GPPUA, _GPPUB;
+    uint8_t _GPIOA;
+    uint8_t _GPIOB;
+    uint8_t _IODIRA;
+    uint8_t _IODIRB;
+    uint8_t _GPPUA;
+    uint8_t _GPPUB;
 
     void writeRegister(uint8_t regaddress, uint8_t val);
     void writeRegisterWord(const uint8_t &regAddress, uint16_t &data);

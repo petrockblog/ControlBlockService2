@@ -5,61 +5,61 @@
 
 #include "ControlBlockConfiguration.h"
 
-ControlBlockConfiguration::ControlBlockConfiguration() : gamepadType(GAMEPAD_ARCADE), 
-	doShutdown(SHUTDOWN_ACTIVATED)
+ControlBlockConfiguration::ControlBlockConfiguration()
 {
+    try
+    {
+        Json::Reader reader;
+
+        std::ifstream configStream("/etc/controlblockconfig.cfg");
+        std::string config_doc((std::istreambuf_iterator<char>(configStream)),
+                std::istreambuf_iterator<char>());
+
+        bool parsingSuccessful = reader.parse(config_doc, root);
+        if (!parsingSuccessful)
+        {
+            // report to the user the failure and their locations in the document.
+            std::cout << "Failed to parse configuration\n" << reader.getFormattedErrorMessages();
+            throw(1);
+        }
+
+        singleConfiguration[0] = new SingleConfiguration(
+                root["controlblocks"][0]["enabled"].asBool(),
+                root["controlblocks"][0]["address"]["SJ2"].asInt() << 2 || root["controlblocks"][0]["address"]["SJ1"].asInt() << 1,
+                root["controlblocks"][0]["gamepadtype"].asString(),
+                root["controlblocks"][0]["powerswitchOn"].asBool(),
+                root["controlblocks"][0]["onlyOneGamepad"].asBool()
+            );
+        singleConfiguration[1] = new SingleConfiguration(
+                root["controlblocks"][1]["enabled"].asBool(),
+                root["controlblocks"][1]["address"]["SJ2"].asInt() << 2 || root["controlblocks"][1]["address"]["SJ1"].asInt() << 1,
+                root["controlblocks"][1]["gamepadtype"].asString(),
+                root["controlblocks"][1]["powerswitchOn"].asBool(),
+                root["controlblocks"][1]["onlyOneGamepad"].asBool()
+            );
+    }
+    catch (int errno)
+    {
+        std::cout << "Error while initializing ControlBlockConfiguration instance. Error number: " << errno
+                << std::endl;
+    }
 }
 
-ControlBlockConfiguration::~ControlBlockConfiguration() 
+ControlBlockConfiguration::~ControlBlockConfiguration()
 {
+    for (int index = 0; index < MAX_CONTROLBLOCK_ID; index++)
+    {
+        if (singleConfiguration[0] != NULL)
+        {
+            delete singleConfiguration[0];
+        }
+    }
 }
 
-void ControlBlockConfiguration::initialize() 
+SingleConfiguration& ControlBlockConfiguration::getConfiguration(int controlBlockID)
 {
-	try {
-		Json::Value root;   // will contains the root value after parsing.
-		Json::Reader reader;
+    assert(controlBlockID < MAX_CONTROLBLOCK_ID);
 
-		std::ifstream t("/etc/controlblockconfig.cfg");
-		std::string config_doc((std::istreambuf_iterator<char>(t)),
-		                 		std::istreambuf_iterator<char>());
-
-		bool parsingSuccessful = reader.parse( config_doc, root );
-		if ( !parsingSuccessful ) {
-		    // report to the user the failure and their locations in the document.
-		    std::cout  << "Failed to parse configuration\n"
-		               << reader.getFormattedErrorMessages();
-		    return;
-		}
-
-		std::string configvalue = root["input"]["gamepadtype"].asString();
-		if (configvalue.compare("arcade") == 0) {
-			gamepadType = GAMEPAD_ARCADE;
-		} else if (configvalue.compare("mame") == 0) {
-			gamepadType = GAMEPAD_MAME;
-		} else if (configvalue.compare("snes") == 0) {
-			gamepadType = GAMEPAD_SNES;
-		} else if (configvalue.compare("none") == 0) {
-			gamepadType = GAMEPAD_NONE;
-		}
-		std::cout << "Read configuration: gamepadtype = " << gamepadType << std::endl;
-
-		bool configboolean = root["powerswitch"]["activated"].asBool();
-		if (configboolean) {
-			doShutdown = SHUTDOWN_ACTIVATED;
-		} else {
-			doShutdown = SHUTDOWN_DEACTIVATED;
-		}
-		std::cout << "Read configuration: doShutdown = " << doShutdown << std::endl;
-	} catch (int errno) {
-		std::cout << "Error while initializing ControlBlockConfiguration instance. Error number: " << errno << std::endl;
-	}
+    return *singleConfiguration[controlBlockID];
 }
 
-ControlBlockConfiguration::GamepadType_e ControlBlockConfiguration::getGamepadType() const  {
-	return gamepadType;
-}
-
-ControlBlockConfiguration::ShutdownType_e ControlBlockConfiguration::getShutdownActivation() const {
-	return doShutdown;
-}

@@ -1,18 +1,18 @@
 #include "ControlBlock.h"
 
+#include "ControlBlockConfiguration.h"
 #include "ArcadeGamepad.h"
 #include "SNESGamepad.h"
 #include "MAMEGamepad.h"
 #include "NONEGamepad.h"
 
 ControlBlock::ControlBlock() :
-                configuration(new ControlBlockConfiguration())
+                m_numberOfGamepads(0u)
 {
-    // read configuration
-    configuration->initialize();
+    ControlBlockConfiguration& config = ControlBlockConfiguration::getInstance();
 
     // initialize the power switch
-    if (configuration->getShutdownActivation() == ControlBlockConfiguration::SHUTDOWN_ACTIVATED)
+    if (config.getConfiguration(0).isEnabled() && config.getConfiguration(0).isPowerSwitchEnabled())
     {
         powerSwitch = new PowerSwitch(PowerSwitch::SHUTDOWN_ACTIVATED);
     }
@@ -22,49 +22,43 @@ ControlBlock::ControlBlock() :
     }
 
     // initialize the controllers
-    for (uint8_t counter = 0u; counter < NUMGAMEPADS; counter++)
+    int counter = 0;
+    for (int index = 0; index < MAX_NUMBER_OF_CONTROLBLOCKS; index++)
     {
-        if (configuration->getGamepadType() == ControlBlockConfiguration::GAMEPAD_ARCADE)
+        if (config.getConfiguration(index).isEnabled())
         {
-            gamepads[counter] = new ArcadeGamepad();
+            ISingleConfiguration::GamepadType_e type = config.getConfiguration(index).getGamepadType();
+            createGamepad(type, gamepads[counter]);
+            InputDevice::Channel_e channel = getInputDevice(counter);
+            gamepads[counter]->initialize(channel);
+            counter++;
+            if (!config.getConfiguration(index).isOnlyOneGamepadEnabled())
+            {
+                createGamepad(type, gamepads[counter]);
+                InputDevice::Channel_e channel = getInputDevice(counter);
+                gamepads[counter]->initialize(channel);
+                counter++;
+            }
         }
-        else if (configuration->getGamepadType() == ControlBlockConfiguration::GAMEPAD_SNES)
-        {
-            gamepads[counter] = new SNESGamepad();
-        }
-        else if (configuration->getGamepadType() == ControlBlockConfiguration::GAMEPAD_MAME)
-        {
-            gamepads[counter] = new MAMEGamepad();
-        }
-        else if (configuration->getGamepadType() == ControlBlockConfiguration::GAMEPAD_NONE)
-        {
-            gamepads[counter] = new NONEGamepad();
-        }
-        else
-        {
-            std::cout << "Error while configuring gamepad type ..." << std::endl;
-            throw 1;
-        }
-        gamepads[counter]->initialize(counter == 0u ? InputDevice::CHANNEL_1 : InputDevice::CHANNEL_2);
     }
+    m_numberOfGamepads = counter;
 }
 
 ControlBlock::~ControlBlock()
 {
-    for (uint8_t counter = 0u; counter < NUMGAMEPADS; counter++)
+    for (int counter = 0; counter < m_numberOfGamepads; counter++)
     {
         delete gamepads[counter];
         gamepads[counter] = NULL;
     }
     delete powerSwitch;
-    delete configuration;
 }
 
 void ControlBlock::update()
 {
     try
     {
-        for (uint8_t counter = 0u; counter < NUMGAMEPADS; counter++)
+        for (int counter = 0; counter < m_numberOfGamepads; counter++)
         {
             gamepads[counter]->update();
         }
@@ -73,6 +67,7 @@ void ControlBlock::update()
     {
         std::cout << "Error while updating the gamepad devices. Error number: " << errno << std::endl;
     }
+
     try
     {
         powerSwitch->update();
@@ -82,3 +77,51 @@ void ControlBlock::update()
         std::cout << "Error while updating the power switch instance. Error number: " << errno << std::endl;
     }
 }
+
+InputDevice::Channel_e ControlBlock::getInputDevice(int counterValue)
+{
+    assert(counterValue < (2 * MAX_NUMBER_OF_CONTROLBLOCKS));
+
+    InputDevice::Channel_e channel = InputDevice::CHANNEL_UNDEFINED;
+    switch (counterValue)
+    {
+    case 0:
+        channel = InputDevice::CHANNEL_1;
+        break;
+    case 1:
+        channel = InputDevice::CHANNEL_2;
+        break;
+    case 2:
+        channel = InputDevice::CHANNEL_3;
+        break;
+    case 3:
+        channel = InputDevice::CHANNEL_4;
+        break;
+    }
+    return channel;
+}
+
+void ControlBlock::createGamepad(ISingleConfiguration::GamepadType_e type, InputDevice*& device)
+{
+    std::cout << "Creating gamepad of type " << type << std::endl;
+    switch (type)
+    {
+    case ControlBlockConfiguration::GAMEPAD_ARCADE:
+        device = new ArcadeGamepad();
+        break;
+    case ControlBlockConfiguration::GAMEPAD_SNES:
+        device = new SNESGamepad();
+        break;
+    case ControlBlockConfiguration::GAMEPAD_MAME:
+        device = new MAMEGamepad();
+        break;
+    case ControlBlockConfiguration::GAMEPAD_NONE:
+        device = new NONEGamepad();
+        break;
+    default:
+        std::cout << "Error while configuring gamepad type ..." << std::endl;
+        throw 1;
+        break;
+    }
+}
+
