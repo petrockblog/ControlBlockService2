@@ -1,33 +1,46 @@
 #ifndef CONTROLBLOCKCONFIGURATION_H
 #define CONTROLBLOCKCONFIGURATION_H
 
+#include <memory>
+#include <assert.h>
 #include <json/json.h>
+#include "SingleConfiguration.h"
 
-class ControlBlockConfiguration {
+class ControlBlockConfiguration
+{
 public:
-	enum GamepadType_e {
-		GAMEPAD_ARCADE = 0,
-		GAMEPAD_MAME,
-		GAMEPAD_SNES,
-		GAMEPAD_NONE
-	};
+    enum GamepadType_e
+    {
+        GAMEPAD_ARCADE = 0,
+        GAMEPAD_MAME,
+        GAMEPAD_SNES,
+        GAMEPAD_NONE
+    };
 
-	enum ShutdownType_e {
-		SHUTDOWN_DEACTIVATED = 0,
-		SHUTDOWN_ACTIVATED
-	};
+    enum ShutdownType_e
+    {
+        SHUTDOWN_DEACTIVATED = 0,
+        SHUTDOWN_ACTIVATED
+    };
 
-	ControlBlockConfiguration();
-	~ControlBlockConfiguration();
-	
-	void initialize();
-	GamepadType_e getGamepadType() const;
-	ShutdownType_e getShutdownActivation() const;
+    static ControlBlockConfiguration& getInstance()
+    {
+        static ControlBlockConfiguration instance = ControlBlockConfiguration();
+        return instance;
+    }
+
+    ~ControlBlockConfiguration();
+
+    SingleConfiguration& getConfiguration(int controlBlockID);
 
 private:
-	GamepadType_e gamepadType;
-	ShutdownType_e doShutdown;
+    static const int MAX_CONTROLBLOCK_ID = 2u;
 
+    Json::Value root;   // will contains the root value after parsing.
+    SingleConfiguration* singleConfiguration[MAX_CONTROLBLOCK_ID];
+
+
+    ControlBlockConfiguration();
 };
 
 #endif

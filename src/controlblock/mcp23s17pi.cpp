@@ -185,7 +185,7 @@ uint16_t MCP23S17PI::readGPIO()
 void MCP23S17PI::writeRegister(uint8_t regAddress, uint8_t data)
 {
     char spiData[3];
-    spiData[0] = MCP23S08_CMD_WRITE | ((_deviceID) << 1);
+    spiData[0] = MCP23S08_CMD_WRITE | ((_deviceID) << 1u);
     spiData[1] = regAddress;
     spiData[2] = data;
     bcm2835_spi_transfern(spiData, 3);
@@ -194,13 +194,13 @@ void MCP23S17PI::writeRegister(uint8_t regAddress, uint8_t data)
 void MCP23S17PI::writeRegisterWord(const uint8_t& regAddress, uint16_t& data)
 {
     writeRegister(regAddress, static_cast<uint8_t>(data));
-    writeRegister(regAddress + 1, static_cast<uint8_t>(data >> 8));
+    writeRegister(regAddress + 1u, static_cast<uint8_t>(data >> 8u));
 }
 
 uint8_t MCP23S17PI::readRegister(uint8_t regAddress)
 {
     char spiData[3];
-    spiData[0] = MCP23S08_CMD_READ | ((_deviceID) << 1);
+    spiData[0] = MCP23S08_CMD_READ | ((_deviceID) << 1u);
     spiData[1] = regAddress;
     bcm2835_spi_transfern(spiData, 3);
     return spiData[2];

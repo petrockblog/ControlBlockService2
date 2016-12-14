@@ -10,6 +10,8 @@ public:
     {
         CHANNEL_1 = 0,
         CHANNEL_2,
+        CHANNEL_3,
+        CHANNEL_4,
         CHANNEL_UNDEFINED
     };
 

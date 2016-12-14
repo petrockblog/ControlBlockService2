@@ -5,26 +5,30 @@
 #include <iostream>
 #include "PowerSwitch.h"
 #include "InputDevice.h"
-#include "ControlBlockConfiguration.h"
+#include "ISingleConfiguration.h"
 
 class ControlBlock
 {
 public:
-    static const uint8_t NUMGAMEPADS = 2u;
-
     ControlBlock();
-
     ~ControlBlock();
+
+    ControlBlock(const ControlBlock& other) = delete;
+    ControlBlock& operator=(const ControlBlock&) = delete;
 
     void update();
 
 private:
-    PowerSwitch* powerSwitch;
-    InputDevice* gamepads[NUMGAMEPADS];
-    ControlBlockConfiguration* configuration;
+    static const uint8_t MAX_NUMBER_OF_CONTROLBLOCKS = 2u;
 
-    // hide copy constructor
-    ControlBlock(const ControlBlock& other);
+    uint8_t m_numberOfGamepads;
+
+    PowerSwitch* powerSwitch;
+    InputDevice* gamepads[MAX_NUMBER_OF_CONTROLBLOCKS];
+
+    InputDevice::Channel_e getInputDevice(int counterValue);
+    void createGamepad(ISingleConfiguration::GamepadType_e type, InputDevice*& device);
+
 };
 
 #endif // CONTROLBLOCK_H

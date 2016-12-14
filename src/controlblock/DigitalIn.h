@@ -59,6 +59,15 @@ public:
     };
 
     /**
+     * Board identifiers in case of several stacked ControlBLocks
+     */
+    enum BoardNumber_e
+    {
+        BOARD_0 = 0,//!< BOARD_0
+        BOARD_1     //!< BOARD_1
+    };
+
+    /**
      * Logical input level identifiers
      */
     enum DI_Level_e
@@ -103,10 +112,12 @@ public:
      * @param channel The channel whose signal level should be returned
      * @return The logical signal level of the channel
      */
-    DI_Level_e getLevel(DI_Channel_e channel);
+    DI_Level_e getLevel(DI_Channel_e channel, BoardNumber_e board = BOARD_0);
 
 private:
-    MCP23S17PI* expander[2];
+    static const uint8_t MAX_NUMBER_OF_MCPS = 4u;
+
+    MCP23S17PI* expander[MAX_NUMBER_OF_MCPS];
 
     DigitalIn();
 };

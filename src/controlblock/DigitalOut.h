@@ -27,6 +27,15 @@ public:
     };
 
     /**
+     * Board identifiers in case of several stacked ControlBLocks
+     */
+    enum BoardNumber_e
+    {
+        BOARD_0 = 0,//!< BOARD_0
+        BOARD_1     //!< BOARD_1
+    };
+
+    /**
      * Logical output level identifiers
      */
     enum DO_Level_e
@@ -59,23 +68,25 @@ public:
     }
 
     /**
-     * @brief Configures port direction, pullup-mode, and initial signal level 
+     * @brief Configures port direction, pullup-mode, and initial signal level
      *        for a given device.
-     * 
+     *
      * @param device The device.
      */
     void configureDevice(DO_Device device);
 
     /**
      * @brief Sets a logical signal level of a given channel
-     * 
+     *
      * @param channel The channel whose signal level should be set
      * @param level The signal level to be set
      */
-    void setLevel(DO_Channel_e channel, DO_Level_e level);
+    void setLevel(DO_Channel_e channel, DO_Level_e level, BoardNumber_e board = BOARD_0);
 
 private:
-    MCP23S17PI* expander[2];
+    static const uint8_t MAX_NUMBER_OF_MCPS = 4u;
+
+    MCP23S17PI* expander[MAX_NUMBER_OF_MCPS];
 
     DigitalOut();  // hide default constructor
 

@@ -53,7 +53,6 @@ int main(int argc, char** argv)
     try
     {
         register_signalhandlers();
-
         ControlBlock controlBlock;
         while (doRun)
         {

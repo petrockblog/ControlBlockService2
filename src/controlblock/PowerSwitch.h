@@ -4,37 +4,38 @@
 #include "DigitalOut.h"
 #include "DigitalIn.h"
 
-class PowerSwitch {
+class PowerSwitch
+{
 public:
-	enum PowerState_e 
-	{
-	    STATE_OFF = 0,
-	    STATE_ON
-	};
+    enum PowerState_e
+    {
+        STATE_OFF = 0,
+        STATE_ON
+    };
 
-	enum ShutdownSignal_e
-	{
-	    SHUTDOWN_FALSE = 0,
-	    SHUTDOWN_TRUE
-	};
+    enum ShutdownSignal_e
+    {
+        SHUTDOWN_FALSE = 0,
+        SHUTDOWN_TRUE
+    };
 
-	enum ShutdownActivated_e
-	{
-		SHUTDOWN_DEACTIVATED = 0,
-		SHUTDOWN_ACTIVATED
-	};
+    enum ShutdownActivated_e
+    {
+        SHUTDOWN_DEACTIVATED = 0,
+        SHUTDOWN_ACTIVATED
+    };
 
-	explicit PowerSwitch(ShutdownActivated_e doShutdownValue);
-	
-	~PowerSwitch();
+    explicit PowerSwitch(ShutdownActivated_e doShutdownValue);
 
-	void update();
+    ~PowerSwitch();
+
+    void update();
 
 private:
-	ShutdownActivated_e doShutdown;
+    ShutdownActivated_e doShutdown;
 
-	void setPowerSignal(PowerState_e state);
-	ShutdownSignal_e getShutdownSignal();
+    void setPowerSignal(PowerState_e state);
+    ShutdownSignal_e getShutdownSignal();
 
 };
 
