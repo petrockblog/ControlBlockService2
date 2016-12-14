@@ -68,16 +68,16 @@ public:
     }
 
     /**
-     * @brief Configures port direction, pullup-mode, and initial signal level 
+     * @brief Configures port direction, pullup-mode, and initial signal level
      *        for a given device.
-     * 
+     *
      * @param device The device.
      */
     void configureDevice(DO_Device device);
 
     /**
      * @brief Sets a logical signal level of a given channel
-     * 
+     *
      * @param channel The channel whose signal level should be set
      * @param level The signal level to be set
      */

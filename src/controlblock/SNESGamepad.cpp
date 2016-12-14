@@ -17,6 +17,16 @@ SNESGamepad::~SNESGamepad()
 
 void SNESGamepad::initialize(InputDevice::Channel_e channel)
 {
+    DigitalOut::BoardNumber_e boardOut = DigitalOut::BOARD_0;
+    if ((channel == InputDevice::CHANNEL_1) || (channel == InputDevice::CHANNEL_2))
+    {
+        boardOut = DigitalOut::BOARD_0;
+    }
+    else
+    {
+        boardOut = DigitalOut::BOARD_1;
+    }
+
     DigitalIn::getInstance().configureDevice(DigitalIn::DI_DEVICE_SNES);
     DigitalOut::getInstance().configureDevice(DigitalOut::DO_DEVICE_SNES);
 
@@ -25,13 +35,13 @@ void SNESGamepad::initialize(InputDevice::Channel_e channel)
     DigitalOut dout = DigitalOut::getInstance();
     if (channel == InputDevice::CHANNEL_1)
     {
-        dout.setLevel(DigitalOut::DO_CHANNEL_P1P2_STROBE, DigitalOut::DO_LEVEL_LOW);
-        dout.setLevel(DigitalOut::DO_CHANNEL_P1P2_CLOCK, DigitalOut::DO_LEVEL_LOW);
-        dout.setLevel(DigitalOut::DO_CHANNEL_P1_VCC, DigitalOut::DO_LEVEL_HIGH);
+        dout.setLevel(DigitalOut::DO_CHANNEL_P1P2_STROBE, DigitalOut::DO_LEVEL_LOW, boardOut);
+        dout.setLevel(DigitalOut::DO_CHANNEL_P1P2_CLOCK, DigitalOut::DO_LEVEL_LOW, boardOut);
+        dout.setLevel(DigitalOut::DO_CHANNEL_P1_VCC, DigitalOut::DO_LEVEL_HIGH, boardOut);
     }
     else
     {
-        dout.setLevel(DigitalOut::DO_CHANNEL_P2_VCC, DigitalOut::DO_LEVEL_HIGH);
+        dout.setLevel(DigitalOut::DO_CHANNEL_P2_VCC, DigitalOut::DO_LEVEL_HIGH, boardOut);
         // strobe and clock were already initialized with player 1 initialization.
     }
 }
