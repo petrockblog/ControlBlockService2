@@ -63,7 +63,7 @@ The configuration file of _controlblock_ is located at ```/etc/controlblockconfi
 
 The default configuration file looks like this:
 
-```json
+```bash
 {
     "controlblocks" : [
         {
