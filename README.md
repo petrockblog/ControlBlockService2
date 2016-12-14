@@ -13,6 +13,7 @@ If you would like to download the latest version of _controlblock_ from [its Git
 ```bash
 git clone https://github.com/petrockblog/ControlBlockService2.git
 ```
+
 ## Prerequisites
 
 To be able to successfully build ControlBlockService you need to have certain APT packages installed. You can make sure that you have the latest version of those packages with these commands:
@@ -60,21 +61,66 @@ sudo make uninstall
 
 The configuration file of _controlblock_ is located at ```/etc/controlblockconfig.cfg```. It uses JSON syntax for setting the the values of its configuration parameters.
 
-The parameters are explained in detail in the following:
+The default configuration file looks like this:
 
- - ```input - gamepadtype```: Can be set to 
-     + ```arcade```: Enables two game pads in the system and maps the GPIOs of the ControlBlock to these game pads.<br>
-     ![ArcadeMapping](https://github.com/petrockblog/ControlBlockService2/raw/master/supplementary/ControlBlockLayoutArcade.png)
-     + ```mame```: Enables a virtual keyboard and maps the GPIOs of the ControlBlock to this keyboard with a MAME layout.<br>
-     ![ArcadeMapping](https://github.com/petrockblog/ControlBlockService2/raw/master/supplementary/ControlBlockLayoutMAME.png)
-     + ```snes```: Enables two game pads in the system and maps the attached SNES/NES controllers accordingly.<br>
-     ![ArcadeMapping](https://github.com/petrockblog/ControlBlockService2/raw/master/supplementary/ControlBlockLayoutSNESNES.png)
- - ```input - singlegamepad```: Can be set to 
-     + ```true```: Enables only one gamepad in the system (eg if only Player1 buttons are wired to the controlblock in your setup, this prevents a ghost gamepad from being selected as default player 2 in retroarch)
-     + ```false```: Enables the two gamepads (default)
- - ```powerswitch - activated```: Can be set to
-     + ```true```: Activates the handling of the power switch signals of the ControlBlock.
-     + ```false```: Deactivates the handling of the power switch signals of the ControlBlock.
+```bash
+{
+    "controlblocks" : [
+        {
+            "enabled" : true,          // Enables (=true) or disables (=false) the ControlBlock 
+            "address" : {              // The address information of the first ControlBlock
+                "SJ1" : 0,             // The hardware address solder-jumper SJ1. Options: 0, 1 
+                "SJ2" : 0              // The hardware address solder-jumper SJ2, Options: 0, 1
+            },
+            "gamepadtype" : "arcade",  // Sets the gamepad type. Options: "arcade", "mame", "snes", "none"
+            "onlyOneGamepad" : false,  // If true, registers only one gamepad instead of two
+            "powerswitchOn" : true     // Enables (=true) the power switch functionality. Options: true, false
+        },
+        {
+            "enabled" : false,          // Enables (=true) or disables (=false) the second ControlBlock 
+            "address" : {               // The address information of the second ControlBlock
+                "SJ1" : 1,              // The hardware address solder-jumper SJ1. Options: 0, 1 
+                "SJ2" : 0               // The hardware address solder-jumper SJ2, Options: 0, 1
+            },
+            "gamepadtype" : "arcade",   // Sets the gamepad type. Options: "arcade", "mame", "snes", "none"
+            "onlyOneGamepad" : false    // If true, registers only one gamepad instead of two
+        }
+    ]
+}
+```
+
+
+### Setting the Type of Gamepad
+
+To set the type of the gamepad you need to set the value of the element `gamepadtype`. You can choose between these values:
+
+ - ```arcade```: Enables two game pads in the system and maps the GPIOs of the ControlBlock to these game pads.<br>
+ ![ArcadeMapping](https://github.com/petrockblog/ControlBlockService2/raw/master/supplementary/ControlBlockLayoutArcade.png)
+ - ```mame```: Enables a virtual keyboard and maps the GPIOs of the ControlBlock to this keyboard with a MAME layout.<br>
+ ![ArcadeMapping](https://github.com/petrockblog/ControlBlockService2/raw/master/supplementary/ControlBlockLayoutMAME.png)
+ - ```snes```: Enables two game pads in the system and maps the attached SNES/NES controllers accordingly.<br>
+ ![ArcadeMapping](https://github.com/petrockblog/ControlBlockService2/raw/master/supplementary/ControlBlockLayoutSNESNES.png)
+
+ You can also connect a latching __reset button__ to `Player-2, Input B`. If the button is pressed a virtual ESC-key press will be triggered.
+
+
+### Only one Gamepad
+
+If you want to connect only one gamepad to the ControlBlock you can set the element `onlyOneGamepad` to `true`: It enables only one gamepad in the system (e.g., if only Player-1 buttons are wired to the ControlBlock in your setup, this prevents a ghost gamepad from being selected as default player 2 in retroarch)
+
+
+### 4-Player Extension
+
+The driver can handle up to two ControlBlocks. This means that you can stack two ControlBlock on top of each other to have inputs for four players. To do so make sure that you set different addresses for each of the ControlBlocks. You can set the address of each ControlBlock by setting the two solder jumpers of each ControlBlock accordingly. The values of the solder jumpers have to be set in the configuration file with the elements `SJ1` and `SJ2`. Also, you have to enable the second ControlBlock by setting the element `enabled` for the second ControlBlock to `true`.
+
+
+### Power Switch Functionality
+
+To enable or disable the power switch functionality you can set the element `powerswitchOn` to `true` or `false`:
+
+ - ```true```: Activates the handling of the power switch signals of the ControlBlock.
+ - ```false```: Deactivates the handling of the power switch signals of the ControlBlock.
+
 
 <br><br>
 __Have fun!__
