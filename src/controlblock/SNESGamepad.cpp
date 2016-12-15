@@ -145,5 +145,6 @@ void SNESGamepad::update()
         DigitalIn di = DigitalIn::getInstance();
         DigitalIn::DI_Level_e resetLevel = di.getLevel(DigitalIn::DI_CHANNEL_P2_B, DigitalIn::BOARD_0);
         keyboard.setKeyState(KEY_ESC, resetLevel == DigitalIn::DI_LEVEL_LOW ? 0 : 1, EV_KEY);
+        keyboard.sync();
     }
 }
