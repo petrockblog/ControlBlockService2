@@ -29,6 +29,9 @@ sudo apt-get install -y cmake g++-4.9
 To build _controlblock_ follow these commands:
 ```bash
 cd ControlBlockService2
+mkdir build
+cd build
+cmake ..
 make
 ```
 
