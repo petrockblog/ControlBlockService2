@@ -58,9 +58,14 @@ if [ -e "/.chroot_is_done" ]; then
 
   echo "Running tests"
   echo "Environment: $(uname -a)"
-  # Commands used to run the tests
+
+  mkdir build && cd build
+  cmake ..
   make
   make install
+  make installservice
+  make uninstallservice
+  make uninstall
 
 else
   if [ "${ARCH}" = "arm" ]; then
