@@ -46,27 +46,27 @@ void ArcadeGamepad::update()
         // axes
         if (di.getLevel(DigitalIn::DI_CHANNEL_P1_LEFT, boardIn) == DigitalIn::DI_LEVEL_HIGH)
         {
-            gamepad.setKeyState(ABS_X, 0, EV_ABS);
+            gamepad.setKeyState(ABS_Y, 4, EV_ABS);
         }
         else if (di.getLevel(DigitalIn::DI_CHANNEL_P1_RIGHT, boardIn) == DigitalIn::DI_LEVEL_HIGH)
+        {
+            gamepad.setKeyState(ABS_Y, 0, EV_ABS);
+        }
+        else
+        {
+            gamepad.setKeyState(ABS_Y, 2, EV_ABS);
+        }
+        if (di.getLevel(DigitalIn::DI_CHANNEL_P1_UP, boardIn) == DigitalIn::DI_LEVEL_HIGH)
+        {
+            gamepad.setKeyState(ABS_X, 0, EV_ABS);
+        }
+        else if (di.getLevel(DigitalIn::DI_CHANNEL_P1_DOWN, boardIn) == DigitalIn::DI_LEVEL_HIGH)
         {
             gamepad.setKeyState(ABS_X, 4, EV_ABS);
         }
         else
         {
             gamepad.setKeyState(ABS_X, 2, EV_ABS);
-        }
-        if (di.getLevel(DigitalIn::DI_CHANNEL_P1_UP, boardIn) == DigitalIn::DI_LEVEL_HIGH)
-        {
-            gamepad.setKeyState(ABS_Y, 0, EV_ABS);
-        }
-        else if (di.getLevel(DigitalIn::DI_CHANNEL_P1_DOWN, boardIn) == DigitalIn::DI_LEVEL_HIGH)
-        {
-            gamepad.setKeyState(ABS_Y, 4, EV_ABS);
-        }
-        else
-        {
-            gamepad.setKeyState(ABS_Y, 2, EV_ABS);
         }
 
         // buttons
