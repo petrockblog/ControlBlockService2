@@ -1,8 +1,8 @@
 #ifndef POWERSWITCH_H
 #define POWERSWITCH_H
 
-#include "hal/DigitalOut.h"
-#include "hal/DigitalIn.h"
+#include "hal/IDigitalOut.h"
+#include "hal/IDigitalIn.h"
 
 class PowerSwitch
 {
@@ -25,14 +25,19 @@ public:
         SHUTDOWN_ACTIVATED
     };
 
-    explicit PowerSwitch(ShutdownActivated_e doShutdownValue);
+    explicit PowerSwitch(IDigitalIn& digitalInReference, IDigitalOut& digitalOutReference, ShutdownActivated_e doShutdownValue);
 
     ~PowerSwitch();
 
     void update();
+    bool isShutdownInitiated() const;
 
 private:
     ShutdownActivated_e doShutdown;
+    bool isShutdownInitiatedValue;
+
+    IDigitalIn& digitalIn;
+    IDigitalOut& digitalOut;
 
     void setPowerSignal(PowerState_e state);
     ShutdownSignal_e getShutdownSignal();

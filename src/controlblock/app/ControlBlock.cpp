@@ -14,11 +14,11 @@ ControlBlock::ControlBlock() :
     // initialize the power switch
     if (config.getConfiguration(0).isEnabled() && config.getConfiguration(0).isPowerSwitchEnabled())
     {
-        powerSwitch = new PowerSwitch(PowerSwitch::SHUTDOWN_ACTIVATED);
+        powerSwitch = new PowerSwitch(DigitalIn::getInstance(), DigitalOut::getInstance(), PowerSwitch::SHUTDOWN_ACTIVATED);
     }
     else
     {
-        powerSwitch = new PowerSwitch(PowerSwitch::SHUTDOWN_DEACTIVATED);
+        powerSwitch = new PowerSwitch(DigitalIn::getInstance(), DigitalOut::getInstance(), PowerSwitch::SHUTDOWN_DEACTIVATED);
     }
 
     // initialize the controllers

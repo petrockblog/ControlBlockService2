@@ -4,7 +4,7 @@ project(ControlBlockService2)
 
 set(CMAKE_CXX_STANDARD 11)
 
-SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -O3")
 
 include_directories(src/controlblock)
 include_directories(src/lib/bcm2835-1.48/src)
@@ -52,4 +52,3 @@ add_custom_target(uninstallservice
 
 enable_testing()
 add_subdirectory(test)
-add_test(testname sample_tests)

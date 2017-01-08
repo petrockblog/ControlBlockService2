@@ -1,10 +1,14 @@
 #include <stdlib.h>
 #include "PowerSwitch.h"
 
-PowerSwitch::PowerSwitch(ShutdownActivated_e doShutdownValue) :
-                doShutdown(doShutdownValue)
+PowerSwitch::PowerSwitch(IDigitalIn& digitalInReference, IDigitalOut& digitalOutReference, ShutdownActivated_e doShutdownValue)
+        :
+        doShutdown(doShutdownValue),
+        isShutdownInitiatedValue(false),
+        digitalIn(digitalInReference),
+        digitalOut(digitalOutReference)
 {
-    DigitalOut::getInstance().configureDevice(DigitalOut::DO_DEVICE_POWERSWITCH);
+    digitalOut.configureDevice(IDigitalOut::DO_DEVICE_POWERSWITCH);
     setPowerSignal(PowerSwitch::STATE_ON);
 }
 
@@ -14,37 +18,35 @@ PowerSwitch::~PowerSwitch()
 
 void PowerSwitch::update()
 {
-    static bool isShutdownInitiated = false;
-
-    if ((doShutdown == SHUTDOWN_ACTIVATED) && (getShutdownSignal() == SHUTDOWN_TRUE)
-            && (isShutdownInitiated == false))
-    {
+    if ((doShutdown==SHUTDOWN_ACTIVATED) && (getShutdownSignal()==SHUTDOWN_TRUE)
+            && (isShutdownInitiatedValue==false)) {
         system("shutdown -t 3 -h now");
-        isShutdownInitiated = true;
+        isShutdownInitiatedValue = true;
     }
+}
+
+bool PowerSwitch::isShutdownInitiated() const
+{
+    return isShutdownInitiatedValue;
 }
 
 void PowerSwitch::setPowerSignal(PowerState_e state)
 {
-    if (state == STATE_OFF)
-    {
-        DigitalOut::getInstance().setLevel(DigitalOut::DO_CHANNEL_TOPOWERSWITCH, DigitalOut::DO_LEVEL_LOW);
+    if (state==STATE_OFF) {
+        digitalOut.setLevel(IDigitalOut::DO_CHANNEL_TOPOWERSWITCH, IDigitalOut::DO_LEVEL_LOW);
     }
-    else
-    {
-        DigitalOut::getInstance().setLevel(DigitalOut::DO_CHANNEL_TOPOWERSWITCH, DigitalOut::DO_LEVEL_HIGH);
+    else {
+        digitalOut.setLevel(IDigitalOut::DO_CHANNEL_TOPOWERSWITCH, IDigitalOut::DO_LEVEL_HIGH);
     }
 }
 
 PowerSwitch::ShutdownSignal_e PowerSwitch::getShutdownSignal()
 {
     ShutdownSignal_e signal = SHUTDOWN_FALSE;
-    if (DigitalIn::getInstance().getLevel(DigitalIn::DI_CHANNEL_FROMPOWERSWITCH) == DigitalIn::DI_LEVEL_LOW)
-    {
+    if (digitalIn.getLevel(IDigitalIn::DI_CHANNEL_FROMPOWERSWITCH)==IDigitalIn::DI_LEVEL_LOW) {
         signal = SHUTDOWN_FALSE;
     }
-    else
-    {
+    else {
         signal = SHUTDOWN_TRUE;
     }
     return signal;
