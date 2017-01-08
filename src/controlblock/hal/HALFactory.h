@@ -1,7 +1,7 @@
 #ifndef HALFACTORY_H
 #define HALFACTORY_H
 
-#include "mcp23s17pi.h"
+#include "hal/mcp23s17pi.h"
 
 class HALFactory
 {

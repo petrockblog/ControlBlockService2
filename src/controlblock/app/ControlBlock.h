@@ -3,9 +3,10 @@
 
 #include <stdint.h>
 #include <iostream>
+
 #include "PowerSwitch.h"
-#include "InputDevice.h"
-#include "ISingleConfiguration.h"
+#include "gamepads/InputDevice.h"
+#include "config/ISingleConfiguration.h"
 
 class ControlBlock
 {

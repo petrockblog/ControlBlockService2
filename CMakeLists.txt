@@ -8,41 +8,41 @@ SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
 set(SOURCE_FILES
         ${SOURCE_FILES}
-        src/controlblock/ArcadeGamepad.cpp
-        src/controlblock/ArcadeGamepad.h
-        src/controlblock/ControlBlock.cpp
-        src/controlblock/ControlBlock.h
-        src/controlblock/ControlBlockConfiguration.cpp
-        src/controlblock/ControlBlockConfiguration.h
-        src/controlblock/DigitalIn.cpp
-        src/controlblock/DigitalIn.h
-        src/controlblock/DigitalOut.cpp
-        src/controlblock/DigitalOut.h
-        src/controlblock/HALFactory.cpp
-        src/controlblock/HALFactory.h
-        src/controlblock/InputDevice.h
-        src/controlblock/ISingleConfiguration.h
-        src/controlblock/main.cpp
-        src/controlblock/MAMEGamepad.cpp
-        src/controlblock/MAMEGamepad.h
-        src/controlblock/mcp23s17pi.cpp
-        src/controlblock/mcp23s17pi.h
-        src/controlblock/NONEGamepad.cpp
-        src/controlblock/NONEGamepad.h
-        src/controlblock/PowerSwitch.cpp
-        src/controlblock/PowerSwitch.h
-        src/controlblock/SingleConfiguration.cpp
-        src/controlblock/SingleConfiguration.h
-        src/controlblock/SNESGamepad.cpp
-        src/controlblock/SNESGamepad.h
-        src/controlblock/UInputDevice.cpp
-        src/controlblock/UInputDevice.h
-        src/controlblock/UInputGamepadArcade.cpp
-        src/controlblock/UInputGamepadArcade.h
-        src/controlblock/UInputGamepadSNES.cpp
-        src/controlblock/UInputGamepadSNES.h
-        src/controlblock/UInputKeyboard.cpp
-        src/controlblock/UInputKeyboard.h
+        src/controlblock/gamepads/ArcadeGamepad.cpp
+        src/controlblock/gamepads/ArcadeGamepad.h
+        src/controlblock/app/ControlBlock.cpp
+        src/controlblock/app/ControlBlock.h
+        src/controlblock/config/ControlBlockConfiguration.cpp
+        src/controlblock/config/ControlBlockConfiguration.h
+        src/controlblock/hal/DigitalIn.cpp
+        src/controlblock/hal/DigitalIn.h
+        src/controlblock/hal/DigitalOut.cpp
+        src/controlblock/hal/DigitalOut.h
+        src/controlblock/hal/HALFactory.cpp
+        src/controlblock/hal/HALFactory.h
+        src/controlblock/gamepads/InputDevice.h
+        src/controlblock/config/ISingleConfiguration.h
+        src/controlblock/app/main.cpp
+        src/controlblock/gamepads/MAMEGamepad.cpp
+        src/controlblock/gamepads/MAMEGamepad.h
+        src/controlblock/hal/mcp23s17pi.cpp
+        src/controlblock/hal/mcp23s17pi.h
+        src/controlblock/gamepads/NONEGamepad.cpp
+        src/controlblock/gamepads/NONEGamepad.h
+        src/controlblock/app/PowerSwitch.cpp
+        src/controlblock/app/PowerSwitch.h
+        src/controlblock/config/SingleConfiguration.cpp
+        src/controlblock/config/SingleConfiguration.h
+        src/controlblock/gamepads/SNESGamepad.cpp
+        src/controlblock/gamepads/SNESGamepad.h
+        src/controlblock/uinput/UInputDevice.cpp
+        src/controlblock/uinput/UInputDevice.h
+        src/controlblock/uinput/UInputGamepadArcade.cpp
+        src/controlblock/uinput/UInputGamepadArcade.h
+        src/controlblock/uinput/UInputGamepadSNES.cpp
+        src/controlblock/uinput/UInputGamepadSNES.h
+        src/controlblock/uinput/UInputKeyboard.cpp
+        src/controlblock/uinput/UInputKeyboard.h
         src/lib/bcm2835-1.48/src/bcm2835.c
         src/lib/bcm2835-1.48/src/bcm2835.h
         )

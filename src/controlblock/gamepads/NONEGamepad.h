@@ -3,7 +3,7 @@
 
 #include <stdint.h>
 #include "InputDevice.h"
-#include "DigitalIn.h"
+#include "hal/DigitalIn.h"
 
 class NONEGamepad : public InputDevice {
 public:

@@ -2,11 +2,11 @@
 #define SNESGAMEPAD_H
 
 #include <stdint.h>
-#include "DigitalIn.h"
-#include "DigitalOut.h"
+#include "hal/DigitalIn.h"
+#include "hal/DigitalOut.h"
 #include "InputDevice.h"
-#include "UInputGamepadSNES.h"
-#include "UInputKeyboard.h"
+#include "uinput/UInputGamepadSNES.h"
+#include "uinput/UInputKeyboard.h"
 
 class SNESGamepad: public InputDevice
 {

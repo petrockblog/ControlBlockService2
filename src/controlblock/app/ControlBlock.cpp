@@ -1,10 +1,10 @@
 #include "ControlBlock.h"
 
-#include "ControlBlockConfiguration.h"
-#include "ArcadeGamepad.h"
-#include "SNESGamepad.h"
-#include "MAMEGamepad.h"
-#include "NONEGamepad.h"
+#include "config/ControlBlockConfiguration.h"
+#include "gamepads/ArcadeGamepad.h"
+#include "gamepads/SNESGamepad.h"
+#include "gamepads/MAMEGamepad.h"
+#include "gamepads/NONEGamepad.h"
 
 ControlBlock::ControlBlock() :
                 m_numberOfGamepads(0u)

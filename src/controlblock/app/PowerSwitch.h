@@ -1,8 +1,8 @@
 #ifndef POWERSWITCH_H
 #define POWERSWITCH_H
 
-#include "DigitalOut.h"
-#include "DigitalIn.h"
+#include "hal/DigitalOut.h"
+#include "hal/DigitalIn.h"
 
 class PowerSwitch
 {

@@ -3,8 +3,8 @@
 
 #include <stdint.h>
 #include "InputDevice.h"
-#include "DigitalIn.h"
-#include "UInputKeyboard.h"
+#include "hal/DigitalIn.h"
+#include "uinput/UInputKeyboard.h"
 
 class MAMEGamepad: public InputDevice
 {

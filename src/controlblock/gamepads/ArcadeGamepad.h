@@ -2,8 +2,8 @@
 #define ARCADEGAMEPAD_H
 
 #include "InputDevice.h"
-#include "DigitalIn.h"
-#include "UInputGamepadArcade.h"
+#include "hal/DigitalIn.h"
+#include "uinput/UInputGamepadArcade.h"
 
 class ArcadeGamepad: public InputDevice
 {
