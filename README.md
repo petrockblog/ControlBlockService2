@@ -35,14 +35,14 @@ cmake ..
 make
 ```
 
-If everything went fine you can install with the command
+If everything went fine you can install the driver from within the folder `build` with the command
 ```bash
 sudo make install
 ```
 
 ## Installation as Service
 
-You can install _controlblock_ as daemon with this command:
+You can install _controlblock_ as daemon from within the folder `build` with this command:
 ```bash
 sudo make installservice
 ```
@@ -50,12 +50,12 @@ It might be that you need to **restart** your Raspberry afterwards to have all n
 
 ## Uninstalling the service and/or the binary
 
-You can uninstall the daemon with this command:
+You can uninstall the daemon from within the folder `build` with this command:
 ```bash
 sudo make uninstallservice
 ```
 
-You can uninstall the binary with this command:
+You can uninstall the binary from within the folder `build` with this command:
 ```bash
 sudo make uninstall
 ```
