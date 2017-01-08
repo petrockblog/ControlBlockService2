@@ -50,5 +50,8 @@ add_custom_target(uninstallservice
         COMMENT "Uninstalling service."
         )
 
+# Docygen documentation target
+add_subdirectory(doc)
+
 enable_testing()
 add_subdirectory(test)
