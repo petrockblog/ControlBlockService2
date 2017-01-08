@@ -62,6 +62,7 @@ if [ -e "/.chroot_is_done" ]; then
   mkdir build && cd build
   cmake ..
   make
+  make test
   make install
   make installservice
   make uninstallservice
