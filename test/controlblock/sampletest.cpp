@@ -1,4 +1,6 @@
-//
-// Created by Florian Müller on 07.01.17.
-//
+#include "gtest/gtest.h"
+
+TEST(SampleTest, AssertionTrue) {
+ASSERT_EQ(1, 1);
+}
 
