@@ -15,6 +15,9 @@ include_directories(
 add_executable(${ALL_TESTS_RUNNER_FILE}
         ../src/controlblock/app/PowerSwitch.cpp
         controlblock/app/PowerBlockTest.cpp
+
+        ../src/controlblock/gamepads/ArcadeGamepad.cpp
+        controlblock/gamepads/ArcadeGamepadTest.cpp
         )
 
 target_link_libraries(${ALL_TESTS_RUNNER_FILE} gtest gtest_main gmock)

@@ -2,13 +2,14 @@
 #define ARCADEGAMEPAD_H
 
 #include "InputDevice.h"
-#include "hal/DigitalIn.h"
-#include "uinput/UInputGamepadArcade.h"
+#include "uinput/IUInputDevice.h"
+#include "uinput/IUInputFactory.h"
+#include "hal/IDigitalIn.h"
 
 class ArcadeGamepad: public InputDevice
 {
 public:
-    ArcadeGamepad();
+    ArcadeGamepad(IUInputFactory& uiFactory, IDigitalIn& digitalInRef);
     ~ArcadeGamepad();
 
     virtual void initialize(InputDevice::Channel_e channel);
@@ -16,7 +17,8 @@ public:
 
 private:
     InputDevice::Channel_e channel;
-    UInputGamepadArcade gamepad;
+    IUInputDevice* gamepad;
+    IDigitalIn* digitalIn;
 };
 
 #endif

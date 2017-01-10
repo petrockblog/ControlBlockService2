@@ -27,7 +27,6 @@ TEST(PowerBlockTest, updateAndExpectShutdown)
 
     powerSwitch.update();
     EXPECT_TRUE(powerSwitch.isShutdownInitiated());
-
 }
 
 TEST(PowerBlockTest, updateAndExpectNoShutdown)
@@ -40,5 +39,4 @@ TEST(PowerBlockTest, updateAndExpectNoShutdown)
 
     powerSwitch.update();
     EXPECT_FALSE(powerSwitch.isShutdownInitiated());
-
 }
