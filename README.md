@@ -11,8 +11,10 @@ This is the driver for the petrockblock.com ControlBlock, which is an extension 
 
 If you would like to download the latest version of _controlblock_ from [its Github repository](https://github.com/petrockblog/ControlBlockService2), you can use this command:
 ```bash
-git clone https://github.com/petrockblog/ControlBlockService2.git
+git clone --recursive https://github.com/petrockblog/ControlBlockService2.git
 ```
+
+Note that the above command also takes care for downloading the included Git submodules.
 
 ## Prerequisites
 
