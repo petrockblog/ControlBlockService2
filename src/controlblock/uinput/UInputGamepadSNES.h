@@ -14,7 +14,7 @@ public:
     /**
      * Destructor
      */
-    ~UInputGamepadSNES();
+    virtual ~UInputGamepadSNES();
 };
 
 #endif

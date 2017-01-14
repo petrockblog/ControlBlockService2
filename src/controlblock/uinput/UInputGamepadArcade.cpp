@@ -1,5 +1,4 @@
 #include "UInputGamepadArcade.h"
-#include <assert.h>
 
 UInputGamepadArcade::UInputGamepadArcade()
 {
@@ -42,15 +41,14 @@ UInputGamepadArcade::UInputGamepadArcade()
 
     /* Create input device into input sub-system */
     write(m_fileDescriptor, &uinp, sizeof(uinp));
-    if (ioctl(m_fileDescriptor, UI_DEV_CREATE))
-    {
+    if (ioctl(m_fileDescriptor, UI_DEV_CREATE)) {
         printf("[ArcadeGamepad] Unable to create UINPUT device.");
         throw -1;
     }
 
     setKeyState(ABS_X, 2, EV_ABS);
     setKeyState(ABS_Y, 2, EV_ABS);
-    sync ();
+    sync();
 }
 
 UInputGamepadArcade::~UInputGamepadArcade()

@@ -3,9 +3,10 @@
 #include <chrono>
 #include <thread>
 #include <signal.h>
+#include <bcm2835.h>
 
 #include "app/ControlBlock.h"
-#include <bcm2835.h>
+#include "uinput/UInputFactory.h"
 
 static volatile sig_atomic_t doRun = 1;
 
@@ -52,7 +53,8 @@ int main(int argc, char** argv)
     try
     {
         register_signalhandlers();
-        ControlBlock controlBlock;
+        UInputFactory uiFactory;
+        ControlBlock controlBlock(uiFactory);
         while (doRun)
         {
             controlBlock.update();

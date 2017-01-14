@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <stdint.h>
+#include "IUInputDevice.h"
 
 extern "C"
 {
@@ -14,7 +15,7 @@ extern "C"
 #include <unistd.h>
 }
 
-class UInputDevice
+class UInputDevice : public IUInputDevice
 {
 public:
     /**
@@ -25,7 +26,7 @@ public:
     /**
      * Destructor
      */
-    ~UInputDevice();
+    virtual ~UInputDevice();
 
     /**
      * Sets the state of a key. To let the changes have an effect the method \ref sync() needs to be called.
@@ -33,12 +34,12 @@ public:
      * @param keyvalue
      * @param evtype
      */
-    void setKeyState(uint16_t keycode, int16_t keyvalue, uint16_t evtype);
+    virtual void setKeyState(uint16_t keycode, int16_t keyvalue, uint16_t evtype);
 
     /**
      * Sends all recent key state changes via \ref setKeyState() to the uinput device.
      */
-    void sync();
+    virtual void sync();
 
 protected:
     uint32_t m_fileDescriptor;

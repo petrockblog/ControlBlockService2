@@ -4,7 +4,9 @@ project(ControlBlockService2)
 
 set(CMAKE_CXX_STANDARD 11)
 
-SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -O3")
+# call with cmake -DCMAKE_BUILD_TYPE=Release .. or -DCMAKE_BUILD_TYPE=Debug
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -std=c++11 -O1 -g -Wall")
+set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -std=c++11 -O3")
 
 include_directories(src/controlblock)
 include_directories(src/lib/bcm2835-1.48/src)
