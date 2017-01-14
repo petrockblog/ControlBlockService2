@@ -1,6 +1,7 @@
 #ifndef ARCADEGAMEPAD_H
 #define ARCADEGAMEPAD_H
 
+#include <memory>
 #include "InputDevice.h"
 #include "uinput/IUInputDevice.h"
 #include "uinput/IUInputFactory.h"
@@ -10,15 +11,15 @@ class ArcadeGamepad: public InputDevice
 {
 public:
     ArcadeGamepad(IUInputFactory& uiFactory, IDigitalIn& digitalInRef);
-    ~ArcadeGamepad();
+    ~ArcadeGamepad() = default;
 
     virtual void initialize(InputDevice::Channel_e channel);
     virtual void update();
 
 private:
     InputDevice::Channel_e channel;
-    IUInputDevice* gamepad;
-    IDigitalIn* digitalIn;
+    std::unique_ptr<IUInputDevice> gamepad;
+    IDigitalIn& digitalIn;
 };
 
 #endif

@@ -4,9 +4,18 @@
 #include "gmock/gmock.h"  // Brings in Google Mock.
 #include "uinput/IUInputFactory.h"
 
-class UInputFactoryMock : public IUInputFactory {
+class UInputFactoryMock : public IUInputFactory
+{
 public:
-    MOCK_METHOD1(getUInputDevice, IUInputDevice*(IUInputDevice::DeviceType type));
+    UInputFactoryMock() { }
+    virtual ~UInputFactoryMock() { }
+
+    virtual std::unique_ptr<IUInputDevice> getUInputDevice(IUInputDevice::DeviceType type)
+    {
+        return std::unique_ptr<IUInputDevice>(getUInputDeviceProxy(type));
+    }
+
+    MOCK_METHOD1(getUInputDeviceProxy, IUInputDevice*(IUInputDevice::DeviceType type));
 };
 
 #endif //CONTROLBLOCKSERVICE2_UINPUTFACTORYMOCK_H

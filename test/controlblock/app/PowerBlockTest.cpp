@@ -5,8 +5,9 @@
 #include "app/PowerSwitch.h"
 
 using ::testing::Return;
+using ::testing::NiceMock;
 
-TEST(PowerBlockTest, Constructor)
+TEST(PowerSwitchTest, Constructor)
 {
     DigitalOutMock doMock;
     DigitalInMock diMock;
@@ -17,9 +18,19 @@ TEST(PowerBlockTest, Constructor)
     EXPECT_FALSE(powerSwitch.isShutdownInitiated());
 }
 
-TEST(PowerBlockTest, updateAndExpectShutdown)
+TEST(PowerSwitchTest, updateWithNoShutdownActivated_ExpectNoShutdown)
 {
-    DigitalOutMock doMock;
+    NiceMock<DigitalOutMock> doMock;
+    DigitalInMock diMock;
+    PowerSwitch powerSwitch(diMock, doMock, PowerSwitch::SHUTDOWN_DEACTIVATED);
+
+    powerSwitch.update();
+    EXPECT_FALSE(powerSwitch.isShutdownInitiated());
+}
+
+TEST(PowerSwitchTest, updateAndExpectShutdown)
+{
+    NiceMock<DigitalOutMock> doMock;
     DigitalInMock diMock;
     PowerSwitch powerSwitch(diMock, doMock, PowerSwitch::SHUTDOWN_ACTIVATED);
 
@@ -29,9 +40,9 @@ TEST(PowerBlockTest, updateAndExpectShutdown)
     EXPECT_TRUE(powerSwitch.isShutdownInitiated());
 }
 
-TEST(PowerBlockTest, updateAndExpectNoShutdown)
+TEST(PowerSwitchTest, updateAndExpectNoShutdown)
 {
-    DigitalOutMock doMock;
+    NiceMock<DigitalOutMock> doMock;
     DigitalInMock diMock;
     PowerSwitch powerSwitch(diMock, doMock, PowerSwitch::SHUTDOWN_ACTIVATED);
 

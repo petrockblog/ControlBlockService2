@@ -7,7 +7,7 @@
 class UInputFactory : public IUInputFactory
 {
 public:
-    virtual IUInputDevice* getUInputDevice(IUInputDevice::DeviceType type);
+    virtual std::unique_ptr<IUInputDevice> getUInputDevice(IUInputDevice::DeviceType type);
 
 };
 
