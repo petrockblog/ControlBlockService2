@@ -9,6 +9,7 @@ PowerSwitch::PowerSwitch(IDigitalIn& digitalInReference, IDigitalOut& digitalOut
         digitalOut(digitalOutReference)
 {
     digitalOut.configureDevice(IDigitalOut::DO_DEVICE_POWERSWITCH);
+    digitalIn.configureDevice(IDigitalIn::DI_DEVICE_POWERSWITCH);
     setPowerSignal(PowerSwitch::STATE_ON);
 }
 

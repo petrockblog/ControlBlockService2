@@ -55,9 +55,12 @@ private:
     bool isInSixButtonMode;
     uint32_t currentState;
     uint32_t lastState;
+    IDigitalIn::BoardNumber_e boardIn;
+    IDigitalOut::BoardNumber_e boardOut;
+    uint32_t playerIndex;
 
     void readButtons();
-    void resetState(int player);
+    void resetState();
     void read3buttons(int player);
     void read6buttons(int player);
     void sendStates();
