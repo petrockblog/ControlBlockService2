@@ -11,6 +11,7 @@ public:
         GAMEPAD_ARCADE = 0,
         GAMEPAD_MAME,
         GAMEPAD_SNES,
+        GAMEPAD_GENESIS,
         GAMEPAD_NONE
     };
 

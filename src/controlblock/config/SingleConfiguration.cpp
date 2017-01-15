@@ -23,6 +23,10 @@ SingleConfiguration::SingleConfiguration(bool enabled, uint8_t address, std::str
     {
         padType = GAMEPAD_NONE;
     }
+    else if (pType.compare("genesis") == 0)
+    {
+        padType = GAMEPAD_GENESIS;
+    }
 }
 
 SingleConfiguration::~SingleConfiguration()

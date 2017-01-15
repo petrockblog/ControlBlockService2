@@ -5,6 +5,7 @@
 #include "gamepads/SNESGamepad.h"
 #include "gamepads/MAMEGamepad.h"
 #include "gamepads/NONEGamepad.h"
+#include "gamepads/GenesisGamepad.h"
 
 ControlBlock::ControlBlock(IUInputFactory& uiFactoryRef) :
                 m_numberOfGamepads(0u),
@@ -117,6 +118,9 @@ void ControlBlock::createGamepad(ISingleConfiguration::GamepadType_e type, Input
         break;
     case ControlBlockConfiguration::GAMEPAD_MAME:
         device = new MAMEGamepad();
+        break;
+    case ControlBlockConfiguration::GAMEPAD_GENESIS:
+        device = new GenesisGamepad();
         break;
     case ControlBlockConfiguration::GAMEPAD_NONE:
         device = new NONEGamepad();

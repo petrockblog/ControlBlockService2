@@ -18,6 +18,9 @@ add_executable(${ALL_TESTS_RUNNER_FILE}
 
         ../src/controlblock/gamepads/ArcadeGamepad.cpp
         controlblock/gamepads/ArcadeGamepadTest.cpp
+
+        ../src/controlblock/gamepads/GenesisGamepad.cpp
+        controlblock/gamepads/GenesisGamepadTest.cpp
         )
 
 target_link_libraries(${ALL_TESTS_RUNNER_FILE} gtest gtest_main gmock)

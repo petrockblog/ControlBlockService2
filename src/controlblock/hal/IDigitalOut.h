@@ -1,7 +1,3 @@
-//
-// Created by Florian Müller on 08.01.17.
-//
-
 #ifndef CONTROLBLOCKSERVICE2_IDIGITALOUT_H
 #define CONTROLBLOCKSERVICE2_IDIGITALOUT_H
 
@@ -17,6 +13,8 @@ public:
       DO_CHANNEL_P1P2_CLOCK,         //!< Clock signal for SNES controller
       DO_CHANNEL_P1_VCC,             //!< Supply voltage for SNES controller, player 1
       DO_CHANNEL_P2_VCC,             //!< Supply voltage for SNES controller, player 2
+      DO_CHANNEL_GENESIS_P1_SELECT,  //!< Select signal for Genesis controller, player 1
+      DO_CHANNEL_GENESIS_P2_SELECT,  //!< Select signal for Genesis controller, player 2
     };
 
     /**
@@ -43,7 +41,8 @@ public:
     enum DO_Device
     {
       DO_DEVICE_POWERSWITCH = 0,  //!< Power switch device
-      DO_DEVICE_SNES              //!< SNES controller device
+      DO_DEVICE_SNES,             //!< SNES controller device
+      DO_DEVICE_GENESIS,          //!< Genesis controller device
     };
 
     virtual void configureDevice(DO_Device device) = 0;

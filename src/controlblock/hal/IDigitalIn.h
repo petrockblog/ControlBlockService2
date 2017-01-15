@@ -75,7 +75,8 @@ public:
     {
       DI_DEVICE_ALLIN = 0,   //!< Device with all ports set as input ports
       DI_DEVICE_POWERSWITCH, //!< Powerswitch device
-      DI_DEVICE_SNES         //!< SNES controller device
+      DI_DEVICE_SNES,        //!< SNES controller device
+      DI_DEVICE_GENESIS,     //!< Genesis controller device
     };
 
     virtual void configureDevice(DI_Device mode) = 0;

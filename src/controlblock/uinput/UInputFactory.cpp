@@ -3,6 +3,7 @@
 #include "UInputGamepadArcade.h"
 #include "UInputKeyboard.h"
 #include "UInputGamepadSNES.h"
+#include "UInputGamepadGenesis.h"
 
 std::unique_ptr<IUInputDevice> UInputFactory::getUInputDevice(IUInputDevice::DeviceType type)
 {
@@ -11,6 +12,8 @@ std::unique_ptr<IUInputDevice> UInputFactory::getUInputDevice(IUInputDevice::Dev
         return std::unique_ptr<IUInputDevice>(new UInputGamepadArcade());
     case IUInputDevice::TYPE_GAMEPAD_SNES:
         return std::unique_ptr<IUInputDevice>(new UInputGamepadSNES());
+    case IUInputDevice::TYPE_GAMEPAD_GENESIS:
+        return std::unique_ptr<IUInputDevice>(new UInputGamepadGenesis());
     case IUInputDevice::TYPE_KEYVBOARD:
         return std::unique_ptr<IUInputDevice>(new UInputKeyboard());
     }
