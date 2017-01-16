@@ -11,7 +11,7 @@ ControlBlockConfiguration::ControlBlockConfiguration()
     {
         Json::Reader reader;
 
-        std::ifstream configStream("/etc/controlblockconfig.cfg");
+        std::ifstream configStream(CONFIGFILEPATH);
         std::string config_doc((std::istreambuf_iterator<char>(configStream)),
                 std::istreambuf_iterator<char>());
 
