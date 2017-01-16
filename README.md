@@ -77,7 +77,7 @@ The default configuration file looks like this:
                 "SJ1" : 0,             // The hardware address solder-jumper SJ1. Options: 0, 1 
                 "SJ2" : 0              // The hardware address solder-jumper SJ2, Options: 0, 1
             },
-            "gamepadtype" : "arcade",  // Sets the gamepad type. Options: "arcade", "mame", "snes", "none"
+            "gamepadtype" : "arcade",  // Sets the gamepad type. Options: "arcade", "mame", "snes", "genesis", "none"
             "onlyOneGamepad" : false,  // If true, registers only one gamepad instead of two
             "powerswitchOn" : true     // Enables (=true) the power switch functionality. Options: true, false
         },
@@ -102,9 +102,11 @@ To set the type of the gamepad you need to set the value of the element `gamepad
  - ```arcade```: Enables two game pads in the system and maps the GPIOs of the ControlBlock to these game pads.<br>
  ![ArcadeMapping](https://github.com/petrockblog/ControlBlockService2/raw/master/supplementary/ControlBlockLayoutArcade.png)
  - ```mame```: Enables a virtual keyboard and maps the GPIOs of the ControlBlock to this keyboard with a MAME layout.<br>
- ![ArcadeMapping](https://github.com/petrockblog/ControlBlockService2/raw/master/supplementary/ControlBlockLayoutMAME.png)
+ ![MAMEMapping](https://github.com/petrockblog/ControlBlockService2/raw/master/supplementary/ControlBlockLayoutMAME.png)
  - ```snes```: Enables two game pads in the system and maps the attached SNES/NES controllers accordingly.<br>
- ![ArcadeMapping](https://github.com/petrockblog/ControlBlockService2/raw/master/supplementary/ControlBlockLayoutSNESNES.png)
+ ![SNESMapping](https://github.com/petrockblog/ControlBlockService2/raw/master/supplementary/ControlBlockLayoutSNES.png)
+ - ```genesis```: Enables two game pads in the system and maps the attached Genesis/Megadrive/Atari controllers accordingly.<br>
+ ![GenesisMapping](https://github.com/petrockblog/ControlBlockService2/raw/master/supplementary/ControlBlockLayoutGenesis.png)
 
  You can also connect a latching __reset button__ to `Player-2, Input B`. If the button is pressed a virtual ESC-key press will be triggered.
 

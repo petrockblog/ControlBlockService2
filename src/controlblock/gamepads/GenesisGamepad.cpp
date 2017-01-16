@@ -16,12 +16,12 @@ const GenesisGamepad::Input GenesisGamepad::inputMap[] = {
     {0, IDigitalIn::DI_CHANNEL_P1_DOWN, ON, RIGHT, MODE}, // P0 DB9 Pin 4
     {0, IDigitalIn::DI_CHANNEL_P1_SW2, A, B, 0}, // P0 DB9 Pin 6
     {0, IDigitalIn::DI_CHANNEL_P1_SW5, START, C, 0}, // P0 DB9 Pin 9
-    {1, IDigitalIn::DI_CHANNEL_P2_RIGHT, UP, UP, Z}, // P0 DB9 Pin 1
-    {1, IDigitalIn::DI_CHANNEL_P2_LEFT, DOWN, DOWN, Y}, // P0 DB9 Pin 2
-    {1, IDigitalIn::DI_CHANNEL_P2_UP, ON, LEFT, X}, // P0 DB9 Pin 3
-    {1, IDigitalIn::DI_CHANNEL_P2_DOWN, ON, RIGHT, MODE}, // P0 DB9 Pin 4
-    {1, IDigitalIn::DI_CHANNEL_P2_SW2, A, B, 0}, // P0 DB9 Pin 6
-    {1, IDigitalIn::DI_CHANNEL_P2_SW5, START, C, 0}, // P0 DB9 Pin 9
+    {1, IDigitalIn::DI_CHANNEL_P2_RIGHT, UP, UP, Z}, // P1 DB9 Pin 1
+    {1, IDigitalIn::DI_CHANNEL_P2_LEFT, DOWN, DOWN, Y}, // P1 DB9 Pin 2
+    {1, IDigitalIn::DI_CHANNEL_P2_UP, ON, LEFT, X}, // P1 DB9 Pin 3
+    {1, IDigitalIn::DI_CHANNEL_P2_DOWN, ON, RIGHT, MODE}, // P1 DB9 Pin 4
+    {1, IDigitalIn::DI_CHANNEL_P2_SW2, A, B, 0}, // P1 DB9 Pin 6
+    {1, IDigitalIn::DI_CHANNEL_P2_SW5, START, C, 0}, // P1 DB9 Pin 9
 };
 
 GenesisGamepad::GenesisGamepad(IUInputFactory &uiFactory, IDigitalIn &digitalInRef, IDigitalOut &digitalOutRef)

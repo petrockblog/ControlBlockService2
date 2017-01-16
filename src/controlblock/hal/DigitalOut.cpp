@@ -47,6 +47,7 @@ void DigitalOut::configureDevice(DO_Device device)
         expander[2]->digitalWrite(15, MCP23S17PI::LEVEL_HIGH);
         break;
     case DO_DEVICE_GENESIS:
+        // todo add vcc and gnd
         expander[0]->setPinMode(6, MCP23S17PI::DIR_OUTPUT);
         expander[0]->setPullupMode(6, MCP23S17PI::PULLUP_DISABLED);
         expander[0]->digitalWrite(6, MCP23S17PI::LEVEL_LOW);
