@@ -1,5 +1,4 @@
 #include "UInputGamepadSNES.h"
-#include <assert.h>
 
 UInputGamepadSNES::UInputGamepadSNES()
 {

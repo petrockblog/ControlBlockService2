@@ -1,7 +1,4 @@
 #include <chrono>
-#include <thread>
-#include <iostream>
-
 #include "SNESGamepad.h"
 
 SNESGamepad::SNESGamepad() :

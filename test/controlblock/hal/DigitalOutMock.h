@@ -2,7 +2,7 @@
 #define CONTROLBLOCKSERVICE2_DIGITALOUTMOCK_H
 
 #include "gmock/gmock.h"  // Brings in Google Mock.
-#include "hal/DigitalOut.h"
+#include "hal/IDigitalOut.h"
 
 class DigitalOutMock : public IDigitalOut {
 public:

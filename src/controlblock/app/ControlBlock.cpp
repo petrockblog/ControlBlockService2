@@ -6,8 +6,10 @@
 #include "gamepads/MAMEGamepad.h"
 #include "gamepads/NONEGamepad.h"
 
-ControlBlock::ControlBlock() :
-                m_numberOfGamepads(0u)
+ControlBlock::ControlBlock(IUInputFactory& uiFactoryRef) :
+                m_numberOfGamepads(0u),
+                powerSwitch(NULL),
+                uiFactory(&uiFactoryRef)
 {
     ControlBlockConfiguration& config = ControlBlockConfiguration::getInstance();
 
@@ -104,10 +106,11 @@ InputDevice::Channel_e ControlBlock::getInputDevice(int counterValue)
 void ControlBlock::createGamepad(ISingleConfiguration::GamepadType_e type, InputDevice*& device)
 {
     std::cout << "Creating gamepad of type " << type << std::endl;
-    switch (type)
-    {
-    case ControlBlockConfiguration::GAMEPAD_ARCADE:
-        device = new ArcadeGamepad();
+    switch (type) {
+    case ControlBlockConfiguration::GAMEPAD_ARCADE: {
+
+        device = new ArcadeGamepad(*uiFactory, DigitalIn::getInstance());
+    }
         break;
     case ControlBlockConfiguration::GAMEPAD_SNES:
         device = new SNESGamepad();
