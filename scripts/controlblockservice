@@ -20,7 +20,7 @@ NAME=controlblock
 DAEMON=/usr/local/bin/$NAME
 DAEMON_ARGS=""
 PIDFILE=/var/run/$NAME.pid
-SCRIPTNAME=/etc/init.d/$NAME
+SCRIPTNAME=/etc/init.d/${NAME}service
 
 # Exit if the package is not installed
 [ -x "$DAEMON" ] || exit 0
