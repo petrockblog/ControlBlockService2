@@ -25,7 +25,7 @@ IF (BUILD_DOCUMENTATION)
             # custom_command for ${doxyfile} generation
             # but I still have to figure out how...
             MAIN_DEPENDENCY ${doxyfile} ${doxyfile_in}
-            DEPENDS controlblockservice2 ${doxy_extra_files}
+            DEPENDS ${EXECUTABLE_NAME} ${doxy_extra_files}
             COMMENT "Generating HTML documentation"
     )
 
