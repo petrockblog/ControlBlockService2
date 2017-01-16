@@ -22,7 +22,7 @@ add_subdirectory(src/controlblock/uinput)
 add_executable(${EXECUTABLE_NAME} "src/controlblock/main.cpp")
 target_link_libraries(${EXECUTABLE_NAME} controlblock-app)
 
-install(FILES ${CMAKE_BINARY_DIR}/controlblockservice2 DESTINATION bin
+install(FILES ${CMAKE_BINARY_DIR}/${EXECUTABLE_NAME} DESTINATION bin
         PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ
         GROUP_EXECUTE GROUP_READ
         )
