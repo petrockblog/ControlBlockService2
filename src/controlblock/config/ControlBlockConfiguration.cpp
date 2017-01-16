@@ -5,6 +5,8 @@
 
 #include "ControlBlockConfiguration.h"
 
+const std::string ControlBlockConfiguration::CONFIGFILEPATH = "/usr/local/etc/controlblockconfig.cfg";
+
 ControlBlockConfiguration::ControlBlockConfiguration()
 {
     try

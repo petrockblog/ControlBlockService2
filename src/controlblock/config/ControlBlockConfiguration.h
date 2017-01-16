@@ -35,7 +35,7 @@ public:
 
 private:
     static const int MAX_CONTROLBLOCK_ID = 2u;
-    static const char CONFIGFILEPATH[] = "/usr/local/etc/controlblockconfig.cfg";
+    static const std::string CONFIGFILEPATH;
 
     Json::Value root;   // will contains the root value after parsing.
     SingleConfiguration* singleConfiguration[MAX_CONTROLBLOCK_ID];
