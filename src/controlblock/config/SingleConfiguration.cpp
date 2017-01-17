@@ -1,3 +1,4 @@
+#include <iostream>
 #include "SingleConfiguration.h"
 
 SingleConfiguration::SingleConfiguration(bool enabled, uint8_t address, std::string pType, bool pwrSwitch,
@@ -23,6 +24,10 @@ SingleConfiguration::SingleConfiguration(bool enabled, uint8_t address, std::str
     {
         padType = GAMEPAD_NONE;
     }
+
+#ifndef NDEBUG
+    std::cout << "Created configuration. isEnabled: " << enabled << ", address: " << static_cast<int>(address) << ", pad type: " << pType << ", power switch: " << pwrSwitch << ", only one gamepad: " << oneGp << std::endl;
+#endif
 }
 
 SingleConfiguration::~SingleConfiguration()
