@@ -28,6 +28,10 @@ install(FILES ${CMAKE_BINARY_DIR}/${EXECUTABLE_NAME} DESTINATION bin
         )
 install(FILES ${CMAKE_BINARY_DIR}/../supplementary/controlblockconfig.cfg DESTINATION etc
         PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ
+        GROUP_READ
+        )
+install(FILES ${CMAKE_BINARY_DIR}/../supplementary/controlblockswitchoff.sh DESTINATION etc
+        PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ
         GROUP_EXECUTE GROUP_READ
         )
 
