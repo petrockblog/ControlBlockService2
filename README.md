@@ -64,7 +64,7 @@ sudo make uninstall
 
 ## Configuration
 
-The configuration file of _controlblock_ is located at __```/usr/local/etc/controlblockconfig.cfg```__. It uses JSON syntax for setting the the values of its configuration parameters.
+The configuration file of _controlblock_ is located at __```/etc/controlblockconfig.cfg```__. It uses JSON syntax for setting the the values of its configuration parameters.
 
 The default configuration file looks like this:
 

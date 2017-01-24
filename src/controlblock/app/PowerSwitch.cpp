@@ -25,7 +25,7 @@ void PowerSwitch::update()
 {
     if ((doShutdown==SHUTDOWN_ACTIVATED) && (getShutdownSignal()==SHUTDOWN_TRUE)
             && (isShutdownInitiatedValue==false)) {
-        system("/usr/local/etc/controlblockswitchoff.sh");
+        system("/etc/controlblockswitchoff.sh");
         isShutdownInitiatedValue = true;
     }
 }
