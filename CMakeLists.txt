@@ -22,11 +22,15 @@ add_subdirectory(src/controlblock/uinput)
 add_executable(${EXECUTABLE_NAME} "src/controlblock/main.cpp")
 target_link_libraries(${EXECUTABLE_NAME} controlblock-app)
 
-install(FILES ${CMAKE_BINARY_DIR}/${EXECUTABLE_NAME} DESTINATION bin
+install(FILES ${CMAKE_BINARY_DIR}/${EXECUTABLE_NAME} DESTINATION /usr/bin
         PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ
         GROUP_EXECUTE GROUP_READ
         )
-install(FILES ${CMAKE_BINARY_DIR}/../supplementary/controlblockconfig.cfg DESTINATION etc
+install(FILES ${CMAKE_BINARY_DIR}/../supplementary/controlblockconfig.cfg DESTINATION /etc
+        PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ
+        GROUP_READ
+        )
+install(FILES ${CMAKE_BINARY_DIR}/../supplementary/controlblockswitchoff.sh DESTINATION /etc
         PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ
         GROUP_EXECUTE GROUP_READ
         )
