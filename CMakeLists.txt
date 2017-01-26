@@ -4,9 +4,8 @@ project(ControlBlockService2)
 
 set(CMAKE_CXX_STANDARD 11)
 
-# call with cmake -DCMAKE_BUILD_TYPE=Release .. or -DCMAKE_BUILD_TYPE=Debug
-set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -std=c++11 -O1 -g -Wall")
-set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -std=c++11 -O3")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -O3")
+set(EXECUTABLE_NAME "controlblock")
 
 include_directories(src/controlblock)
 include_directories(src/lib/bcm2835-1.48/src)
@@ -20,14 +19,18 @@ add_subdirectory(src/controlblock/hal)
 add_subdirectory(src/controlblock/gamepads)
 add_subdirectory(src/controlblock/uinput)
 
-add_executable(controlblockservice2 "src/controlblock/main.cpp")
-target_link_libraries(controlblockservice2 controlblock-app)
+add_executable(${EXECUTABLE_NAME} "src/controlblock/main.cpp")
+target_link_libraries(${EXECUTABLE_NAME} controlblock-app)
 
-install(FILES ${CMAKE_BINARY_DIR}/controlblockservice2 DESTINATION bin
+install(FILES ${CMAKE_BINARY_DIR}/${EXECUTABLE_NAME} DESTINATION /usr/bin
         PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ
         GROUP_EXECUTE GROUP_READ
         )
-install(FILES ${CMAKE_BINARY_DIR}/../supplementary/controlblockconfig.cfg DESTINATION etc
+install(FILES ${CMAKE_BINARY_DIR}/../supplementary/controlblockconfig.cfg DESTINATION /etc
+        PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ
+        GROUP_READ
+        )
+install(FILES ${CMAKE_BINARY_DIR}/../supplementary/controlblockswitchoff.sh DESTINATION /etc
         PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ
         GROUP_EXECUTE GROUP_READ
         )

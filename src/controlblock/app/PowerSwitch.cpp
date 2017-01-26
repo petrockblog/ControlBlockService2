@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <iostream>
 #include "PowerSwitch.h"
 
 PowerSwitch::PowerSwitch(IDigitalIn& digitalInReference, IDigitalOut& digitalOutReference, ShutdownActivated_e doShutdownValue)
@@ -11,6 +12,10 @@ PowerSwitch::PowerSwitch(IDigitalIn& digitalInReference, IDigitalOut& digitalOut
     digitalOut.configureDevice(IDigitalOut::DO_DEVICE_POWERSWITCH);
     digitalIn.configureDevice(IDigitalIn::DI_DEVICE_POWERSWITCH);
     setPowerSignal(PowerSwitch::STATE_ON);
+
+#ifndef NDEBUG
+    std::cout << "Created PowerSwitch. doShutdown: " << doShutdownValue << std::endl;
+#endif
 }
 
 PowerSwitch::~PowerSwitch()
@@ -21,7 +26,7 @@ void PowerSwitch::update()
 {
     if ((doShutdown==SHUTDOWN_ACTIVATED) && (getShutdownSignal()==SHUTDOWN_TRUE)
             && (isShutdownInitiatedValue==false)) {
-        system("shutdown -t 3 -h now");
+        system("/etc/controlblockswitchoff.sh");
         isShutdownInitiatedValue = true;
     }
 }
