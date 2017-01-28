@@ -36,7 +36,7 @@
 class ControlBlock
 {
 public:
-    ControlBlock(IUInputFactory& uiFactoryRef, IDigitalIn& digitalInRef, IDigitalOut& digitalOutRef);
+    ControlBlock(IUInputFactory& uiFactoryRef, IDigitalIn& digitalInRef, IDigitalOut& digitalOutRef, std::string configFile);
     ~ControlBlock();
 
     ControlBlock(const ControlBlock& other) = delete;

@@ -30,34 +30,30 @@
 class ControlBlockConfiguration
 {
 public:
-    enum GamepadType_e
-    {
-      GAMEPAD_ARCADE = 0, GAMEPAD_MAME, GAMEPAD_SNES, GAMEPAD_GENESIS, GAMEPAD_NONE
-    };
-
     enum ShutdownType_e
     {
       SHUTDOWN_DEACTIVATED = 0, SHUTDOWN_ACTIVATED
     };
 
-    static ControlBlockConfiguration& getInstance()
-    {
-        static ControlBlockConfiguration instance = ControlBlockConfiguration();
-        return instance;
-    }
+    /**
+     * Constructor. Loads the information from the given configuration file.
+     * It is assumed that the config file follows a certain JSON schema.
+     * @param configFile - Path and file name of the configuration file
+     */
+    ControlBlockConfiguration(std::string configFile);
 
+    /**
+     * Default destructor
+     */
     ~ControlBlockConfiguration();
 
     SingleConfiguration& getConfiguration(int controlBlockID);
 
 private:
     static const int MAX_CONTROLBLOCK_ID = 2u;
-    static const std::string CONFIGFILEPATH;
 
     Json::Value root;   // will contains the root value after parsing.
     SingleConfiguration* singleConfiguration[MAX_CONTROLBLOCK_ID];
-
-    ControlBlockConfiguration();
 };
 
 #endif

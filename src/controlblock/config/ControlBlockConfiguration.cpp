@@ -21,21 +21,17 @@
  */
 
 #include <iostream>
-#include <string>
 #include <fstream>
-#include <streambuf>
 
 #include "ControlBlockConfiguration.h"
 
-const std::string ControlBlockConfiguration::CONFIGFILEPATH = "/etc/controlblockconfig.cfg";
-
-ControlBlockConfiguration::ControlBlockConfiguration()
+ControlBlockConfiguration::ControlBlockConfiguration(std::string configFile)
 {
     try
     {
         Json::Reader reader;
 
-        std::ifstream configStream(CONFIGFILEPATH);
+        std::ifstream configStream(configFile);
         std::string config_doc((std::istreambuf_iterator<char>(configStream)),
                 std::istreambuf_iterator<char>());
 

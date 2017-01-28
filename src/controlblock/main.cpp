@@ -22,12 +22,13 @@
 
 #include <stdio.h>
 #include <iostream>
-#include <chrono>
 #include <thread>
 #include <signal.h>
 #include <bcm2835.h>
 
 #include "app/ControlBlock.h"
+#include "hal/DigitalIn.h"
+#include "hal/DigitalOut.h"
 #include "uinput/UInputFactory.h"
 
 static volatile sig_atomic_t doRun = 1;
@@ -76,7 +77,10 @@ int main(int argc, char** argv)
     {
         register_signalhandlers();
         UInputFactory uiFactory;
-        ControlBlock controlBlock(uiFactory);
+        const std::string CONFIGFILEPATH = "/etc/controlblockconfig.cfg";
+        DigitalIn digitalIn;
+        DigitalOut digitalOut;
+        ControlBlock controlBlock = ControlBlock(uiFactory, digitalIn, digitalOut, CONFIGFILEPATH);
         while (doRun)
         {
             controlBlock.update();

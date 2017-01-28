@@ -37,20 +37,12 @@
 class DigitalIn : public IDigitalIn
 {
 public:
+    DigitalIn();
+
     /**
      * @brief Destructor
      */
     ~DigitalIn();
-
-    /**
-     * @brief Returns a singleton instance
-     * @return Reference to singleton instance
-     */
-    static DigitalIn& getInstance()
-    {
-        static DigitalIn digitalIn = DigitalIn();
-        return digitalIn;
-    }
 
     /**
      * @brief Sets port direction and pullup mode for the given device type
@@ -59,7 +51,7 @@ public:
 
     /**
      * @brief Returns the logical signal level of the given channel
-     * 
+     *
      * @param channel The channel whose signal level should be returned
      * @return The logical signal level of the channel
      */
@@ -69,8 +61,6 @@ private:
     static const uint8_t MAX_NUMBER_OF_MCPS = 4u;
 
     MCP23S17PI* expander[MAX_NUMBER_OF_MCPS];
-
-    DigitalIn();
 };
 
 #endif // DIGITALIN_H

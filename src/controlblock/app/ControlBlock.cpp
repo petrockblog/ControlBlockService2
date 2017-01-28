@@ -29,14 +29,14 @@
 #include "gamepads/NONEGamepad.h"
 #include "gamepads/GenesisGamepad.h"
 
-ControlBlock::ControlBlock(IUInputFactory& uiFactoryRef, IDigitalIn& digitalInRef, IDigitalOut& digitalOutRef) :
+ControlBlock::ControlBlock(IUInputFactory& uiFactoryRef, IDigitalIn& digitalInRef, IDigitalOut& digitalOutRef, std::string configFile) :
         m_numberOfGamepads(0u),
         powerSwitch(NULL),
         uiFactory(&uiFactoryRef),
         digitalIn(&digitalInRef),
         digitalOut(&digitalOutRef)
 {
-    ControlBlockConfiguration& config = ControlBlockConfiguration::getInstance();
+    ControlBlockConfiguration config = ControlBlockConfiguration(configFile);
 
     // initialize the power switch
     if (config.getConfiguration(0).isEnabled() && config.getConfiguration(0).isPowerSwitchEnabled()) {
@@ -142,7 +142,6 @@ void ControlBlock::createGamepad(ISingleConfiguration::GamepadType_e type, Input
     default:
         std::cout << "Error while configuring gamepad type ..." << std::endl;
         throw 1;
-        break;
     }
 }
 

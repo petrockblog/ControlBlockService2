@@ -37,19 +37,12 @@
 class DigitalOut : public IDigitalOut
 {
 public:
+    DigitalOut();
+
     /**
      * @brief Destructor
      */
     ~DigitalOut();
-
-    /**
-     * @brief Returns a singleton instance
-     */
-    static DigitalOut& getInstance()
-    {
-        static DigitalOut digitalOut = DigitalOut();
-        return digitalOut;
-    }
 
     /**
      * @brief Configures port direction, pullup-mode, and initial signal level
@@ -68,12 +61,10 @@ public:
     virtual void setLevel(DO_Channel_e channel, DO_Level_e level, BoardNumber_e board = BOARD_0);
 
 private:
+
     static const uint8_t MAX_NUMBER_OF_MCPS = 4u;
 
     MCP23S17PI* expander[MAX_NUMBER_OF_MCPS];
-
-    DigitalOut();  // hide default constructor
-
 };
 
 #endif // DIGITALOUT_H

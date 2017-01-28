@@ -12,6 +12,8 @@ include_directories(
         controlblock
 )
 
+set_source_files_properties(controlblock/app/ControlBlockTest.cpp PROPERTIES COMPILE_DEFINITIONS TESTCONFIGFILE="${PROJECT_SOURCE_DIR}/supplementary/controlblockconfig.cfg")
+
 add_executable(${ALL_TESTS_RUNNER_FILE}
         ../src/controlblock/app/ControlBlock.cpp
         controlblock/app/ControlBlockTest.cpp
@@ -26,6 +28,6 @@ add_executable(${ALL_TESTS_RUNNER_FILE}
         controlblock/gamepads/GenesisGamepadTest.cpp
         )
 
-target_link_libraries(${ALL_TESTS_RUNNER_FILE} gtest gtest_main gmock controlblock-gamepads)
+target_link_libraries(${ALL_TESTS_RUNNER_FILE} gtest gtest_main gmock controlblock-gamepads controlblock-config)
 
 add_test(NAME AllControlBlockTests COMMAND "${PROJECT_BINARY_DIR}/test/${ALL_TESTS_RUNNER_FILE}" " --gtest_output=xml:gtestresults.xml")

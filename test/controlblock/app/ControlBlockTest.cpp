@@ -35,11 +35,8 @@ TEST(ControlBlockTest, Constructor)
     DigitalOutMock doMock;
     DigitalInMock diMock;
     UInputFactoryMock uiFactory;
+    std::string CONFIGFILE = TESTCONFIGFILE;
+    std::cout << "Config file: " << CONFIGFILE << std::endl;
 
-//    EXPECT_CALL(doMock, configureDevice(IDigitalOut::DO_DEVICE_POWERSWITCH));
-//    EXPECT_CALL(doMock, setLevel(IDigitalOut::DO_CHANNEL_TOPOWERSWITCH, IDigitalOut::DO_LEVEL_HIGH, IDigitalOut::BOARD_0));
-//    EXPECT_CALL(diMock, configureDevice(IDigitalIn::DI_DEVICE_POWERSWITCH));
-//    PowerSwitch powerSwitch(diMock, doMock, PowerSwitch::SHUTDOWN_ACTIVATED);
-//    ControlBlock controlBlock()
-//    EXPECT_FALSE(powerSwitch.isShutdownInitiated());
+    ControlBlock controlBlock(uiFactory, diMock, doMock, CONFIGFILE);
 }
