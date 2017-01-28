@@ -69,9 +69,9 @@ ControlBlockConfiguration::~ControlBlockConfiguration()
 {
     for (int index = 0; index < MAX_CONTROLBLOCK_ID; index++)
     {
-        if (singleConfiguration[0] != NULL)
+        if (singleConfiguration[index] != NULL)
         {
-            delete singleConfiguration[0];
+            delete singleConfiguration[index];
         }
     }
 }
