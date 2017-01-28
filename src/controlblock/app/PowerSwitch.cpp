@@ -1,23 +1,3 @@
-#include <stdlib.h>
-#include <iostream>
-#include "PowerSwitch.h"
-
-PowerSwitch::PowerSwitch(IDigitalIn& digitalInReference, IDigitalOut& digitalOutReference, ShutdownActivated_e doShutdownValue)
-        :
-        doShutdown(doShutdownValue),
-        isShutdownInitiatedValue(false),
-        digitalIn(digitalInReference),
-        digitalOut(digitalOutReference)
-{
-    digitalOut.configureDevice(IDigitalOut::DO_DEVICE_POWERSWITCH);
-    digitalIn.configureDevice(IDigitalIn::DI_DEVICE_POWERSWITCH);
-    setPowerSignal(PowerSwitch::STATE_ON);
-
-#ifndef NDEBUG
-    std::cout << "Created PowerSwitch. doShutdown: " << doShutdownValue << std::endl;
-#endif
-}
-
 /**
  * (c) Copyright 2017  Florian Müller (contact@petrockblock.com)
  * https://github.com/petrockblog/ControlBlock2
@@ -39,6 +19,26 @@ PowerSwitch::PowerSwitch(IDigitalIn& digitalInReference, IDigitalOut& digitalOut
  * should be forwarded to them so everyone can benefit from the modifications
  * in future versions.
  */
+
+#include <stdlib.h>
+#include <iostream>
+#include "PowerSwitch.h"
+
+PowerSwitch::PowerSwitch(IDigitalIn& digitalInReference, IDigitalOut& digitalOutReference, ShutdownActivated_e doShutdownValue)
+        :
+        doShutdown(doShutdownValue),
+        isShutdownInitiatedValue(false),
+        digitalIn(digitalInReference),
+        digitalOut(digitalOutReference)
+{
+    digitalOut.configureDevice(IDigitalOut::DO_DEVICE_POWERSWITCH);
+    digitalIn.configureDevice(IDigitalIn::DI_DEVICE_POWERSWITCH);
+    setPowerSignal(PowerSwitch::STATE_ON);
+
+#ifndef NDEBUG
+    std::cout << "Created PowerSwitch. doShutdown: " << doShutdownValue << std::endl;
+#endif
+}
 
 PowerSwitch::~PowerSwitch()
 {
