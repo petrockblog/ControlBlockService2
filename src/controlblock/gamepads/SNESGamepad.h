@@ -24,11 +24,10 @@
 #define SNESGAMEPAD_H
 
 #include <stdint.h>
-#include "hal/DigitalIn.h"
-#include "hal/DigitalOut.h"
+#include <uinput/IUInputFactory.h>
+#include "hal/IDigitalIn.h"
+#include "hal/IDigitalOut.h"
 #include "InputDevice.h"
-#include "uinput/UInputGamepadSNES.h"
-#include "uinput/UInputKeyboard.h"
 
 class SNESGamepad: public InputDevice
 {
@@ -48,8 +47,8 @@ public:
     static const uint16_t GPAD_SNES_R = 0x800;
     static const uint16_t GPAD_SNES_RESET = 0x1000;
 
-    SNESGamepad();
-    ~SNESGamepad();
+    SNESGamepad(IUInputFactory& uiFactoryRef, IDigitalIn& digitalInRef, IDigitalOut& digitalOutRef);
+    ~SNESGamepad() = default;
 
     virtual void initialize(InputDevice::Channel_e channel);
     virtual void update();
@@ -57,9 +56,13 @@ public:
 private:
     static const uint32_t STROBEDELAY = 1u;
 
+    IUInputFactory* uiFactory;
+    IDigitalIn* digitalIn;
+    IDigitalOut* digitalOut;
+
     InputDevice::Channel_e channel;
-    UInputGamepadSNES gamepad;
-    UInputKeyboard keyboard;
+    std::unique_ptr<IUInputDevice> gamepad;
+    std::unique_ptr<IUInputDevice> keyboard;
 
     uint16_t getSNESControllerState();
 };

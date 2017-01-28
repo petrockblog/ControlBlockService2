@@ -27,6 +27,7 @@
 
 class UInputGamepadGenesis : public UInputDevice
 {
+public:
     UInputGamepadGenesis();
     ~UInputGamepadGenesis();
 

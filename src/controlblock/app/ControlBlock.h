@@ -30,11 +30,13 @@
 #include "gamepads/InputDevice.h"
 #include "config/ISingleConfiguration.h"
 #include "uinput/IUInputFactory.h"
+#include "hal/IDigitalIn.h"
+#include "hal/IDigitalOut.h"
 
 class ControlBlock
 {
 public:
-    ControlBlock(IUInputFactory& uiFactoryRef);
+    ControlBlock(IUInputFactory& uiFactoryRef, IDigitalIn& digitalInRef, IDigitalOut& digitalOutRef);
     ~ControlBlock();
 
     ControlBlock(const ControlBlock& other) = delete;
@@ -50,6 +52,8 @@ private:
     PowerSwitch* powerSwitch;
     InputDevice* gamepads[MAX_NUMBER_OF_CONTROLBLOCKS];
     IUInputFactory* uiFactory;
+    IDigitalIn* digitalIn;
+    IDigitalOut* digitalOut;
 
     InputDevice::Channel_e getInputDevice(int counterValue);
     void createGamepad(ISingleConfiguration::GamepadType_e type, InputDevice*& device);

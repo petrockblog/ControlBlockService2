@@ -120,5 +120,11 @@ void DigitalOut::setLevel(DO_Channel_e channel, DO_Level_e level, BoardNumber_e 
     case DO_CHANNEL_P1_VCC:
         expander[0 + offset]->digitalWrite(15, outlevel);
         break;
+    case DO_CHANNEL_GENESIS_P1_SELECT:
+        expander[0 + offset]->digitalWrite(6, outlevel);
+        break;
+    case DO_CHANNEL_GENESIS_P2_SELECT:
+        expander[0 + offset]->digitalWrite(9, outlevel);
+        break;
     }
 }

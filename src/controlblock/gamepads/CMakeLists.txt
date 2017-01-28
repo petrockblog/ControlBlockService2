@@ -5,6 +5,3 @@ add_library(controlblock-gamepads STATIC
         SNESGamepad.cpp
         GenesisGamepad.cpp
         )
-
-target_link_libraries(controlblock-gamepads controlblock-uinput)
-target_link_libraries(controlblock-gamepads controlblock-hal)

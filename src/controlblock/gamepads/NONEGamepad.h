@@ -23,9 +23,7 @@
 #ifndef NONEGAMEPAD_H
 #define NONEGAMEPAD_H
 
-#include <stdint.h>
 #include "InputDevice.h"
-#include "hal/DigitalIn.h"
 
 class NONEGamepad : public InputDevice {
 public:

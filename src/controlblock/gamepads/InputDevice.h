@@ -23,8 +23,6 @@
 #ifndef INPUTDEVICE_H
 #define INPUTDEVICE_H
 
-#include <stdint.h>
-
 class InputDevice
 {
 public:

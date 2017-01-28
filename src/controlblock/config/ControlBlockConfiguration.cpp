@@ -86,4 +86,3 @@ SingleConfiguration& ControlBlockConfiguration::getConfiguration(int controlBloc
 
     return *singleConfiguration[controlBlockID];
 }
-

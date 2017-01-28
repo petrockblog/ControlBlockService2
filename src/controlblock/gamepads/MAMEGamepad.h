@@ -23,23 +23,23 @@
 #ifndef MAMEGAMEPAD_H
 #define MAMEGAMEPAD_H
 
-#include <stdint.h>
 #include "InputDevice.h"
-#include "hal/DigitalIn.h"
-#include "uinput/UInputKeyboard.h"
+#include "hal/IDigitalIn.h"
+#include "uinput/IUInputFactory.h"
 
 class MAMEGamepad: public InputDevice
 {
 public:
-    MAMEGamepad();
-    ~MAMEGamepad();
+    MAMEGamepad(IUInputFactory& uiFactory, IDigitalIn& digitalInRef);
+    ~MAMEGamepad() = default;
 
     virtual void initialize(InputDevice::Channel_e channel);
     virtual void update();
 
 private:
     InputDevice::Channel_e channel;
-    UInputKeyboard keyboard;
+    IDigitalIn* digitalIn;
+    std::unique_ptr<IUInputDevice> keyboard;
 };
 
 #endif

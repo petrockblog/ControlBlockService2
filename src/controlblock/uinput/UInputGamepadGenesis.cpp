@@ -75,6 +75,6 @@ UInputGamepadGenesis::UInputGamepadGenesis()
     sync();
 }
 
-UInputGamepadGenesis::UInputDevice()
+UInputGamepadGenesis::~UInputGamepadGenesis()
 {
 }

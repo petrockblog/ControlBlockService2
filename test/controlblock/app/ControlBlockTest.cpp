@@ -20,16 +20,26 @@
  * in future versions.
  */
 
-#ifndef CONTROLBLOCKSERVICE2_DIGITALINMOCK_H
-#define CONTROLBLOCKSERVICE2_DIGITALINMOCK_H
+#include "gtest/gtest.h"
+#include "gmock/gmock.h"
+#include "hal/DigitalOutMock.h"
+#include "hal/DigitalInMock.h"
+#include "uinput/UInputFactoryMock.h"
+#include "app/ControlBlock.h"
 
-#include "gmock/gmock.h"  // Brings in Google Mock.
-#include "hal/DigitalIn.h"
+using ::testing::Return;
+using ::testing::NiceMock;
 
-class DigitalInMock : public IDigitalIn {
-public:
-    MOCK_METHOD1(configureDevice, void(DI_Device mode));
-    MOCK_METHOD2(getLevel, DI_Level_e(DI_Channel_e channel, BoardNumber_e board));
-};
+TEST(ControlBlockTest, Constructor)
+{
+    DigitalOutMock doMock;
+    DigitalInMock diMock;
+    UInputFactoryMock uiFactory;
 
-#endif //CONTROLBLOCKSERVICE2_DIGITALINMOCK_H
+//    EXPECT_CALL(doMock, configureDevice(IDigitalOut::DO_DEVICE_POWERSWITCH));
+//    EXPECT_CALL(doMock, setLevel(IDigitalOut::DO_CHANNEL_TOPOWERSWITCH, IDigitalOut::DO_LEVEL_HIGH, IDigitalOut::BOARD_0));
+//    EXPECT_CALL(diMock, configureDevice(IDigitalIn::DI_DEVICE_POWERSWITCH));
+//    PowerSwitch powerSwitch(diMock, doMock, PowerSwitch::SHUTDOWN_ACTIVATED);
+//    ControlBlock controlBlock()
+//    EXPECT_FALSE(powerSwitch.isShutdownInitiated());
+}

@@ -29,36 +29,35 @@
 #include "gamepads/NONEGamepad.h"
 #include "gamepads/GenesisGamepad.h"
 
-ControlBlock::ControlBlock(IUInputFactory& uiFactoryRef) :
-                m_numberOfGamepads(0u),
-                powerSwitch(NULL),
-                uiFactory(&uiFactoryRef)
+ControlBlock::ControlBlock(IUInputFactory& uiFactoryRef, IDigitalIn& digitalInRef, IDigitalOut& digitalOutRef) :
+        m_numberOfGamepads(0u),
+        powerSwitch(NULL),
+        uiFactory(&uiFactoryRef),
+        digitalIn(&digitalInRef),
+        digitalOut(&digitalOutRef)
 {
     ControlBlockConfiguration& config = ControlBlockConfiguration::getInstance();
 
     // initialize the power switch
-    if (config.getConfiguration(0).isEnabled() && config.getConfiguration(0).isPowerSwitchEnabled())
-    {
-        powerSwitch = new PowerSwitch(DigitalIn::getInstance(), DigitalOut::getInstance(), PowerSwitch::SHUTDOWN_ACTIVATED);
+    if (config.getConfiguration(0).isEnabled() && config.getConfiguration(0).isPowerSwitchEnabled()) {
+        powerSwitch = new PowerSwitch(*digitalIn, *digitalOut,
+                PowerSwitch::SHUTDOWN_ACTIVATED);
     }
-    else
-    {
-        powerSwitch = new PowerSwitch(DigitalIn::getInstance(), DigitalOut::getInstance(), PowerSwitch::SHUTDOWN_DEACTIVATED);
+    else {
+        powerSwitch = new PowerSwitch(*digitalIn, *digitalOut,
+                PowerSwitch::SHUTDOWN_DEACTIVATED);
     }
 
     // initialize the controllers
     int counter = 0;
-    for (int index = 0; index < MAX_NUMBER_OF_CONTROLBLOCKS; index++)
-    {
-        if (config.getConfiguration(index).isEnabled())
-        {
+    for (int index = 0; index<MAX_NUMBER_OF_CONTROLBLOCKS; index++) {
+        if (config.getConfiguration(index).isEnabled()) {
             ISingleConfiguration::GamepadType_e type = config.getConfiguration(index).getGamepadType();
             createGamepad(type, gamepads[counter]);
             InputDevice::Channel_e channel = getInputDevice(counter);
             gamepads[counter]->initialize(channel);
             counter++;
-            if (!config.getConfiguration(index).isOnlyOneGamepadEnabled())
-            {
+            if (!config.getConfiguration(index).isOnlyOneGamepadEnabled()) {
                 createGamepad(type, gamepads[counter]);
                 InputDevice::Channel_e channel = getInputDevice(counter);
                 gamepads[counter]->initialize(channel);
@@ -71,8 +70,7 @@ ControlBlock::ControlBlock(IUInputFactory& uiFactoryRef) :
 
 ControlBlock::~ControlBlock()
 {
-    for (int counter = 0; counter < m_numberOfGamepads; counter++)
-    {
+    for (int counter = 0; counter<m_numberOfGamepads; counter++) {
         delete gamepads[counter];
         gamepads[counter] = NULL;
     }
@@ -81,35 +79,29 @@ ControlBlock::~ControlBlock()
 
 void ControlBlock::update()
 {
-    try
-    {
-        for (int counter = 0; counter < m_numberOfGamepads; counter++)
-        {
+    try {
+        for (int counter = 0; counter<m_numberOfGamepads; counter++) {
             gamepads[counter]->update();
         }
     }
-    catch (int errno)
-    {
+    catch (int errno) {
         std::cout << "Error while updating the gamepad devices. Error number: " << errno << std::endl;
     }
 
-    try
-    {
+    try {
         powerSwitch->update();
     }
-    catch (int errno)
-    {
+    catch (int errno) {
         std::cout << "Error while updating the power switch instance. Error number: " << errno << std::endl;
     }
 }
 
 InputDevice::Channel_e ControlBlock::getInputDevice(int counterValue)
 {
-    assert(counterValue < (2 * MAX_NUMBER_OF_CONTROLBLOCKS));
+    assert(counterValue<(2*MAX_NUMBER_OF_CONTROLBLOCKS));
 
     InputDevice::Channel_e channel = InputDevice::CHANNEL_UNDEFINED;
-    switch (counterValue)
-    {
+    switch (counterValue) {
     case 0:
         channel = InputDevice::CHANNEL_1;
         break;
@@ -130,21 +122,21 @@ void ControlBlock::createGamepad(ISingleConfiguration::GamepadType_e type, Input
 {
     std::cout << "Creating gamepad of type " << type << std::endl;
     switch (type) {
-    case ControlBlockConfiguration::GAMEPAD_ARCADE: {
+    case ISingleConfiguration::GAMEPAD_ARCADE: {
 
-        device = new ArcadeGamepad(*uiFactory, DigitalIn::getInstance());
+        device = new ArcadeGamepad(*uiFactory, *digitalIn);
     }
         break;
-    case ControlBlockConfiguration::GAMEPAD_SNES:
-        device = new SNESGamepad();
+    case ISingleConfiguration::GAMEPAD_SNES:
+        device = new SNESGamepad(*uiFactory, *digitalIn, *digitalOut);
         break;
-    case ControlBlockConfiguration::GAMEPAD_MAME:
-        device = new MAMEGamepad();
+    case ISingleConfiguration::GAMEPAD_MAME:
+        device = new MAMEGamepad(*uiFactory, *digitalIn);
         break;
-    case ControlBlockConfiguration::GAMEPAD_GENESIS:
-        device = new GenesisGamepad();
+    case ISingleConfiguration::GAMEPAD_GENESIS:
+        device = new GenesisGamepad(*uiFactory, *digitalIn, *digitalOut);
         break;
-    case ControlBlockConfiguration::GAMEPAD_NONE:
+    case ISingleConfiguration::GAMEPAD_NONE:
         device = new NONEGamepad();
         break;
     default:
