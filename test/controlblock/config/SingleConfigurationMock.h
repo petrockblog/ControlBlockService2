@@ -20,32 +20,20 @@
  * in future versions.
  */
 
-#ifndef ISINGLECONFIGURATION_H
-#define ISINGLECONFIGURATION_H
+#ifndef CONTROLBLOCKSERVICE2_SINGLECONFIGURATIONMOCK_H
+#define CONTROLBLOCKSERVICE2_SINGLECONFIGURATIONMOCK_H
 
-#include <stdint.h>
+#include "gmock/gmock.h"  // Brings in Google Mock.
+#include "config/ISingleConfiguration.h"
 
-class ISingleConfiguration
+class SingleConfigurationMock: public ISingleConfiguration
 {
 public:
-    enum GamepadType_e
-    {
-        GAMEPAD_ARCADE = 0,
-        GAMEPAD_MAME,
-        GAMEPAD_SNES,
-        GAMEPAD_GENESIS,
-        GAMEPAD_NONE
-    };
-
-    ISingleConfiguration() = default;
-    virtual ~ISingleConfiguration() = default;
-
-    virtual bool isEnabled() = 0;
-    virtual uint8_t getDeviceAddress() = 0;
-    virtual GamepadType_e getGamepadType() = 0;
-    virtual bool isPowerSwitchEnabled() = 0;
-    virtual bool isOnlyOneGamepadEnabled() = 0;
-
+    MOCK_METHOD0(isEnabled, bool());
+    MOCK_METHOD0(getDeviceAddress, uint8_t());
+    MOCK_METHOD0(getGamepadType, GamepadType_e());
+    MOCK_METHOD0(isPowerSwitchEnabled, bool());
+    MOCK_METHOD0(isOnlyOneGamepadEnabled, bool());
 };
 
-#endif
+#endif //CONTROLBLOCKSERVICE2_SINGLECONFIGURATIONMOCK_H

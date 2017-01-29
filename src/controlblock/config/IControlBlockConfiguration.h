@@ -20,36 +20,17 @@
  * in future versions.
  */
 
-#ifndef CONTROLBLOCKCONFIGURATION_H
-#define CONTROLBLOCKCONFIGURATION_H
+#ifndef CONTROLBLOCKSERVICE2_ICONTROLBLOCKCONFIGURATION_H
+#define CONTROLBLOCKSERVICE2_ICONTROLBLOCKCONFIGURATION_H
 
-#include "IControlBlockConfiguration.h"
+#include "SingleConfiguration.h"
 
-class ControlBlockConfiguration : public IControlBlockConfiguration
+class IControlBlockConfiguration
 {
 public:
-    /**
-     * Constructor. Loads the information from the given configuration file.
-     * It is assumed that the config file follows a certain JSON schema.
-     * @param configFile - Path and file name of the configuration file
-     */
-    ControlBlockConfiguration();
+    virtual void loadConfiguration() = 0;
+    virtual SingleConfiguration& getConfiguration(int controlBlockID) = 0;
 
-    /**
-     * Default destructor
-     */
-    ~ControlBlockConfiguration();
-
-    virtual void loadConfiguration();
-
-    virtual SingleConfiguration& getConfiguration(int controlBlockID);
-
-private:
-    static const int MAX_CONTROLBLOCK_ID = 2u;
-    const std::string CONFIGFILEPATH{"/etc/controlblockconfig.cfg"};
-
-    bool hasLoadedConfiguration;
-    SingleConfiguration* singleConfiguration[MAX_CONTROLBLOCK_ID];
 };
 
-#endif
+#endif //CONTROLBLOCKSERVICE2_ICONTROLBLOCKCONFIGURATION_H

@@ -26,8 +26,12 @@
 #include "hal/DigitalInMock.h"
 #include "uinput/UInputFactoryMock.h"
 #include "app/ControlBlock.h"
+#include "config/ControlBlockConfigurationMock.h"
+#include "gamepads/GamepadFactoryMock.h"
+#include "gamepads/InputDeviceMock.h"
 
 using ::testing::Return;
+using ::testing::ReturnRef;
 using ::testing::NiceMock;
 
 TEST(ControlBlockTest, Constructor)
@@ -35,8 +39,26 @@ TEST(ControlBlockTest, Constructor)
     DigitalOutMock doMock;
     DigitalInMock diMock;
     UInputFactoryMock uiFactory;
-    std::string CONFIGFILE = TESTCONFIGFILE;
-    std::cout << "Config file: " << CONFIGFILE << std::endl;
+    ControlBlockConfigurationMock configMock;
+    GamepadFactoryMock gpadFactoryMock;
+    InputDeviceMock* inputDeviceMock= new InputDeviceMock();
 
-    ControlBlock controlBlock{uiFactory, diMock, doMock, CONFIGFILE};
+    SingleConfiguration config_board0(true, 0u, "snes", true, false);
+    SingleConfiguration config_board1(false, 0u, "snes", true, false);
+
+    // configuration expectations
+    EXPECT_CALL(configMock, loadConfiguration());
+    EXPECT_CALL(configMock, getConfiguration(0)).WillRepeatedly(ReturnRef(config_board0));
+    EXPECT_CALL(configMock, getConfiguration(1)).WillRepeatedly(ReturnRef(config_board1));
+
+    // power switch expectations
+    EXPECT_CALL(doMock, configureDevice(IDigitalOut::DO_DEVICE_POWERSWITCH));
+    EXPECT_CALL(diMock, configureDevice(IDigitalIn::DI_DEVICE_POWERSWITCH));
+    EXPECT_CALL(doMock, setLevel(IDigitalOut::DO_CHANNEL_TOPOWERSWITCH, IDigitalOut::DO_LEVEL_HIGH, IDigitalOut::BOARD_0));
+
+    // gamepad expectations
+    EXPECT_CALL(gpadFactoryMock, createGamepadProxy(InputDevice::GAMEPAD_SNES)).WillRepeatedly(Return(inputDeviceMock));
+    EXPECT_CALL(*inputDeviceMock, initialize(InputDevice::CHANNEL_1));
+
+    ControlBlock controlBlock{uiFactory, diMock, doMock, configMock, gpadFactoryMock};
 }

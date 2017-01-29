@@ -12,7 +12,7 @@ include_directories(
         controlblock
 )
 
-set_source_files_properties(controlblock/app/ControlBlockTest.cpp PROPERTIES COMPILE_DEFINITIONS TESTCONFIGFILE="${PROJECT_SOURCE_DIR}/supplementary/controlblockconfig.cfg")
+set_source_files_properties(controlblock/app/ControlBlockTest.cpp PROPERTIES COMPILE_DEFINITIONS DEF_TESTCONFIGFILE="${PROJECT_SOURCE_DIR}/supplementary/controlblockconfig.cfg")
 
 add_executable(${ALL_TESTS_RUNNER_FILE}
         ../src/controlblock/app/ControlBlock.cpp

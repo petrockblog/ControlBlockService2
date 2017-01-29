@@ -27,6 +27,7 @@
 #include <bcm2835.h>
 
 #include "app/ControlBlock.h"
+#include "config/ControlBlockConfiguration.h"
 #include "hal/DigitalIn.h"
 #include "hal/DigitalOut.h"
 #include "uinput/UInputFactory.h"
@@ -76,11 +77,13 @@ int main(int argc, char** argv)
     try
     {
         register_signalhandlers();
+
         UInputFactory uiFactory;
-        const std::string CONFIGFILEPATH = "/etc/controlblockconfig.cfg";
         DigitalIn digitalIn;
         DigitalOut digitalOut;
-        ControlBlock controlBlock{uiFactory, digitalIn, digitalOut, CONFIGFILEPATH};
+        ControlBlockConfiguration config;
+
+        ControlBlock controlBlock{uiFactory, digitalIn, digitalOut, config};
         while (doRun)
         {
             controlBlock.update();

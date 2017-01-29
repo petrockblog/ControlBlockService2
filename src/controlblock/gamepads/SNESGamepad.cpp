@@ -30,7 +30,7 @@ SNESGamepad::SNESGamepad(IUInputFactory& uiFactoryRef, IDigitalIn& digitalInRef,
         digitalOut(&digitalOutRef),
         channel(InputDevice::CHANNEL_UNDEFINED)
 {
-    gamepad = uiFactory->getUInputDevice(IUInputDevice::TYPE_GAMEPAD_ARCADE);
+    gamepad = uiFactory->getUInputDevice(IUInputDevice::TYPE_GAMEPAD_SNES);
     keyboard = uiFactory->getUInputDevice(IUInputDevice::TYPE_KEYVBOARD);
 }
 

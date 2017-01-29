@@ -20,36 +20,16 @@
  * in future versions.
  */
 
-#ifndef CONTROLBLOCKCONFIGURATION_H
-#define CONTROLBLOCKCONFIGURATION_H
+#ifndef CONTROLBLOCKSERVICE2_IGAMEPADFACTORY_H
+#define CONTROLBLOCKSERVICE2_IGAMEPADFACTORY_H
 
-#include "IControlBlockConfiguration.h"
+#include <memory>
+#include "InputDevice.h"
 
-class ControlBlockConfiguration : public IControlBlockConfiguration
+class IGamepadFactory
 {
 public:
-    /**
-     * Constructor. Loads the information from the given configuration file.
-     * It is assumed that the config file follows a certain JSON schema.
-     * @param configFile - Path and file name of the configuration file
-     */
-    ControlBlockConfiguration();
-
-    /**
-     * Default destructor
-     */
-    ~ControlBlockConfiguration();
-
-    virtual void loadConfiguration();
-
-    virtual SingleConfiguration& getConfiguration(int controlBlockID);
-
-private:
-    static const int MAX_CONTROLBLOCK_ID = 2u;
-    const std::string CONFIGFILEPATH{"/etc/controlblockconfig.cfg"};
-
-    bool hasLoadedConfiguration;
-    SingleConfiguration* singleConfiguration[MAX_CONTROLBLOCK_ID];
+    virtual std::unique_ptr<InputDevice> createGamepad(InputDevice::GamepadType_e gamepadType) = 0;
 };
 
-#endif
+#endif //CONTROLBLOCKSERVICE2_IGAMEPADFACTORY_H

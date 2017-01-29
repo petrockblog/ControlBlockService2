@@ -22,6 +22,7 @@
 
 #include <iostream>
 #include "SingleConfiguration.h"
+#include "gamepads/InputDevice.h"
 
 SingleConfiguration::SingleConfiguration(bool enabled, uint8_t address, std::string pType, bool pwrSwitch,
         bool oneGp) :
@@ -32,23 +33,23 @@ SingleConfiguration::SingleConfiguration(bool enabled, uint8_t address, std::str
 {
     if (pType.compare("arcade") == 0)
     {
-        padType = GAMEPAD_ARCADE;
+        padType = InputDevice::GAMEPAD_ARCADE;
     }
     else if (pType.compare("mame") == 0)
     {
-        padType = GAMEPAD_MAME;
+        padType = InputDevice::GAMEPAD_MAME;
     }
     else if (pType.compare("snes") == 0)
     {
-        padType = GAMEPAD_SNES;
+        padType = InputDevice::GAMEPAD_SNES;
     }
     else if (pType.compare("none") == 0)
     {
-        padType = GAMEPAD_NONE;
+        padType = InputDevice::GAMEPAD_NONE;
     }
     else if (pType.compare("genesis") == 0)
     {
-        padType = GAMEPAD_GENESIS;
+        padType = InputDevice::GAMEPAD_GENESIS;
     }
 
 #ifndef NDEBUG
@@ -70,7 +71,7 @@ uint8_t SingleConfiguration::getDeviceAddress()
     return deviceAddress;
 }
 
-ISingleConfiguration::GamepadType_e SingleConfiguration::getGamepadType()
+InputDevice::GamepadType_e SingleConfiguration::getGamepadType()
 {
     return padType;
 }

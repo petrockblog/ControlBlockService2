@@ -25,10 +25,10 @@
 
 #include <stdint.h>
 #include <iostream>
+#include <config/IControlBlockConfiguration.h>
 
 #include "PowerSwitch.h"
-#include "gamepads/InputDevice.h"
-#include "config/ISingleConfiguration.h"
+#include "gamepads/IGamepadFactory.h"
 #include "uinput/IUInputFactory.h"
 #include "hal/IDigitalIn.h"
 #include "hal/IDigitalOut.h"
@@ -36,7 +36,8 @@
 class ControlBlock
 {
 public:
-    ControlBlock(IUInputFactory& uiFactoryRef, IDigitalIn& digitalInRef, IDigitalOut& digitalOutRef, std::string configFile);
+    ControlBlock(IUInputFactory& uiFactoryRef, IDigitalIn& digitalInRef, IDigitalOut& digitalOutRef,
+            IControlBlockConfiguration& configRef, IGamepadFactory& gamepadFactory);
     ~ControlBlock();
 
     ControlBlock(const ControlBlock& other) = delete;
@@ -50,13 +51,10 @@ private:
     uint8_t m_numberOfGamepads;
 
     PowerSwitch* powerSwitch;
-    InputDevice* gamepads[MAX_NUMBER_OF_CONTROLBLOCKS];
-    IUInputFactory* uiFactory;
-    IDigitalIn* digitalIn;
-    IDigitalOut* digitalOut;
+
+    std::unique_ptr<InputDevice> gamepads[MAX_NUMBER_OF_CONTROLBLOCKS];
 
     InputDevice::Channel_e getInputDevice(int counterValue);
-    void createGamepad(ISingleConfiguration::GamepadType_e type, InputDevice*& device);
 
 };
 

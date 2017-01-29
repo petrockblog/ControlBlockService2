@@ -26,6 +26,15 @@
 class InputDevice
 {
 public:
+    enum GamepadType_e
+    {
+        GAMEPAD_ARCADE = 0,
+        GAMEPAD_MAME,
+        GAMEPAD_SNES,
+        GAMEPAD_GENESIS,
+        GAMEPAD_NONE
+    };
+
     enum Channel_e
     {
         CHANNEL_1 = 0,
@@ -34,14 +43,6 @@ public:
         CHANNEL_4,
         CHANNEL_UNDEFINED
     };
-
-    InputDevice()
-    {
-    }
-
-    virtual ~InputDevice()
-    {
-    }
 
     virtual void initialize(Channel_e channel) = 0;
     virtual void update() = 0;

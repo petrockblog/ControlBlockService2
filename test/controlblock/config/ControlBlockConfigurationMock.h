@@ -20,36 +20,18 @@
  * in future versions.
  */
 
-#ifndef CONTROLBLOCKCONFIGURATION_H
-#define CONTROLBLOCKCONFIGURATION_H
+#ifndef CONTROLBLOCKSERVICE2_CONTROLBLOCKCONFIGURATIONMOCK_H
+#define CONTROLBLOCKSERVICE2_CONTROLBLOCKCONFIGURATIONMOCK_H
 
-#include "IControlBlockConfiguration.h"
+#include "gmock/gmock.h"  // Brings in Google Mock.
+#include "config/IControlBlockConfiguration.h"
 
-class ControlBlockConfiguration : public IControlBlockConfiguration
+class ControlBlockConfigurationMock : public IControlBlockConfiguration
 {
 public:
-    /**
-     * Constructor. Loads the information from the given configuration file.
-     * It is assumed that the config file follows a certain JSON schema.
-     * @param configFile - Path and file name of the configuration file
-     */
-    ControlBlockConfiguration();
+    MOCK_METHOD0(loadConfiguration, void());
+    MOCK_METHOD1(getConfiguration, SingleConfiguration&(int controlBlockID));
 
-    /**
-     * Default destructor
-     */
-    ~ControlBlockConfiguration();
-
-    virtual void loadConfiguration();
-
-    virtual SingleConfiguration& getConfiguration(int controlBlockID);
-
-private:
-    static const int MAX_CONTROLBLOCK_ID = 2u;
-    const std::string CONFIGFILEPATH{"/etc/controlblockconfig.cfg"};
-
-    bool hasLoadedConfiguration;
-    SingleConfiguration* singleConfiguration[MAX_CONTROLBLOCK_ID];
 };
 
-#endif
+#endif //CONTROLBLOCKSERVICE2_CONTROLBLOCKCONFIGURATIONMOCK_H
