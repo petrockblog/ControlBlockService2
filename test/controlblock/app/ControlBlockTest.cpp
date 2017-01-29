@@ -41,7 +41,8 @@ TEST(ControlBlockTest, Constructor)
     UInputFactoryMock uiFactory;
     ControlBlockConfigurationMock configMock;
     GamepadFactoryMock gpadFactoryMock;
-    InputDeviceMock* inputDeviceMock= new InputDeviceMock();
+    InputDeviceMock* inputDevice0 = new InputDeviceMock();
+    InputDeviceMock* inputDevice1 = new InputDeviceMock();
 
     SingleConfiguration config_board0(true, 0u, "snes", true, false);
     SingleConfiguration config_board1(false, 0u, "snes", true, false);
@@ -57,8 +58,10 @@ TEST(ControlBlockTest, Constructor)
     EXPECT_CALL(doMock, setLevel(IDigitalOut::DO_CHANNEL_TOPOWERSWITCH, IDigitalOut::DO_LEVEL_HIGH, IDigitalOut::BOARD_0));
 
     // gamepad expectations
-    EXPECT_CALL(gpadFactoryMock, createGamepadProxy(InputDevice::GAMEPAD_SNES)).WillRepeatedly(Return(inputDeviceMock));
-    EXPECT_CALL(*inputDeviceMock, initialize(InputDevice::CHANNEL_1));
+    EXPECT_CALL(gpadFactoryMock, createGamepadProxy(InputDevice::GAMEPAD_SNES)).WillOnce(Return(inputDevice0));
+    EXPECT_CALL(*inputDevice0, initialize(InputDevice::CHANNEL_1));
+    EXPECT_CALL(gpadFactoryMock, createGamepadProxy(InputDevice::GAMEPAD_SNES)).WillOnce(Return(inputDevice1));
+    EXPECT_CALL(*inputDevice1, initialize(InputDevice::CHANNEL_2));
 
     ControlBlock controlBlock{uiFactory, diMock, doMock, configMock, gpadFactoryMock};
 }

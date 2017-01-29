@@ -15,7 +15,9 @@ GamepadFactory::GamepadFactory(IUInputFactory& uiFactoryRef, IDigitalIn& digital
 
 std::unique_ptr<InputDevice> GamepadFactory::createGamepad(InputDevice::GamepadType_e gamepadType)
 {
+#ifndef NDEBUG
     std::cout << "Creating gamepad of type " << gamepadType << std::endl;
+#endif
     switch (gamepadType) {
     case InputDevice::GAMEPAD_ARCADE:
         return std::unique_ptr<InputDevice>(new ArcadeGamepad(*uiFactory, *digitalIn));

@@ -31,6 +31,7 @@
 #include "hal/DigitalIn.h"
 #include "hal/DigitalOut.h"
 #include "uinput/UInputFactory.h"
+#include "gamepads/GamepadFactory.h"
 
 static volatile sig_atomic_t doRun = 1;
 
@@ -82,8 +83,9 @@ int main(int argc, char** argv)
         DigitalIn digitalIn;
         DigitalOut digitalOut;
         ControlBlockConfiguration config;
+        GamepadFactory gamepadFactory(uiFactory, digitalIn, digitalOut);
 
-        ControlBlock controlBlock{uiFactory, digitalIn, digitalOut, config};
+        ControlBlock controlBlock{uiFactory, digitalIn, digitalOut, config, gamepadFactory};
         while (doRun)
         {
             controlBlock.update();
