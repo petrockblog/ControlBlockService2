@@ -38,5 +38,5 @@ TEST(ControlBlockTest, Constructor)
     std::string CONFIGFILE = TESTCONFIGFILE;
     std::cout << "Config file: " << CONFIGFILE << std::endl;
 
-    ControlBlock controlBlock(uiFactory, diMock, doMock, CONFIGFILE);
+    ControlBlock controlBlock{uiFactory, diMock, doMock, CONFIGFILE};
 }

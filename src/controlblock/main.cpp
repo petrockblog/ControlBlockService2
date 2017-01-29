@@ -80,7 +80,7 @@ int main(int argc, char** argv)
         const std::string CONFIGFILEPATH = "/etc/controlblockconfig.cfg";
         DigitalIn digitalIn;
         DigitalOut digitalOut;
-        ControlBlock controlBlock = ControlBlock(uiFactory, digitalIn, digitalOut, CONFIGFILEPATH);
+        ControlBlock controlBlock{uiFactory, digitalIn, digitalOut, CONFIGFILEPATH};
         while (doRun)
         {
             controlBlock.update();
