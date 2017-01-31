@@ -47,21 +47,23 @@ TEST(ControlBlockTest, Constructor)
     SingleConfiguration config_board0(true, 0u, "snes", true, false);
     SingleConfiguration config_board1(false, 0u, "snes", true, false);
 
-    // configuration expectations
     EXPECT_CALL(configMock, loadConfiguration());
     EXPECT_CALL(configMock, getConfiguration(0)).WillRepeatedly(ReturnRef(config_board0));
     EXPECT_CALL(configMock, getConfiguration(1)).WillRepeatedly(ReturnRef(config_board1));
 
-    // power switch expectations
-    EXPECT_CALL(doMock, configureDevice(IDigitalOut::DO_DEVICE_POWERSWITCH));
-    EXPECT_CALL(diMock, configureDevice(IDigitalIn::DI_DEVICE_POWERSWITCH));
-    EXPECT_CALL(doMock, setLevel(IDigitalOut::DO_CHANNEL_TOPOWERSWITCH, IDigitalOut::DO_LEVEL_HIGH, IDigitalOut::BOARD_0));
+    using ::testing::InSequence;
+    {
+        InSequence dummy;        // configuration expectations        // power switch expectations
+        EXPECT_CALL(doMock, configureDevice(IDigitalOut::DO_DEVICE_POWERSWITCH));
+        EXPECT_CALL(diMock, configureDevice(IDigitalIn::DI_DEVICE_POWERSWITCH));
+        EXPECT_CALL(doMock, setLevel(IDigitalOut::DO_CHANNEL_TOPOWERSWITCH, IDigitalOut::DO_LEVEL_HIGH, IDigitalOut::BOARD_0));
 
-    // gamepad expectations
-    EXPECT_CALL(gpadFactoryMock, createGamepadProxy(InputDevice::GAMEPAD_SNES)).WillOnce(Return(inputDevice0));
-    EXPECT_CALL(*inputDevice0, initialize(InputDevice::CHANNEL_1));
-    EXPECT_CALL(gpadFactoryMock, createGamepadProxy(InputDevice::GAMEPAD_SNES)).WillOnce(Return(inputDevice1));
-    EXPECT_CALL(*inputDevice1, initialize(InputDevice::CHANNEL_2));
+        // gamepad expectations
+        EXPECT_CALL(gpadFactoryMock, createGamepadProxy(InputDevice::GAMEPAD_SNES)).WillOnce(Return(inputDevice0));
+        EXPECT_CALL(*inputDevice0, initialize(InputDevice::CHANNEL_1));
+        EXPECT_CALL(gpadFactoryMock, createGamepadProxy(InputDevice::GAMEPAD_SNES)).WillOnce(Return(inputDevice1));
+        EXPECT_CALL(*inputDevice1, initialize(InputDevice::CHANNEL_2));
+    }
 
     ControlBlock controlBlock{uiFactory, diMock, doMock, configMock, gpadFactoryMock};
 }
