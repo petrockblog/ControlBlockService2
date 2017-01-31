@@ -53,7 +53,8 @@ TEST(ControlBlockTest, Constructor)
 
     using ::testing::InSequence;
     {
-        InSequence dummy;        // configuration expectations        // power switch expectations
+        InSequence dummy;        // configuration expectations
+
         EXPECT_CALL(doMock, configureDevice(IDigitalOut::DO_DEVICE_POWERSWITCH));
         EXPECT_CALL(diMock, configureDevice(IDigitalIn::DI_DEVICE_POWERSWITCH));
         EXPECT_CALL(doMock, setLevel(IDigitalOut::DO_CHANNEL_TOPOWERSWITCH, IDigitalOut::DO_LEVEL_HIGH, IDigitalOut::BOARD_0));
@@ -63,7 +64,10 @@ TEST(ControlBlockTest, Constructor)
         EXPECT_CALL(*inputDevice0, initialize(InputDevice::CHANNEL_1));
         EXPECT_CALL(gpadFactoryMock, createGamepadProxy(InputDevice::GAMEPAD_SNES)).WillOnce(Return(inputDevice1));
         EXPECT_CALL(*inputDevice1, initialize(InputDevice::CHANNEL_2));
+
+        ControlBlock controlBlock{uiFactory, diMock, doMock, configMock, gpadFactoryMock};
     }
 
-    ControlBlock controlBlock{uiFactory, diMock, doMock, configMock, gpadFactoryMock};
+    testing::Mock::AllowLeak(static_cast<void*>(inputDevice0));
+    testing::Mock::AllowLeak(static_cast<void*>(inputDevice1));
 }
