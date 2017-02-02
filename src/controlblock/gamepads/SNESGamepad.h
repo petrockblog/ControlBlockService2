@@ -55,11 +55,13 @@ public:
 
 private:
     static const uint32_t STROBEDELAY = 1u;
+    static const uint32_t NUMBER_OF_BUTTONS = 12u;
 
     IUInputFactory* uiFactory;
     IDigitalIn* digitalIn;
     IDigitalOut* digitalOut;
 
+    bool isInitialized;
     InputDevice::Channel_e channel;
     std::unique_ptr<IUInputDevice> gamepad;
     std::unique_ptr<IUInputDevice> keyboard;

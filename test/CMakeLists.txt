@@ -24,6 +24,9 @@ add_executable(${ALL_TESTS_RUNNER_FILE}
         ../src/controlblock/gamepads/ArcadeGamepad.cpp
         controlblock/gamepads/ArcadeGamepadTest.cpp
 
+        ../src/controlblock/gamepads/SNESGamepad.cpp
+        controlblock/gamepads/SNESGamepadTest.cpp
+
         ../src/controlblock/gamepads/GenesisGamepad.cpp
         controlblock/gamepads/GenesisGamepadTest.cpp
         )
