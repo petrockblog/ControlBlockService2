@@ -34,7 +34,7 @@
  *          This includes GPIO signals as well as the signals that are available
  *          via the two MCP23S17 port expanders.
  */
-class DigitalIn : public IDigitalIn
+class DigitalIn: public IDigitalIn
 {
 public:
     DigitalIn();
@@ -42,7 +42,7 @@ public:
     /**
      * @brief Destructor
      */
-    ~DigitalIn();
+    ~DigitalIn() = default;
 
     /**
      * @brief Sets port direction and pullup mode for the given device type
@@ -58,6 +58,7 @@ public:
     virtual DI_Level_e getLevel(DI_Channel_e channel, BoardNumber_e board = BOARD_0);
 
 private:
+    static const uint8_t TOTAL_NUMBER_OF_CHANNELS = 16u;
     static const uint8_t MAX_NUMBER_OF_MCPS = 4u;
 
     MCP23S17PI* expander[MAX_NUMBER_OF_MCPS];

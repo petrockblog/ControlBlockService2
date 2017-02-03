@@ -111,4 +111,7 @@ TEST(ControlBlockTest, Update_TwoGamepads)
     EXPECT_CALL(diMock, getLevel(IDigitalIn::DI_CHANNEL_FROMPOWERSWITCH, IDigitalIn::BOARD_0));
 
     controlBlock.update();
+
+    testing::Mock::AllowLeak(static_cast<void*>(inputDevice0));
+    testing::Mock::AllowLeak(static_cast<void*>(inputDevice1));
 }

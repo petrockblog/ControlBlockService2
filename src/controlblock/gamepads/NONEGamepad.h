@@ -25,13 +25,14 @@
 
 #include "InputDevice.h"
 
-class NONEGamepad : public InputDevice {
+class NONEGamepad: public InputDevice
+{
 public:
-	NONEGamepad();
-	~NONEGamepad();
+    NONEGamepad();
+    ~NONEGamepad();
 
-	virtual void initialize(InputDevice::Channel_e channel);
-	virtual void update();
+    virtual void initialize(InputDevice::Channel_e channel);
+    virtual void update();
 
 };
 

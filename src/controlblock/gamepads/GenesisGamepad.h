@@ -42,11 +42,11 @@ public:
 private:
     struct Input
     {
-      int player;
-      IDigitalIn::DI_Channel_e inputChannel;
-      int lowFlag;
-      int highFlag;
-      int pulse3Flag;
+        int player;
+        IDigitalIn::DI_Channel_e inputChannel;
+        int lowFlag;
+        int highFlag;
+        int pulse3Flag;
     };
 
     static const uint32_t NUM_PLAYERS = 2u;

@@ -34,11 +34,11 @@ class SingleConfiguration
 public:
     /**
      * Constructor
-     * @param enabled -
-     * @param address
-     * @param type
-     * @param pwrSwitch
-     * @param oneGp
+     * @param enabled - The enable status
+     * @param address - The hardware address
+     * @param type - The type of the gamepad
+     * @param pwrSwitch - Whether the power switch functionality is enabled (=true) or not (=false)
+     * @param oneGp - Whether one (=true) or two (=false) gamepads should be registered
      */
     SingleConfiguration(bool enabled, uint8_t address, std::string type, bool pwrSwitch, bool oneGp);
 
@@ -48,13 +48,39 @@ public:
     virtual ~SingleConfiguration();
 
     /**
-     *
+     * Returns whether the ControlBlock is enabled or not
      * @return
+     *  - true, if the ControlBlock is enabled,
+     *  - false, otherwise.
      */
     virtual bool isEnabled();
+
+    /**
+     * Returns the device address of the ControlBlock
+     * @return The address of the ControlBlock
+     */
     virtual uint8_t getDeviceAddress();
+
+    /**
+     * Returns the type of gamepad
+     * @return The type of gamepad
+     */
     virtual InputDevice::GamepadType_e getGamepadType();
+
+    /**
+     * Returns whether the power switch functionality is enabled or not
+     * @return
+     *  - true, if the power switch functionality is enabled,
+     *  - false, otherwise.
+     */
     virtual bool isPowerSwitchEnabled();
+
+    /**
+     * Returns whether only one gamepad should be enabled or not
+     * @return
+     *  - true, if only one gamepad should be enabled,
+     *  - false, otherwise.
+     */
     virtual bool isOnlyOneGamepadEnabled();
 
 private:

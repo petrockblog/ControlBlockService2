@@ -23,28 +23,46 @@
 #ifndef INPUTDEVICE_H
 #define INPUTDEVICE_H
 
+/**
+ * Interface for an input device supported by the ControlBlock
+ */
 class InputDevice
 {
 public:
+    /**
+     * Gamepad types
+     */
     enum GamepadType_e
     {
-        GAMEPAD_ARCADE = 0,
-        GAMEPAD_MAME,
-        GAMEPAD_SNES,
-        GAMEPAD_GENESIS,
-        GAMEPAD_NONE
+        GAMEPAD_ARCADE = 0,  //!< Arcade gamepad type
+        GAMEPAD_MAME,        //!< MAME gamepad type
+        GAMEPAD_SNES,        //!< SNES gamepad type
+        GAMEPAD_GENESIS,     //!< Genesis gamepad type
+        GAMEPAD_NONE         //!< Neutral gamepad type
     };
 
+    /**
+     * Channel identifiers
+     */
     enum Channel_e
     {
-        CHANNEL_1 = 0,
-        CHANNEL_2,
-        CHANNEL_3,
-        CHANNEL_4,
-        CHANNEL_UNDEFINED
+        CHANNEL_1 = 0,     //!< Channel 1
+        CHANNEL_2,         //!< Channel 2
+        CHANNEL_3,         //!< Channel 3
+        CHANNEL_4,         //!< Channel 4
+        CHANNEL_UNDEFINED  //!< Undefined channel
     };
 
+    /**
+     * Initializes the input and output interfaces specifically for the gamepad type
+     * and the given channel
+     * @param channel - THe channel for which the gamepad should be initialized
+     */
     virtual void initialize(Channel_e channel) = 0;
+
+    /**
+     * Update the gamepad state.
+     */
     virtual void update() = 0;
 };
 

@@ -28,7 +28,8 @@
 #include "ControlBlockConfiguration.h"
 
 ControlBlockConfiguration::ControlBlockConfiguration() :
-        hasLoadedConfiguration(false)
+        hasLoadedConfiguration(false),
+        singleConfiguration{NULL}
 {
 }
 
@@ -80,6 +81,7 @@ void ControlBlockConfiguration::loadConfiguration()
 SingleConfiguration& ControlBlockConfiguration::getConfiguration(int controlBlockID)
 {
     assert(controlBlockID < MAX_CONTROLBLOCK_ID);
+    assert(hasLoadedConfiguration);
 
     return *singleConfiguration[controlBlockID];
 }

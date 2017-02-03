@@ -25,7 +25,10 @@
 
 #include "IControlBlockConfiguration.h"
 
-class ControlBlockConfiguration : public IControlBlockConfiguration
+/**
+ * This class models the user configuration of the ControlBlock
+ */
+class ControlBlockConfiguration: public IControlBlockConfiguration
 {
 public:
     /**
@@ -40,15 +43,25 @@ public:
      */
     ~ControlBlockConfiguration();
 
+    /**
+     * Loads the configuration from \ref CONFIGFILEPATH
+     */
     virtual void loadConfiguration();
 
+    /**
+     * Returns the configuration for a given ControlBlock ID
+     * @param controlBlockID - The ID of the ControlBlock
+     * @return Reference to the configuration of the given ControlBlock ID
+     */
     virtual SingleConfiguration& getConfiguration(int controlBlockID);
 
 private:
     static const int MAX_CONTROLBLOCK_ID = 2u;
+
     const std::string CONFIGFILEPATH{"/etc/controlblockconfig.cfg"};
 
     bool hasLoadedConfiguration;
+
     SingleConfiguration* singleConfiguration[MAX_CONTROLBLOCK_ID];
 };
 

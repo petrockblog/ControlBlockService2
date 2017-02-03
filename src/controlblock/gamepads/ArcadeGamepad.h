@@ -28,13 +28,33 @@
 #include "hal/IDigitalIn.h"
 #include "uinput/IUInputFactory.h"
 
+/**
+ * This class implements a gamepad for arcade controls.
+ * It polls a four-way joystick and various buttons.
+ */
 class ArcadeGamepad: public InputDevice
 {
 public:
+    /**
+     * Constructor
+     * @param uiFactory - Reference with IUInputFactory interface
+     * @param digitalInRef - Reference with IigitalIn interface
+     */
     ArcadeGamepad(IUInputFactory& uiFactory, IDigitalIn& digitalInRef);
+
+    /**
+     * Destructor
+     */
     ~ArcadeGamepad() = default;
 
+    /**
+     * See \ref InputDevice::initialize()
+     */
     virtual void initialize(InputDevice::Channel_e channel);
+
+    /**
+     * See \ref InputDevice::update()
+     */
     virtual void update();
 
 private:
