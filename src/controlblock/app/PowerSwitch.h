@@ -29,6 +29,9 @@
 class PowerSwitch
 {
 public:
+    /**
+     * Power state identifiers
+     */
     enum PowerState_e
     {
         STATE_OFF = 0,
