@@ -49,8 +49,6 @@ private:
         int pulse3Flag;
     };
 
-    static const uint32_t NUM_PLAYERS = 2u;
-
     // Controller Button Flags
     static const uint32_t ON = 1;
     static const uint32_t UP = (1u << 1);

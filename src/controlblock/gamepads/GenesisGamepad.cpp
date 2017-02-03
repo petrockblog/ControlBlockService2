@@ -55,9 +55,9 @@ GenesisGamepad::GenesisGamepad(IUInputFactory& uiFactory, IDigitalIn& digitalInR
         lastState(0xFFFF),
         boardIn(IDigitalIn::BOARD_0),
         boardOut(IDigitalOut::BOARD_0),
-        playerIndex(0u)
+        playerIndex(0u),
+        gamepad(uiFactory.getUInputDevice(IUInputDevice::TYPE_GAMEPAD_GENESIS))
 {
-    gamepad = uiFactory.getUInputDevice(IUInputDevice::TYPE_GAMEPAD_GENESIS);
 }
 
 void GenesisGamepad::initialize(InputDevice::Channel_e channel)

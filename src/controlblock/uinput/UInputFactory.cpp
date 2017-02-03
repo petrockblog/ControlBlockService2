@@ -38,5 +38,7 @@ std::unique_ptr<IUInputDevice> UInputFactory::getUInputDevice(IUInputDevice::Dev
         return std::unique_ptr<IUInputDevice>(new UInputGamepadGenesis());
     case IUInputDevice::TYPE_KEYVBOARD:
         return std::unique_ptr<IUInputDevice>(new UInputKeyboard());
+    default:
+        throw 1;
     }
 }

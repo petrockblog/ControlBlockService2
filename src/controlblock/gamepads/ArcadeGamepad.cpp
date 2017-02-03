@@ -24,9 +24,9 @@
 
 ArcadeGamepad::ArcadeGamepad(IUInputFactory& uiFactory, IDigitalIn& digitalInRef) :
         channel(InputDevice::CHANNEL_UNDEFINED),
-        digitalIn(digitalInRef)
+        digitalIn(digitalInRef),
+        gamepad(uiFactory.getUInputDevice(IUInputDevice::TYPE_GAMEPAD_ARCADE))
 {
-    gamepad = uiFactory.getUInputDevice(IUInputDevice::TYPE_GAMEPAD_ARCADE);
 }
 
 void ArcadeGamepad::initialize(InputDevice::Channel_e channel)

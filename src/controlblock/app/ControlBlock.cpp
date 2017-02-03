@@ -1,5 +1,5 @@
 /**
- * (c) Copyright 2017  Florian Müller (contact@petrockblock.com)
+ * (c) Copyright 2017  Florian Mueller (contact@petrockblock.com)
  * https://github.com/petrockblog/ControlBlock2
  *
  * Permission to use, copy, modify and distribute the program in both binary and
@@ -40,17 +40,17 @@ ControlBlock::ControlBlock(IUInputFactory& uiFactoryRef, IDigitalIn& digitalInRe
     }
 
     // initialize the controllers
-    int counter = 0;
-    for (int index = 0; index < MAX_NUMBER_OF_CONTROLBLOCKS; index++) {
+    uint8_t counter = 0u;
+    for (auto index = 0; index < MAX_NUMBER_OF_CONTROLBLOCKS; index++) {
         if (configRef.getConfiguration(index).isEnabled()) {
             InputDevice::GamepadType_e type = configRef.getConfiguration(index).getGamepadType();
             gamepads[counter] = gamepadFactory.createGamepad(type);
-            InputDevice::Channel_e channel = getInputDevice(counter);
+            InputDevice::Channel_e channel = getInputDeviceChannel(counter);
             gamepads[counter]->initialize(channel);
             counter++;
             if (!configRef.getConfiguration(index).isOnlyOneGamepadEnabled()) {
                 gamepads[counter] = gamepadFactory.createGamepad(type);
-                InputDevice::Channel_e channel = getInputDevice(counter);
+                channel = getInputDeviceChannel(counter);
                 gamepads[counter]->initialize(channel);
                 counter++;
             }
@@ -83,11 +83,11 @@ void ControlBlock::update()
     }
 }
 
-InputDevice::Channel_e ControlBlock::getInputDevice(int counterValue)
+InputDevice::Channel_e ControlBlock::getInputDeviceChannel(int counterValue)
 {
     assert(counterValue < (MAX_NUMBER_OF_INPUTDEVICES));
 
-    InputDevice::Channel_e channel = InputDevice::CHANNEL_UNDEFINED;
+    InputDevice::Channel_e channel;
     switch (counterValue) {
     case 0:channel = InputDevice::CHANNEL_1;
         break;
@@ -97,6 +97,8 @@ InputDevice::Channel_e ControlBlock::getInputDevice(int counterValue)
         break;
     case 3:channel = InputDevice::CHANNEL_4;
         break;
+    default:
+        throw 1;
     }
     return channel;
 }

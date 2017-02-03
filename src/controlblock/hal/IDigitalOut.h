@@ -27,8 +27,8 @@ class IDigitalOut
 {
 public:
     /**
- * Digital output channel identifiers
- */
+     * Digital output channel identifiers
+     */
     enum DO_Channel_e
     {
         DO_CHANNEL_TOPOWERSWITCH = 0,  //!< Status signal to power switch uC

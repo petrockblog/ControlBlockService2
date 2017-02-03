@@ -37,6 +37,9 @@
 class DigitalOut : public IDigitalOut
 {
 public:
+    /**
+     * Constructor
+     */
     DigitalOut();
 
     /**
@@ -61,7 +64,6 @@ public:
     virtual void setLevel(DO_Channel_e channel, DO_Level_e level, BoardNumber_e board = BOARD_0);
 
 private:
-
     static const uint8_t MAX_NUMBER_OF_MCPS = 4u;
 
     MCP23S17PI* expander[MAX_NUMBER_OF_MCPS];

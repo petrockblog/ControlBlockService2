@@ -23,7 +23,6 @@
 #include "mcp23s17pi.h"
 
 #include <iostream>
-#include <stdio.h>
 
 MCP23S17PI::MCP23S17PI(ChipSelectPin chipSelectPin, uint8_t deviceID) :
                 _deviceID(deviceID),

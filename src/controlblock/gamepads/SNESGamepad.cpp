@@ -115,8 +115,8 @@ uint16_t SNESGamepad::getSNESControllerState()
     const std::chrono::microseconds dura(STROBEDELAY);
     uint16_t state = 0u;
 
-    IDigitalIn::BoardNumber_e boardIn = IDigitalIn::BOARD_0;
-    IDigitalOut::BoardNumber_e boardOut = IDigitalOut::BOARD_0;
+    IDigitalIn::BoardNumber_e boardIn;
+    IDigitalOut::BoardNumber_e boardOut;
     if ((channel == InputDevice::CHANNEL_1) || (channel == InputDevice::CHANNEL_2)) {
         boardIn = IDigitalIn::BOARD_0;
         boardOut = IDigitalOut::BOARD_0;

@@ -1,5 +1,5 @@
 /**
- * (c) Copyright 2017  Florian Müller (contact@petrockblock.com)
+ * (c) Copyright 2017  Florian Mueller (contact@petrockblock.com)
  * https://github.com/petrockblog/ControlBlock2
  *
  * Permission to use, copy, modify and distribute the program in both binary and
@@ -43,7 +43,7 @@ PowerSwitch::PowerSwitch(IDigitalIn& digitalInReference, IDigitalOut& digitalOut
 void PowerSwitch::update()
 {
     if ((doShutdown == SHUTDOWN_ACTIVATED) && (getShutdownSignal() == SHUTDOWN_TRUE)
-            && (isShutdownInitiatedValue == false)) {
+            && (!isShutdownInitiatedValue)) {
         system("/etc/controlblockswitchoff.sh");
         isShutdownInitiatedValue = true;
     }
@@ -66,7 +66,7 @@ void PowerSwitch::setPowerSignal(PowerState_e state)
 
 PowerSwitch::ShutdownSignal_e PowerSwitch::getShutdownSignal()
 {
-    ShutdownSignal_e signal = SHUTDOWN_FALSE;
+    ShutdownSignal_e signal;
     if (digitalIn.getLevel(IDigitalIn::DI_CHANNEL_FROMPOWERSWITCH) == IDigitalIn::DI_LEVEL_LOW) {
         signal = SHUTDOWN_FALSE;
     }

@@ -26,8 +26,8 @@
 class IDigitalIn {
 public:
     /**
- * Digital input channel identifiers
- */
+     * Digital input channel identifiers
+     */
     enum DI_Channel_e
     {
       DI_CHANNEL_FROMPOWERSWITCH = 0,

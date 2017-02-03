@@ -21,7 +21,6 @@
  */
 
 #include "UInputKeyboard.h"
-#include <assert.h>
 
 UInputKeyboard::UInputKeyboard()
 {

@@ -24,6 +24,7 @@
 #include <iostream>
 #include <thread>
 #include <bcm2835.h>
+#include <signal.h>
 
 #include "app/ControlBlock.h"
 #include "config/ControlBlockConfiguration.h"

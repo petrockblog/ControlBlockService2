@@ -22,7 +22,6 @@
 
 #include <iostream>
 #include "SingleConfiguration.h"
-#include "gamepads/InputDevice.h"
 
 SingleConfiguration::SingleConfiguration(bool enabled, uint8_t address, std::string pType, bool pwrSwitch,
         bool oneGp) :

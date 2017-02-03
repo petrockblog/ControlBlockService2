@@ -37,6 +37,9 @@
 class DigitalIn: public IDigitalIn
 {
 public:
+    /**
+     * Constructor
+     */
     DigitalIn();
 
     /**

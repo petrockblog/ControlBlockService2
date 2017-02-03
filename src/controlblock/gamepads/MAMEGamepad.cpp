@@ -24,9 +24,9 @@
 
 MAMEGamepad::MAMEGamepad(IUInputFactory& uiFactory, IDigitalIn& digitalInRef) :
         channel(CHANNEL_UNDEFINED),
-        digitalIn(&digitalInRef)
+        digitalIn(&digitalInRef),
+        keyboard(uiFactory.getUInputDevice(IUInputDevice::TYPE_KEYVBOARD))
 {
-    keyboard = uiFactory.getUInputDevice(IUInputDevice::TYPE_KEYVBOARD);
 }
 
 void MAMEGamepad::initialize(InputDevice::Channel_e channel)
@@ -38,7 +38,7 @@ void MAMEGamepad::initialize(InputDevice::Channel_e channel)
 
 void MAMEGamepad::update()
 {
-    IDigitalIn::BoardNumber_e boardIn = IDigitalIn::BOARD_0;
+    IDigitalIn::BoardNumber_e boardIn;
     if ((channel == InputDevice::CHANNEL_1) || (channel == InputDevice::CHANNEL_2)) {
         boardIn = IDigitalIn::BOARD_0;
     }

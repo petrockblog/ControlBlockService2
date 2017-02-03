@@ -64,7 +64,7 @@ public:
     virtual void sync();
 
 protected:
-    uint32_t m_fileDescriptor;
+    int32_t m_fileDescriptor;
     int32_t getHandle();
     void releaseHandle();
 };
