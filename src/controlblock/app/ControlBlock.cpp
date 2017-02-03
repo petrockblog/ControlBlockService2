@@ -85,7 +85,7 @@ void ControlBlock::update()
 
 InputDevice::Channel_e ControlBlock::getInputDevice(int counterValue)
 {
-    assert(counterValue < (2 * MAX_NUMBER_OF_CONTROLBLOCKS));
+    assert(counterValue < (MAX_NUMBER_OF_INPUTDEVICES));
 
     InputDevice::Channel_e channel = InputDevice::CHANNEL_UNDEFINED;
     switch (counterValue) {

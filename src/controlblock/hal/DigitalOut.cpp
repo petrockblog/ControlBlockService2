@@ -36,13 +36,10 @@ DigitalOut::~DigitalOut()
 
 void DigitalOut::configureDevice(DO_Device device)
 {
-    switch (device)
-    {
-    case DO_DEVICE_POWERSWITCH:
-        bcm2835_gpio_fsel(RPI_GPIO_P1_11, BCM2835_GPIO_FSEL_OUTP);
+    switch (device) {
+    case DO_DEVICE_POWERSWITCH:bcm2835_gpio_fsel(RPI_GPIO_P1_11, BCM2835_GPIO_FSEL_OUTP);
         break;
-    case DO_DEVICE_SNES:
-        expander[0]->setPinMode(12, MCP23S17PI::DIR_OUTPUT);
+    case DO_DEVICE_SNES:expander[0]->setPinMode(12, MCP23S17PI::DIR_OUTPUT);
         expander[0]->setPinMode(13, MCP23S17PI::DIR_OUTPUT);
         expander[0]->setPinMode(14, MCP23S17PI::DIR_OUTPUT);
         expander[0]->setPinMode(15, MCP23S17PI::DIR_OUTPUT);
@@ -93,38 +90,28 @@ void DigitalOut::setLevel(DO_Channel_e channel, DO_Level_e level, BoardNumber_e 
 {
     MCP23S17PI::Level outlevel;
 
-    if (level == DO_LEVEL_LOW)
-    {
+    if (level == DO_LEVEL_LOW) {
         outlevel = MCP23S17PI::LEVEL_LOW;
     }
-    else
-    {
+    else {
         outlevel = MCP23S17PI::LEVEL_HIGH;
     }
 
     const uint32_t offset = (board == BOARD_0 ? 0u : 2u);
-    switch (channel)
-    {
-    case DO_CHANNEL_TOPOWERSWITCH:
-        bcm2835_gpio_write(RPI_GPIO_P1_11, outlevel == MCP23S17PI::LEVEL_LOW ? LOW : HIGH);
+    switch (channel) {
+    case DO_CHANNEL_TOPOWERSWITCH:bcm2835_gpio_write(RPI_GPIO_P1_11, outlevel == MCP23S17PI::LEVEL_LOW ? LOW : HIGH);
         break;
-    case DO_CHANNEL_P1P2_CLOCK:
-        expander[0 + offset]->digitalWrite(12, outlevel);
+    case DO_CHANNEL_P1P2_CLOCK:expander[0 + offset]->digitalWrite(12, outlevel);
         break;
-    case DO_CHANNEL_P1P2_STROBE:
-        expander[0 + offset]->digitalWrite(13, outlevel);
+    case DO_CHANNEL_P1P2_STROBE:expander[0 + offset]->digitalWrite(13, outlevel);
         break;
-    case DO_CHANNEL_P2_VCC:
-        expander[0 + offset]->digitalWrite(14, outlevel);
+    case DO_CHANNEL_P2_VCC:expander[0 + offset]->digitalWrite(14, outlevel);
         break;
-    case DO_CHANNEL_P1_VCC:
-        expander[0 + offset]->digitalWrite(15, outlevel);
+    case DO_CHANNEL_P1_VCC:expander[0 + offset]->digitalWrite(15, outlevel);
         break;
-    case DO_CHANNEL_GENESIS_P1_SELECT:
-        expander[0 + offset]->digitalWrite(6, outlevel);
+    case DO_CHANNEL_GENESIS_P1_SELECT:expander[0 + offset]->digitalWrite(6, outlevel);
         break;
-    case DO_CHANNEL_GENESIS_P2_SELECT:
-        expander[0 + offset]->digitalWrite(9, outlevel);
+    case DO_CHANNEL_GENESIS_P2_SELECT:expander[0 + offset]->digitalWrite(9, outlevel);
         break;
     }
 }

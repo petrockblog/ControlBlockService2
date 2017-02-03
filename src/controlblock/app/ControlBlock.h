@@ -33,27 +33,43 @@
 #include "hal/IDigitalIn.h"
 #include "hal/IDigitalOut.h"
 
+/**
+ * This class models the functionalities of the ControlBlock
+ */
 class ControlBlock
 {
 public:
+    /**
+     * Constructor
+     * @param uiFactoryRef - Reference with UInputFactory interface
+     * @param digitalInRef - Reference with IDigitalIn interface
+     * @param digitalOutRef - Reference with IDigitalOut interface
+     * @param configRef - Reference with IControlBlockConfiguration interface
+     * @param gamepadFactory
+     */
     ControlBlock(IUInputFactory& uiFactoryRef, IDigitalIn& digitalInRef, IDigitalOut& digitalOutRef,
             IControlBlockConfiguration& configRef, IGamepadFactory& gamepadFactory);
+
+    /**
+     * Destructor
+     */
     ~ControlBlock();
 
     ControlBlock(const ControlBlock& other) = delete;
     ControlBlock& operator=(const ControlBlock&) = delete;
 
+    /**
+     * Updates the state of every configured gamepad and of the power switch
+     */
     void update();
 
 private:
     static const uint8_t MAX_NUMBER_OF_CONTROLBLOCKS = 2u;
+    static const uint8_t MAX_NUMBER_OF_INPUTDEVICES = 2u * MAX_NUMBER_OF_CONTROLBLOCKS;
 
     uint8_t m_numberOfGamepads;
-
     PowerSwitch* powerSwitch;
-
     std::unique_ptr<InputDevice> gamepads[MAX_NUMBER_OF_CONTROLBLOCKS];
-
     InputDevice::Channel_e getInputDevice(int counterValue);
 
 };

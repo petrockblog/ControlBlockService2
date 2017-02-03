@@ -26,12 +26,31 @@
 #include <string>
 #include "gamepads/InputDevice.h"
 
+/**
+ * Instances of this class represent the configuration of a single ControlBlock
+ */
 class SingleConfiguration
 {
 public:
+    /**
+     * Constructor
+     * @param enabled -
+     * @param address
+     * @param type
+     * @param pwrSwitch
+     * @param oneGp
+     */
     SingleConfiguration(bool enabled, uint8_t address, std::string type, bool pwrSwitch, bool oneGp);
+
+    /**
+     * Destructor
+     */
     virtual ~SingleConfiguration();
 
+    /**
+     *
+     * @return
+     */
     virtual bool isEnabled();
     virtual uint8_t getDeviceAddress();
     virtual InputDevice::GamepadType_e getGamepadType();

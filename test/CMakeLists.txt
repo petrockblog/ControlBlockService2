@@ -19,7 +19,7 @@ add_executable(${ALL_TESTS_RUNNER_FILE}
         controlblock/app/ControlBlockTest.cpp
 
         ../src/controlblock/app/PowerSwitch.cpp
-        controlblock/app/PowerBlockTest.cpp
+        controlblock/app/PowerSwitchTest.cpp
 
         ../src/controlblock/gamepads/ArcadeGamepad.cpp
         controlblock/gamepads/ArcadeGamepadTest.cpp

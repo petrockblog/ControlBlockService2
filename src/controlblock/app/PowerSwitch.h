@@ -26,6 +26,9 @@
 #include "hal/IDigitalOut.h"
 #include "hal/IDigitalIn.h"
 
+/**
+ * This class models the power switch functionalities of the ControlBlock.
+ */
 class PowerSwitch
 {
 public:
@@ -34,33 +37,59 @@ public:
      */
     enum PowerState_e
     {
-        STATE_OFF = 0,
-        STATE_ON
+        STATE_OFF = 0,  //!< Power state is off
+        STATE_ON        //!< Power state is on
     };
 
+    /**
+     * Shutdown signal identifiers
+     */
     enum ShutdownSignal_e
     {
-        SHUTDOWN_FALSE = 0,
-        SHUTDOWN_TRUE
+        SHUTDOWN_FALSE = 0,  //!< Shutdown signal is not set
+        SHUTDOWN_TRUE        //!< Shutdown signal is set
     };
 
+    /**
+     * Indicates whether the power switch functionality is enabled or not
+     */
     enum ShutdownActivated_e
     {
-        SHUTDOWN_DEACTIVATED = 0,
-        SHUTDOWN_ACTIVATED
+        SHUTDOWN_DEACTIVATED = 0, //!< Power switch is disabled
+        SHUTDOWN_ACTIVATED        //!< Power switch is enabled
     };
 
-    explicit PowerSwitch(IDigitalIn& digitalInReference, IDigitalOut& digitalOutReference, ShutdownActivated_e doShutdownValue);
+    /**
+     * Constructor
+     * @param digitalInReference - Reference with IDigitalIn interface
+     * @param digitalOutReference - Reference with IDigitalOut interface
+     * @param doShutdownValue - Power switch function is enabled or not
+     */
+    explicit PowerSwitch(IDigitalIn& digitalInReference, IDigitalOut& digitalOutReference,
+            ShutdownActivated_e doShutdownValue);
 
-    ~PowerSwitch();
+    /**
+     * Destructor
+     */
+    ~PowerSwitch() = default;
 
+    /**
+     * Checks the shutdown signal. If the signal is logical high then the switch-off script
+     * is executed.
+     */
     void update();
+
+    /**
+     * Returns the information whether the switch-off script was called or not.
+     * @return
+     *  - true, if the switch-off script was called,
+     *  - false, otherwise.
+     */
     bool isShutdownInitiated() const;
 
 private:
     ShutdownActivated_e doShutdown;
     bool isShutdownInitiatedValue;
-
     IDigitalIn& digitalIn;
     IDigitalOut& digitalOut;
 
