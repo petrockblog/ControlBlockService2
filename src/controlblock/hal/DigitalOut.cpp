@@ -66,22 +66,21 @@ void DigitalOut::configureDevice(DO_Device device)
         expander[2]->digitalWrite(15, MCP23S17PI::LEVEL_HIGH);
         break;
     case DO_DEVICE_GENESIS:
-        // todo add vcc and gnd
-        expander[0]->setPinMode(6, MCP23S17PI::DIR_OUTPUT);
-        expander[0]->setPullupMode(6, MCP23S17PI::PULLUP_DISABLED);
-        expander[0]->digitalWrite(6, MCP23S17PI::LEVEL_LOW);
+        expander[0]->setPinMode(4, MCP23S17PI::DIR_OUTPUT);
+        expander[0]->setPullupMode(4, MCP23S17PI::PULLUP_DISABLED);
+        expander[0]->digitalWrite(4, MCP23S17PI::LEVEL_HIGH);
 
-        expander[0]->setPinMode(9, MCP23S17PI::DIR_OUTPUT);
-        expander[0]->setPullupMode(9, MCP23S17PI::PULLUP_DISABLED);
-        expander[0]->digitalWrite(9, MCP23S17PI::LEVEL_LOW);
+        expander[0]->setPinMode(7, MCP23S17PI::DIR_OUTPUT);
+        expander[0]->setPullupMode(7, MCP23S17PI::PULLUP_DISABLED);
+        expander[0]->digitalWrite(7, MCP23S17PI::LEVEL_LOW);
 
-        expander[2]->setPinMode(6, MCP23S17PI::DIR_OUTPUT);
-        expander[2]->setPullupMode(6, MCP23S17PI::PULLUP_DISABLED);
-        expander[2]->digitalWrite(6, MCP23S17PI::LEVEL_LOW);
+        expander[2]->setPinMode(4, MCP23S17PI::DIR_OUTPUT);
+        expander[2]->setPullupMode(4, MCP23S17PI::PULLUP_DISABLED);
+        expander[2]->digitalWrite(4, MCP23S17PI::LEVEL_HIGH);
 
-        expander[2]->setPinMode(9, MCP23S17PI::DIR_OUTPUT);
-        expander[2]->setPullupMode(9, MCP23S17PI::PULLUP_DISABLED);
-        expander[2]->digitalWrite(9, MCP23S17PI::LEVEL_LOW);
+        expander[2]->setPinMode(7, MCP23S17PI::DIR_OUTPUT);
+        expander[2]->setPullupMode(7, MCP23S17PI::PULLUP_DISABLED);
+        expander[2]->digitalWrite(7, MCP23S17PI::LEVEL_LOW);
         break;
     }
 }

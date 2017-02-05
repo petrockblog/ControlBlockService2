@@ -82,6 +82,9 @@ void DigitalIn::configureDevice(DI_Device device)
         expander[0]->setPinMode(5, MCP23S17PI::DIR_INPUT);
         expander[0]->setPullupMode(5, MCP23S17PI::PULLUP_ENABLED);
 
+        expander[0]->setPinMode(6, MCP23S17PI::DIR_INPUT);
+        expander[0]->setPullupMode(6, MCP23S17PI::PULLUP_ENABLED);
+
         expander[1]->setPinMode(0, MCP23S17PI::DIR_INPUT);
         expander[1]->setPullupMode(0, MCP23S17PI::PULLUP_ENABLED);
 
@@ -99,6 +102,9 @@ void DigitalIn::configureDevice(DI_Device device)
 
         expander[2]->setPinMode(5, MCP23S17PI::DIR_INPUT);
         expander[2]->setPullupMode(5, MCP23S17PI::PULLUP_ENABLED);
+
+        expander[2]->setPinMode(6, MCP23S17PI::DIR_INPUT);
+        expander[2]->setPullupMode(6, MCP23S17PI::PULLUP_ENABLED);
 
         expander[3]->setPinMode(0, MCP23S17PI::DIR_INPUT);
         expander[3]->setPullupMode(0, MCP23S17PI::PULLUP_ENABLED);

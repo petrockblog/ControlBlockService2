@@ -30,13 +30,34 @@
 #include "hal/IDigitalIn.h"
 #include "hal/IDigitalOut.h"
 
+/**
+ * Models a Genesis/Megadrive gamepad. Polls the controller and sends the corresponding
+ * user inputs to the uinput device.
+ */
 class GenesisGamepad: public InputDevice
 {
 public:
+    /**
+     * Constructor
+     * @param uiFactory
+     * @param digitalInRef
+     * @param digitalOutRef
+     */
     GenesisGamepad(IUInputFactory& uiFactory, IDigitalIn& digitalInRef, IDigitalOut& digitalOutRef);
+
+    /**
+     * Default Destructor
+     */
     virtual ~GenesisGamepad() = default;
 
+    /**
+     * Implements \ref InputDevice::initialize
+     */
     virtual void initialize(InputDevice::Channel_e channel);
+
+    /**
+     * Implement \ref InputDevice::update()
+     */
     virtual void update();
 
 private:
@@ -50,19 +71,19 @@ private:
     };
 
     // Controller Button Flags
-    static const uint32_t ON = 1;
+    static const uint32_t ON = 1u;
     static const uint32_t UP = (1u << 1);
-    static const uint32_t DOWN = 4;
-    static const uint32_t LEFT = 8;
-    static const uint32_t RIGHT = 16;
-    static const uint32_t START = 32;
-    static const uint32_t A = 64;
-    static const uint32_t B = 128;
-    static const uint32_t C = 256;
-    static const uint32_t X = 512;
-    static const uint32_t Y = 1024;
-    static const uint32_t Z = 2048;
-    static const uint32_t MODE = 4096;
+    static const uint32_t DOWN = (1u << 2);
+    static const uint32_t LEFT = (1u << 3);
+    static const uint32_t RIGHT = (1u << 4);
+    static const uint32_t START = (1u << 5);
+    static const uint32_t A = (1u << 6);
+    static const uint32_t B = (1u << 7);
+    static const uint32_t C = (1u << 8);
+    static const uint32_t X = (1u << 9);
+    static const uint32_t Y = (1u << 10);
+    static const uint32_t Z = (1u << 11);
+    static const uint32_t MODE = (1u << 12);
 
     static const IDigitalOut::DO_Channel_e CHN_SELECT[];
     static const Input inputMap[];
