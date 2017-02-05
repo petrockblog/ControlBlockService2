@@ -67,7 +67,9 @@ void DigitalIn::configureDevice(DI_Device device)
         expander[3]->setPinMode(8, MCP23S17PI::DIR_INPUT);
         expander[3]->setPullupMode(8, MCP23S17PI::PULLUP_ENABLED);
         break;
-    case DI_DEVICE_GENESIS:expander[0]->setPinMode(0, MCP23S17PI::DIR_INPUT);
+    case DI_DEVICE_GENESIS:
+        // Player 1
+        expander[0]->setPinMode(0, MCP23S17PI::DIR_INPUT);
         expander[0]->setPullupMode(0, MCP23S17PI::PULLUP_ENABLED);
 
         expander[0]->setPinMode(1, MCP23S17PI::DIR_INPUT);
@@ -88,26 +90,27 @@ void DigitalIn::configureDevice(DI_Device device)
         expander[1]->setPinMode(0, MCP23S17PI::DIR_INPUT);
         expander[1]->setPullupMode(0, MCP23S17PI::PULLUP_ENABLED);
 
-        expander[2]->setPinMode(0, MCP23S17PI::DIR_INPUT);
-        expander[2]->setPullupMode(0, MCP23S17PI::PULLUP_ENABLED);
+        // Player 2
+        expander[0]->setPinMode(15, MCP23S17PI::DIR_INPUT);
+        expander[0]->setPullupMode(15, MCP23S17PI::PULLUP_ENABLED);
 
-        expander[2]->setPinMode(1, MCP23S17PI::DIR_INPUT);
-        expander[2]->setPullupMode(1, MCP23S17PI::PULLUP_ENABLED);
+        expander[0]->setPinMode(14, MCP23S17PI::DIR_INPUT);
+        expander[0]->setPullupMode(14, MCP23S17PI::PULLUP_ENABLED);
 
-        expander[2]->setPinMode(2, MCP23S17PI::DIR_INPUT);
-        expander[2]->setPullupMode(2, MCP23S17PI::PULLUP_ENABLED);
+        expander[0]->setPinMode(13, MCP23S17PI::DIR_INPUT);
+        expander[0]->setPullupMode(13, MCP23S17PI::PULLUP_ENABLED);
 
-        expander[2]->setPinMode(3, MCP23S17PI::DIR_INPUT);
-        expander[2]->setPullupMode(3, MCP23S17PI::PULLUP_ENABLED);
+        expander[0]->setPinMode(12, MCP23S17PI::DIR_INPUT);
+        expander[0]->setPullupMode(12, MCP23S17PI::PULLUP_ENABLED);
 
-        expander[2]->setPinMode(5, MCP23S17PI::DIR_INPUT);
-        expander[2]->setPullupMode(5, MCP23S17PI::PULLUP_ENABLED);
+        expander[0]->setPinMode(10, MCP23S17PI::DIR_INPUT);
+        expander[0]->setPullupMode(10, MCP23S17PI::PULLUP_ENABLED);
 
-        expander[2]->setPinMode(6, MCP23S17PI::DIR_INPUT);
-        expander[2]->setPullupMode(6, MCP23S17PI::PULLUP_ENABLED);
+        expander[0]->setPinMode(9, MCP23S17PI::DIR_INPUT);
+        expander[0]->setPullupMode(9, MCP23S17PI::PULLUP_ENABLED);
 
-        expander[3]->setPinMode(0, MCP23S17PI::DIR_INPUT);
-        expander[3]->setPullupMode(0, MCP23S17PI::PULLUP_ENABLED);
+        expander[1]->setPinMode(15, MCP23S17PI::DIR_INPUT);
+        expander[1]->setPullupMode(15, MCP23S17PI::PULLUP_ENABLED);
         break;
     default:throw 50;
     }

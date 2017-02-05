@@ -66,21 +66,35 @@ void DigitalOut::configureDevice(DO_Device device)
         expander[2]->digitalWrite(15, MCP23S17PI::LEVEL_HIGH);
         break;
     case DO_DEVICE_GENESIS:
+        // VCC Player 1
         expander[0]->setPinMode(4, MCP23S17PI::DIR_OUTPUT);
         expander[0]->setPullupMode(4, MCP23S17PI::PULLUP_DISABLED);
         expander[0]->digitalWrite(4, MCP23S17PI::LEVEL_HIGH);
 
+        // GND Player 1
         expander[0]->setPinMode(7, MCP23S17PI::DIR_OUTPUT);
         expander[0]->setPullupMode(7, MCP23S17PI::PULLUP_DISABLED);
         expander[0]->digitalWrite(7, MCP23S17PI::LEVEL_LOW);
 
-        expander[2]->setPinMode(4, MCP23S17PI::DIR_OUTPUT);
-        expander[2]->setPullupMode(4, MCP23S17PI::PULLUP_DISABLED);
-        expander[2]->digitalWrite(4, MCP23S17PI::LEVEL_HIGH);
+        // SELECT Player 1
+        expander[0]->setPinMode(6, MCP23S17PI::DIR_OUTPUT);
+        expander[0]->setPullupMode(6, MCP23S17PI::PULLUP_DISABLED);
+        expander[0]->digitalWrite(6, MCP23S17PI::LEVEL_LOW);
 
-        expander[2]->setPinMode(7, MCP23S17PI::DIR_OUTPUT);
-        expander[2]->setPullupMode(7, MCP23S17PI::PULLUP_DISABLED);
-        expander[2]->digitalWrite(7, MCP23S17PI::LEVEL_LOW);
+        // VCC Player 2
+        expander[0]->setPinMode(11, MCP23S17PI::DIR_OUTPUT);
+        expander[0]->setPullupMode(11, MCP23S17PI::PULLUP_DISABLED);
+        expander[0]->digitalWrite(11, MCP23S17PI::LEVEL_HIGH);
+
+        // GND Player 2
+        expander[0]->setPinMode(8, MCP23S17PI::DIR_OUTPUT);
+        expander[0]->setPullupMode(8, MCP23S17PI::PULLUP_DISABLED);
+        expander[0]->digitalWrite(8, MCP23S17PI::LEVEL_LOW);
+
+        // SELECT Player 2
+        expander[0]->setPinMode(9, MCP23S17PI::DIR_OUTPUT);
+        expander[0]->setPullupMode(9, MCP23S17PI::PULLUP_DISABLED);
+        expander[0]->digitalWrite(9, MCP23S17PI::LEVEL_LOW);
         break;
     }
 }
