@@ -40,7 +40,7 @@ ControlBlock::ControlBlock(IUInputFactory& uiFactoryRef, IDigitalIn& digitalInRe
     }
 
     // initialize the controllers
-    uint8_t counter = 0u;
+    auto counter = 0;
     for (auto index = 0; index < MAX_NUMBER_OF_CONTROLBLOCKS; index++) {
         if (configRef.getConfiguration(index).isEnabled()) {
             InputDevice::GamepadType_e type = configRef.getConfiguration(index).getGamepadType();
@@ -57,6 +57,7 @@ ControlBlock::ControlBlock(IUInputFactory& uiFactoryRef, IDigitalIn& digitalInRe
         }
     }
     m_numberOfGamepads = counter;
+    std::cout << "Initialized " << counter << " gamepad(s)" << std::endl;
 }
 
 ControlBlock::~ControlBlock()
