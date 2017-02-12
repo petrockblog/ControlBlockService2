@@ -1,3 +1,25 @@
+/**
+ * (c) Copyright 2017  Florian Müller (contact@petrockblock.com)
+ * https://github.com/petrockblog/ControlBlock2
+ *
+ * Permission to use, copy, modify and distribute the program in both binary and
+ * source form, for non-commercial purposes, is hereby granted without fee,
+ * providing that this license information and copyright notice appear with
+ * all copies and any derived work.
+ *
+ * This software is provided 'as-is', without any express or implied
+ * warranty. In no event shall the authors be held liable for any damages
+ * arising from the use of this software.
+ *
+ * This program is freeware for PERSONAL USE only. Commercial users must
+ * seek permission of the copyright holders first. Commercial use includes
+ * charging money for the program or software derived from the program.
+ *
+ * The copyright holders request that bug fixes and improvements to the code
+ * should be forwarded to them so everyone can benefit from the modifications
+ * in future versions.
+ */
+
 #include "DigitalOut.h"
 
 DigitalOut::DigitalOut()
@@ -14,13 +36,10 @@ DigitalOut::~DigitalOut()
 
 void DigitalOut::configureDevice(DO_Device device)
 {
-    switch (device)
-    {
-    case DO_DEVICE_POWERSWITCH:
-        bcm2835_gpio_fsel(RPI_GPIO_P1_11, BCM2835_GPIO_FSEL_OUTP);
+    switch (device) {
+    case DO_DEVICE_POWERSWITCH:bcm2835_gpio_fsel(RPI_GPIO_P1_11, BCM2835_GPIO_FSEL_OUTP);
         break;
-    case DO_DEVICE_SNES:
-        expander[0]->setPinMode(12, MCP23S17PI::DIR_OUTPUT);
+    case DO_DEVICE_SNES:expander[0]->setPinMode(12, MCP23S17PI::DIR_OUTPUT);
         expander[0]->setPinMode(13, MCP23S17PI::DIR_OUTPUT);
         expander[0]->setPinMode(14, MCP23S17PI::DIR_OUTPUT);
         expander[0]->setPinMode(15, MCP23S17PI::DIR_OUTPUT);
@@ -46,6 +65,37 @@ void DigitalOut::configureDevice(DO_Device device)
         expander[2]->digitalWrite(14, MCP23S17PI::LEVEL_HIGH);
         expander[2]->digitalWrite(15, MCP23S17PI::LEVEL_HIGH);
         break;
+    case DO_DEVICE_GENESIS:
+        // VCC Player 1
+        expander[0]->setPinMode(4, MCP23S17PI::DIR_OUTPUT);
+        expander[0]->setPullupMode(4, MCP23S17PI::PULLUP_DISABLED);
+        expander[0]->digitalWrite(4, MCP23S17PI::LEVEL_HIGH);
+
+        // GND Player 1
+        expander[0]->setPinMode(7, MCP23S17PI::DIR_OUTPUT);
+        expander[0]->setPullupMode(7, MCP23S17PI::PULLUP_DISABLED);
+        expander[0]->digitalWrite(7, MCP23S17PI::LEVEL_LOW);
+
+        // SELECT Player 1
+        expander[0]->setPinMode(6, MCP23S17PI::DIR_OUTPUT);
+        expander[0]->setPullupMode(6, MCP23S17PI::PULLUP_DISABLED);
+        expander[0]->digitalWrite(6, MCP23S17PI::LEVEL_LOW);
+
+        // VCC Player 2
+        expander[0]->setPinMode(11, MCP23S17PI::DIR_OUTPUT);
+        expander[0]->setPullupMode(11, MCP23S17PI::PULLUP_DISABLED);
+        expander[0]->digitalWrite(11, MCP23S17PI::LEVEL_HIGH);
+
+        // GND Player 2
+        expander[0]->setPinMode(8, MCP23S17PI::DIR_OUTPUT);
+        expander[0]->setPullupMode(8, MCP23S17PI::PULLUP_DISABLED);
+        expander[0]->digitalWrite(8, MCP23S17PI::LEVEL_LOW);
+
+        // SELECT Player 2
+        expander[0]->setPinMode(9, MCP23S17PI::DIR_OUTPUT);
+        expander[0]->setPullupMode(9, MCP23S17PI::PULLUP_DISABLED);
+        expander[0]->digitalWrite(9, MCP23S17PI::LEVEL_LOW);
+        break;
     }
 }
 
@@ -53,32 +103,28 @@ void DigitalOut::setLevel(DO_Channel_e channel, DO_Level_e level, BoardNumber_e 
 {
     MCP23S17PI::Level outlevel;
 
-    if (level == DO_LEVEL_LOW)
-    {
+    if (level == DO_LEVEL_LOW) {
         outlevel = MCP23S17PI::LEVEL_LOW;
     }
-    else
-    {
+    else {
         outlevel = MCP23S17PI::LEVEL_HIGH;
     }
 
     const uint32_t offset = (board == BOARD_0 ? 0u : 2u);
-    switch (channel)
-    {
-    case DO_CHANNEL_TOPOWERSWITCH:
-        bcm2835_gpio_write(RPI_GPIO_P1_11, outlevel == MCP23S17PI::LEVEL_LOW ? LOW : HIGH);
+    switch (channel) {
+    case DO_CHANNEL_TOPOWERSWITCH:bcm2835_gpio_write(RPI_GPIO_P1_11, outlevel == MCP23S17PI::LEVEL_LOW ? LOW : HIGH);
         break;
-    case DO_CHANNEL_P1P2_CLOCK:
-        expander[0 + offset]->digitalWrite(12, outlevel);
+    case DO_CHANNEL_P1P2_CLOCK:expander[0 + offset]->digitalWrite(12, outlevel);
         break;
-    case DO_CHANNEL_P1P2_STROBE:
-        expander[0 + offset]->digitalWrite(13, outlevel);
+    case DO_CHANNEL_P1P2_STROBE:expander[0 + offset]->digitalWrite(13, outlevel);
         break;
-    case DO_CHANNEL_P2_VCC:
-        expander[0 + offset]->digitalWrite(14, outlevel);
+    case DO_CHANNEL_P2_VCC:expander[0 + offset]->digitalWrite(14, outlevel);
         break;
-    case DO_CHANNEL_P1_VCC:
-        expander[0 + offset]->digitalWrite(15, outlevel);
+    case DO_CHANNEL_P1_VCC:expander[0 + offset]->digitalWrite(15, outlevel);
+        break;
+    case DO_CHANNEL_GENESIS_P1_SELECT:expander[0 + offset]->digitalWrite(6, outlevel);
+        break;
+    case DO_CHANNEL_GENESIS_P2_SELECT:expander[0 + offset]->digitalWrite(9, outlevel);
         break;
     }
 }

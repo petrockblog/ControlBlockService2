@@ -20,20 +20,17 @@
  * in future versions.
  */
 
-#ifndef NONEGAMEPAD_H
-#define NONEGAMEPAD_H
+#ifndef CONTROLBLOCKSERVICE2_UINPUTGAMEPADGENESIS_H
+#define CONTROLBLOCKSERVICE2_UINPUTGAMEPADGENESIS_H
 
-#include "InputDevice.h"
+#include "UInputDevice.h"
 
-class NONEGamepad: public InputDevice
+class UInputGamepadGenesis : public UInputDevice
 {
 public:
-    NONEGamepad();
-    ~NONEGamepad();
-
-    virtual void initialize(InputDevice::Channel_e channel);
-    virtual void update();
+    UInputGamepadGenesis();
+    ~UInputGamepadGenesis();
 
 };
 
-#endif
+#endif //CONTROLBLOCKSERVICE2_UINPUTGAMEPADGENESIS_H

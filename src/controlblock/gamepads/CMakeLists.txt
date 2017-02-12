@@ -3,7 +3,6 @@ add_library(controlblock-gamepads STATIC
         MAMEGamepad.cpp
         NONEGamepad.cpp
         SNESGamepad.cpp
+        GenesisGamepad.cpp
+        GamepadFactory.cpp
         )
-
-target_link_libraries(controlblock-gamepads controlblock-uinput)
-target_link_libraries(controlblock-gamepads controlblock-hal)

@@ -20,20 +20,25 @@
  * in future versions.
  */
 
-#ifndef NONEGAMEPAD_H
-#define NONEGAMEPAD_H
+#include "gtest/gtest.h"
+#include "gmock/gmock.h"
 
-#include "InputDevice.h"
+#include "uinput/UInputDeviceMock.h"
+#include "uinput/UInputFactoryMock.h"
+#include "hal/DigitalInMock.h"
+#include "hal/DigitalOutMock.h"
+#include "gamepads/GenesisGamepad.h"
 
-class NONEGamepad: public InputDevice
+using ::testing::Return;
+using ::testing::NiceMock;
+
+TEST(GenesisGamepadTest, Constructor)
 {
-public:
-    NONEGamepad();
-    ~NONEGamepad();
+    UInputFactoryMock uiFactory;
+    DigitalInMock di;
+    DigitalOutMock digitalOut;
 
-    virtual void initialize(InputDevice::Channel_e channel);
-    virtual void update();
+    EXPECT_CALL(uiFactory, getUInputDeviceProxy(IUInputDevice::TYPE_GAMEPAD_GENESIS));
+    GenesisGamepad gamepad(uiFactory, di, digitalOut);
+}
 
-};
-
-#endif

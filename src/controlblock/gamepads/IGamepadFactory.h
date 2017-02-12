@@ -20,20 +20,16 @@
  * in future versions.
  */
 
-#ifndef NONEGAMEPAD_H
-#define NONEGAMEPAD_H
+#ifndef CONTROLBLOCKSERVICE2_IGAMEPADFACTORY_H
+#define CONTROLBLOCKSERVICE2_IGAMEPADFACTORY_H
 
+#include <memory>
 #include "InputDevice.h"
 
-class NONEGamepad: public InputDevice
+class IGamepadFactory
 {
 public:
-    NONEGamepad();
-    ~NONEGamepad();
-
-    virtual void initialize(InputDevice::Channel_e channel);
-    virtual void update();
-
+    virtual std::unique_ptr<InputDevice> createGamepad(InputDevice::GamepadType_e gamepadType) = 0;
 };
 
-#endif
+#endif //CONTROLBLOCKSERVICE2_IGAMEPADFACTORY_H

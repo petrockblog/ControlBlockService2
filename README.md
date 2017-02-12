@@ -1,7 +1,7 @@
 ControlBlockService2
 ====================
 
-[![Build Status](https://travis-ci.org/petrockblog/ControlBlockService2.svg?branch=master)](https://travis-ci.org/petrockblog/ControlBlockService2)
+[![Build Status](https://travis-ci.org/petrockblog/ControlBlockService2.svg?branch=master)](https://travis-ci.org/petrockblog/ControlBlockService2) [![Coverity Scan Build Status](https://scan.coverity.com/projects/11735/badge.svg)](https://scan.coverity.com/projects/petrockblog-controlblockservice2)
 
 This is the driver for the petrockblock.com ControlBlock, which is an extension board for the Raspberry Pi (TM). The driver itself is denoted as _controlblock_ in the following. The driver provides a service for interacting with the power button signals as well as for mapping attached game controllers to corresponding game pad devices on the Raspberry Pi.
 
@@ -77,7 +77,7 @@ The default configuration file looks like this:
                 "SJ1" : 0,             // The hardware address solder-jumper SJ1. Options: 0, 1 
                 "SJ2" : 0              // The hardware address solder-jumper SJ2, Options: 0, 1
             },
-            "gamepadtype" : "arcade",  // Sets the gamepad type. Options: "arcade", "mame", "snes", "none"
+            "gamepadtype" : "arcade",  // Sets the gamepad type. Options: "arcade", "mame", "snes", "genesis", "none"
             "onlyOneGamepad" : false,  // If true, registers only one gamepad instead of two
             "powerswitchOn" : true     // Enables (=true) the power switch functionality. Options: true, false
         },
@@ -105,6 +105,8 @@ To set the type of the gamepad you need to set the value of the element `gamepad
  ![MAMEMapping](https://github.com/petrockblog/ControlBlockService2/raw/master/supplementary/ControlBlockLayoutMAME.png)
  - ```snes```: Enables two game pads in the system and maps the attached SNES/NES controllers accordingly.<br>
  ![SNESMapping](https://github.com/petrockblog/ControlBlockService2/raw/master/supplementary/ControlBlockLayoutSNES.png)
+ - ```genesis```: Enables two game pads in the system and maps the attached Genesis/Megadrive/Atari controllers accordingly.<br>
+ ![GenesisMapping](https://github.com/petrockblog/ControlBlockService2/raw/master/supplementary/ControlBlockLayoutGenesis.png)
 
  You can also connect a latching __reset button__ to `Player-2, Input B`. If the button is pressed a virtual ESC-key press will be triggered.
 

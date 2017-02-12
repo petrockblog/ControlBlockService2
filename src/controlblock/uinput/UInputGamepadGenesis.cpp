@@ -20,15 +20,15 @@
  * in future versions.
  */
 
-#include "UInputGamepadSNES.h"
+#include "UInputGamepadGenesis.h"
 
-UInputGamepadSNES::UInputGamepadSNES()
+UInputGamepadGenesis::UInputGamepadGenesis()
 {
     m_fileDescriptor = getHandle();
 
     struct uinput_user_dev uinp;
     memset(&uinp, 0, sizeof(uinp));
-    strncpy(uinp.name, "ControlBlock SNES Gamepad", strlen("ControlBlock SNES Gamepad"));
+    strncpy(uinp.name, "ControlBlock Genesis Gamepad", strlen("ControlBlock Genesis Gamepad"));
     uinp.id.version = 4;
     uinp.id.bustype = BUS_USB;
     uinp.id.product = 1;
@@ -41,12 +41,12 @@ UInputGamepadSNES::UInputGamepadSNES()
     // gamepad, buttons
     ioctl(m_fileDescriptor, UI_SET_KEYBIT, BTN_A);
     ioctl(m_fileDescriptor, UI_SET_KEYBIT, BTN_B);
+    ioctl(m_fileDescriptor, UI_SET_KEYBIT, BTN_C);
     ioctl(m_fileDescriptor, UI_SET_KEYBIT, BTN_X);
     ioctl(m_fileDescriptor, UI_SET_KEYBIT, BTN_Y);
-    ioctl(m_fileDescriptor, UI_SET_KEYBIT, BTN_TL);
-    ioctl(m_fileDescriptor, UI_SET_KEYBIT, BTN_TR);
+    ioctl(m_fileDescriptor, UI_SET_KEYBIT, BTN_Z);
     ioctl(m_fileDescriptor, UI_SET_KEYBIT, BTN_START);
-    ioctl(m_fileDescriptor, UI_SET_KEYBIT, BTN_SELECT);
+    ioctl(m_fileDescriptor, UI_SET_KEYBIT, BTN_MODE);
 
     // Add Absolute (D-pad) type
     ioctl(m_fileDescriptor, UI_SET_EVBIT, EV_ABS);
@@ -65,9 +65,8 @@ UInputGamepadSNES::UInputGamepadSNES()
 
     /* Create input device into input sub-system */
     write(m_fileDescriptor, &uinp, sizeof(uinp));
-    if (ioctl(m_fileDescriptor, UI_DEV_CREATE))
-    {
-        printf("[SNESGamepad] Unable to create UINPUT device.");
+    if (ioctl(m_fileDescriptor, UI_DEV_CREATE)) {
+        printf("[GenesisGamepad] Unable to create UINPUT device.");
         // throw -1;
     }
 
@@ -76,6 +75,6 @@ UInputGamepadSNES::UInputGamepadSNES()
     sync();
 }
 
-UInputGamepadSNES::~UInputGamepadSNES()
+UInputGamepadGenesis::~UInputGamepadGenesis()
 {
 }

@@ -20,20 +20,24 @@
  * in future versions.
  */
 
-#ifndef NONEGAMEPAD_H
-#define NONEGAMEPAD_H
+#ifndef CONTROLBLOCKSERVICE2_GAMEPADFACTORYMOCK_H
+#define CONTROLBLOCKSERVICE2_GAMEPADFACTORYMOCK_H
 
-#include "InputDevice.h"
+#include "gmock/gmock.h"  // Brings in Google Mock.
+#include "gamepads/IGamepadFactory.h"
 
-class NONEGamepad: public InputDevice
+class GamepadFactoryMock: public IGamepadFactory
 {
 public:
-    NONEGamepad();
-    ~NONEGamepad();
+    GamepadFactoryMock() { }
+    virtual ~GamepadFactoryMock() { }
 
-    virtual void initialize(InputDevice::Channel_e channel);
-    virtual void update();
+    virtual std::unique_ptr<InputDevice> createGamepad(InputDevice::GamepadType_e gamepadType)
+    {
+        return std::unique_ptr<InputDevice>(createGamepadProxy(gamepadType));
+    }
 
+    MOCK_METHOD1(createGamepadProxy, InputDevice*(InputDevice::GamepadType_e gamepadType));
 };
 
-#endif
+#endif //CONTROLBLOCKSERVICE2_GAMEPADFACTORYMOCK_H

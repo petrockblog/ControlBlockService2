@@ -4,7 +4,7 @@ project(ControlBlockService2)
 
 set(CMAKE_CXX_STANDARD 11)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -O3")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -O3 -g")
 set(EXECUTABLE_NAME "controlblock")
 
 include_directories(src/controlblock)
@@ -20,7 +20,7 @@ add_subdirectory(src/controlblock/gamepads)
 add_subdirectory(src/controlblock/uinput)
 
 add_executable(${EXECUTABLE_NAME} "src/controlblock/main.cpp")
-target_link_libraries(${EXECUTABLE_NAME} controlblock-app)
+target_link_libraries(${EXECUTABLE_NAME} controlblock-app bcm2835 controlblock-config controlblock-hal controlblock-gamepads controlblock-uinput)
 
 install(FILES ${CMAKE_BINARY_DIR}/${EXECUTABLE_NAME} DESTINATION /usr/bin
         PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ

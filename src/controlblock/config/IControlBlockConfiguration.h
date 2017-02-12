@@ -20,20 +20,17 @@
  * in future versions.
  */
 
-#ifndef NONEGAMEPAD_H
-#define NONEGAMEPAD_H
+#ifndef CONTROLBLOCKSERVICE2_ICONTROLBLOCKCONFIGURATION_H
+#define CONTROLBLOCKSERVICE2_ICONTROLBLOCKCONFIGURATION_H
 
-#include "InputDevice.h"
+#include "SingleConfiguration.h"
 
-class NONEGamepad: public InputDevice
+class IControlBlockConfiguration
 {
 public:
-    NONEGamepad();
-    ~NONEGamepad();
-
-    virtual void initialize(InputDevice::Channel_e channel);
-    virtual void update();
+    virtual void loadConfiguration() = 0;
+    virtual SingleConfiguration& getConfiguration(int controlBlockID) = 0;
 
 };
 
-#endif
+#endif //CONTROLBLOCKSERVICE2_ICONTROLBLOCKCONFIGURATION_H

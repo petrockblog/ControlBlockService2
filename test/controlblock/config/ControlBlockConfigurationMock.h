@@ -20,20 +20,18 @@
  * in future versions.
  */
 
-#ifndef NONEGAMEPAD_H
-#define NONEGAMEPAD_H
+#ifndef CONTROLBLOCKSERVICE2_CONTROLBLOCKCONFIGURATIONMOCK_H
+#define CONTROLBLOCKSERVICE2_CONTROLBLOCKCONFIGURATIONMOCK_H
 
-#include "InputDevice.h"
+#include "gmock/gmock.h"  // Brings in Google Mock.
+#include "config/IControlBlockConfiguration.h"
 
-class NONEGamepad: public InputDevice
+class ControlBlockConfigurationMock : public IControlBlockConfiguration
 {
 public:
-    NONEGamepad();
-    ~NONEGamepad();
-
-    virtual void initialize(InputDevice::Channel_e channel);
-    virtual void update();
+    MOCK_METHOD0(loadConfiguration, void());
+    MOCK_METHOD1(getConfiguration, SingleConfiguration&(int controlBlockID));
 
 };
 
-#endif
+#endif //CONTROLBLOCKSERVICE2_CONTROLBLOCKCONFIGURATIONMOCK_H
