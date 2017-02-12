@@ -3,13 +3,26 @@ sudo: required
 dist: precise
 language: cpp
 
-matrix:
-  include:
-    - compiler: gcc
-      env: 
-       - COMPILER=g++-4.9
+compiler: gcc
+env:
+  global:
+   - COMPILER=g++-4.9
+   # The next declaration is the encrypted COVERITY_SCAN_TOKEN, created
+   #   via the "travis encrypt" command using the project repo's public key
+   - secure: "bX8OzZ4CN4jDUtX3wls5RauoqtV5zH3HDhG/u3K9ss6PkfYYynpTmUQWqJlAryb2pJHRpjmIwgkUuV54gUEBh4PRPSqII/dUO7iWJ1YegpOhoRk4ri9LVsZl7FeGIWyRV7dLbZxd+mWgNJa+fC1/q29H4cCeOmrhEW6iOGHyhIn4HHKUA9kAzbHsGTgHspDDp3R3VGihO/c3f4chjCYtKzAZV5iIDESYDy0gWw0BCSnWWfk+XEQ/SOwXILcGZjcyeDUSNUV8GYfLppkDz6CQXdeLuM3Y3Xnveq+lBSt7eouZgCtfdnKEN11/8BKoNetcSI1LUwzyPqiEvLk9w3molequO7YgOFk9juS3SzWl3JoSnbebhAKKfOENviesYZKArVVr5QjyIj6VtVpzUVhP6ir9Zs0H61HZW0Gg1psZnSbd5gFDhYqV2x9XDZrZ+Rn/zayQR+dZF3vjwGYAUIdUp3Pcgb/gIpb1uQrXb1dLVc7Uf+aF+TnaO5OECEBb69R/vK1wJ6wD2G9JXOn2Dw41sMVwq/ivx+DsQXHl69fwUK3hFllcgfsVU50GYSHGQUWHWBGL12mPRvWd/nnBYz0y22kzpO7jl4j9V4sdXbMIsZl8GNzMyOEO9jd1wbfhYLtn28jdJVS+FIasuZ/vlzCWPGWn5cv/ndcYzQr2g6F6RlI="
+
+addons:
+  coverity_scan:
+    project:
+      name: "petrockblog/ControlBlockService2"
+      description: "Build submitted via Travis CI"
+    notification_email: contact@petrockblock.com
+    build_command_prepend: "cmake ."
+    build_command: "make"
+    branch_pattern: master
 
 before_install:
+  - echo -n | openssl s_client -connect scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-
   - sudo apt-get update -qq
 
 script:
