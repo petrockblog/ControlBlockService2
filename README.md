@@ -129,6 +129,19 @@ To enable or disable the power switch functionality you can set the element `pow
  - ```false```: Deactivates the handling of the power switch signals of the ControlBlock.
 
 
+### Shutdown Script
+
+When the driver observes a shutdown signal from the ControlBlock, a shutdown Bash script is called. You can find and edit it at `/etc/controlblockswitchoff.sh`.
+
+## Troubleshooting
+
+It is important to start with a well defined and working installation. Therefore, I suggest to start with a fresh Raspbian, RetroPie or whatever image and install the ControlBlock driver with only the power switch connected. Follow the steps [as described above for that.
+
+If that works, you can test the functionality of the arcade button input pins by using a jumper wire that is connected to GND and contacting the various button pins. `jstest /dev/input/js0` gives you the so simulated button presses for player one and `jstest /dev/input/js1` gives you the simulated button presses for player two (You can exit `jstest` with `Ctrl-C`.
+
+If you find that every input pin s working as expected start with connecting the controls in small steps. For example, first the joysticks, then the buttons for one player, then the ones for the other player. Use `jstest` after every smaller step to verify that things still work as expected.
+
+
 <br><br>
 __Have fun!__
 
