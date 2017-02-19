@@ -68,7 +68,7 @@ The configuration file of _controlblock_ is located at __```/etc/controlblockcon
 
 The default configuration file looks like this:
 
-```bash
+```json
 {
     "controlblocks" : [
         {
@@ -109,7 +109,7 @@ You can also connect a latching __reset button__ to `Player-2, Input B`. If the 
 
  - ```genesis```: Enables two game pads in the system and maps the attached Genesis/Megadrive/Atari controllers accordingly.<br>
  ![GenesisMapping](https://github.com/petrockblog/ControlBlockService2/raw/master/supplementary/ControlBlockLayoutGenesis.png)
-
+You can __switch to six-button__ controller by pressing the button combination `START, A, B, C, UP` at the same time.
 
 ### Only one Gamepad
 
@@ -119,6 +119,36 @@ If you want to connect only one gamepad to the ControlBlock you can set the elem
 ### 4-Player Extension
 
 The driver can handle up to two ControlBlocks. This means that you can stack two ControlBlock on top of each other to have inputs for four players. To do so make sure that you set different addresses for each of the ControlBlocks. You can set the address of each ControlBlock by setting the two solder jumpers of each ControlBlock accordingly. The values of the solder jumpers have to be set in the configuration file with the elements `SJ1` and `SJ2`. Also, you have to enable the second ControlBlock by setting the element `enabled` for the second ControlBlock to `true`.
+
+A usual 4-player configuration that enables two ControlBlocks with arcade mode would look like this:
+```json
+{
+    "controlblocks" : [
+        {
+            "enabled" : true,          // Enables (=true) or disables (=false) the ControlBlock 
+            "address" : {              // The address information of the first ControlBlock
+                "SJ1" : 0,             // The hardware address solder-jumper SJ1. Options: 0, 1 
+                "SJ2" : 0              // The hardware address solder-jumper SJ2, Options: 0, 1
+            },
+            "gamepadtype" : "arcade",  // Sets the gamepad type. Options: "arcade", "mame", "snes", "genesis", "none"
+            "onlyOneGamepad" : false,  // If true, registers only one gamepad instead of two
+            "powerswitchOn" : true     // Enables (=true) the power switch functionality. Options: true, false
+        },
+        {
+            "enabled" : true,          // Enables (=true) or disables (=false) the second ControlBlock 
+            "address" : {               // The address information of the second ControlBlock
+                "SJ1" : 1,              // The hardware address solder-jumper SJ1. Options: 0, 1 
+                "SJ2" : 0               // The hardware address solder-jumper SJ2, Options: 0, 1
+            },
+            "gamepadtype" : "arcade",   // Sets the gamepad type. Options: "arcade", "mame", "snes", "none"
+            "onlyOneGamepad" : false    // If true, registers only one gamepad instead of two
+        }
+    ]
+}
+```
+
+__Attention:__ It is important that you interrupt the signal lines for the power switch to the second ControlBlock. For that you need to snap off or bend the pins 11 and 12 on the bottom ControlBlock. The power switch functionality and all game pad functionalities are still given! _If you do not interrupt the signals to the top ControlBlock, the system will shutdown immediately after the system start_.
+
 
 
 ### Power Switch Functionality
@@ -139,7 +169,11 @@ It is important to start with a well defined and working installation. Therefore
 
 If that works, you can test the functionality of the arcade button input pins by using a jumper wire that is connected to GND and contacting the various button pins. `jstest /dev/input/js0` gives you the so simulated button presses for player one and `jstest /dev/input/js1` gives you the simulated button presses for player two (You can exit `jstest` with `Ctrl-C`.
 
-If you find that every input pin s working as expected start with connecting the controls in small steps. For example, first the joysticks, then the buttons for one player, then the ones for the other player. Use `jstest` after every smaller step to verify that things still work as expected.
+If you find that every input pin is working as expected start with connecting the controls in small steps. For example, first the joysticks, then the buttons for one player, then the ones for the other player. Use `jstest` after every smaller step to verify that things still work as expected.
+
+### Checking the Raw GPIO of the Raspberry
+
+To check that the GPIOs of the Raspberry Pi itself are working correctly, you can use the bash script `scripts/testRPiGPIO.sh`). You can start it with `./scripts/testRPiGPIO.sh`. Please follow the instructions that are printed to the shell.
 
 
 <br><br>
