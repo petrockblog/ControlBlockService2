@@ -38,7 +38,7 @@ static volatile sig_atomic_t doRun = 1;
 extern "C" {
 void sig_handler(int signo)
 {
-    if ((signo == SIGINT) | (signo == SIGQUIT) | (signo == SIGABRT) | (signo == SIGTERM)) {
+    if ((signo == SIGINT) || (signo == SIGQUIT) || (signo == SIGABRT) || (signo == SIGTERM)) {
         printf("[ControlBlockService] Releasing input devices.\n");
         doRun = 0;
     }
