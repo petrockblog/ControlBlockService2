@@ -149,9 +149,9 @@ A usual 4-player configuration that enables two ControlBlocks with arcade mode w
 
 __Attention:__ It is important that you interrupt the signal lines for the power switch to the second ControlBlock. For that you need to snap off or bend the pins 11 and 12 on the bottom ControlBlock. The power switch functionality and all game pad functionalities are still given! _If you do not interrupt the signals to the top ControlBlock, the system will shutdown immediately after the system start_. Here are two images that show how the pins could be bent:
 
-![Bending pins for 4-player functionality, view 1](https://github.com/petrockblog/ControlBlockService2/raw/master/supplementary/4playerCB1.png)
+![Bending pins for 4-player functionality, view 1](https://github.com/petrockblog/ControlBlockService2/raw/master/supplementary/4playerCB1.jpg)
 
-![Bending pins for 4-player functionality, view 2](https://github.com/petrockblog/ControlBlockService2/raw/master/supplementary/4playerCB2.png)
+![Bending pins for 4-player functionality, view 2](https://github.com/petrockblog/ControlBlockService2/raw/master/supplementary/4playerCB2.jpg)
 
 
 ### Power Switch Functionality
