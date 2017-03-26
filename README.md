@@ -68,7 +68,7 @@ The configuration file of _controlblock_ is located at __```/etc/controlblockcon
 
 The default configuration file looks like this:
 
-```json
+```
 {
     "controlblocks" : [
         {
@@ -121,7 +121,7 @@ If you want to connect only one gamepad to the ControlBlock you can set the elem
 The driver can handle up to two ControlBlocks. This means that you can stack two ControlBlock on top of each other to have inputs for four players. To do so make sure that you set different addresses for each of the ControlBlocks. You can set the address of each ControlBlock by setting the two solder jumpers of each ControlBlock accordingly. The values of the solder jumpers have to be set in the configuration file with the elements `SJ1` and `SJ2`. Also, you have to enable the second ControlBlock by setting the element `enabled` for the second ControlBlock to `true`.
 
 A usual 4-player configuration that enables two ControlBlocks with arcade mode would look like this:
-```json
+```
 {
     "controlblocks" : [
         {
@@ -147,8 +147,11 @@ A usual 4-player configuration that enables two ControlBlocks with arcade mode w
 }
 ```
 
-__Attention:__ It is important that you interrupt the signal lines for the power switch to the second ControlBlock. For that you need to snap off or bend the pins 11 and 12 on the bottom ControlBlock. The power switch functionality and all game pad functionalities are still given! _If you do not interrupt the signals to the top ControlBlock, the system will shutdown immediately after the system start_.
+__Attention:__ It is important that you interrupt the signal lines for the power switch to the second ControlBlock. For that you need to snap off or bend the pins 11 and 12 on the bottom ControlBlock. The power switch functionality and all game pad functionalities are still given! _If you do not interrupt the signals to the top ControlBlock, the system will shutdown immediately after the system start_. Here are two images that show how the pins could be bent:
 
+![Bending pins for 4-player functionality, view 1](https://github.com/petrockblog/ControlBlockService2/raw/master/supplementary/4playerCB1.png)
+
+![Bending pins for 4-player functionality, view 2](https://github.com/petrockblog/ControlBlockService2/raw/master/supplementary/4playerCB2.png)
 
 
 ### Power Switch Functionality
