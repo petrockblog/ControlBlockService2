@@ -1,11 +1,40 @@
 ControlBlockService2
 ====================
 
-[![Build Status](https://travis-ci.org/petrockblog/ControlBlockService2.svg?branch=master)](https://travis-ci.org/petrockblog/ControlBlockService2) [![Coverity Scan Build Status](https://scan.coverity.com/projects/11735/badge.svg)](https://scan.coverity.com/projects/petrockblog-controlblockservice2)
+[![Build Status](https://travis-ci.org/petrockblog/ControlBlockService2.svg?branch=master)](https://travis-ci.org/petrockblog/ControlBlockService2)
 
 This is the driver for the petrockblock.com ControlBlock, which is an extension board for the Raspberry Pi (TM). The driver itself is denoted as _controlblock_ in the following. The driver provides a service for interacting with the power button signals as well as for mapping attached game controllers to corresponding game pad devices on the Raspberry Pi.
 
 **Please note that this is the driver for revision 2.X of the ControlBlock. If you have a revision 1.X board, you need to use the [driver for that revision series](https://github.com/petrockblog/ControlBlockService).**
+
+## Contents
+
+
+
+ - [Prerequisites](#prerequisites)
+ - [Downloading](#downloading) 
+ - [Building and Installation](#building-and-installation)
+ - [Make the Driver Start at Boot](#installation-as-service)
+ - [Uninstalling the driver and the service](#uninstalling-the-service-andor-the-binary)
+ - [Configuration](#configuration)
+    - [Using only One Game Pad](#using-only-one-game-pad)
+    - [Setting the Type of Game Pad](#setting-the-type-of-gamepad)
+    - [Enabling or Disabling the Power Switch Functionality](#enabling-or-disabling-the-power-switch-functionality)
+ - [Custom Actions at Shutdown](#custom-actions-at-shutdown)
+ - [4-Player Extension with two ControlBlocks](#4player-extension-with-two-controlblocks)
+ - [Troubleshooting](#troubleshooting)
+
+
+## Prerequisites
+
+To be able to successfully build ControlBlockService you need to have certain APT packages installed. You can make sure that you have the latest version of those packages with these commands:
+
+```bash
+sudo apt-get update
+sudo apt-get upgrade -y
+sudo apt-get install -y git cmake g++-4.9 doxygen
+```
+
 
 ## Downloading
 
@@ -15,16 +44,6 @@ git clone --recursive https://github.com/petrockblog/ControlBlockService2.git
 ```
 
 Note that the above command also takes care for downloading the included Git submodules.
-
-## Prerequisites
-
-To be able to successfully build ControlBlockService you need to have certain APT packages installed. You can make sure that you have the latest version of those packages with these commands:
-
-```bash
-sudo apt-get update
-sudo apt-get upgrade -y
-sudo apt-get install -y cmake g++-4.9 doxygen
-```
 
 ## Building and Installation
 
@@ -116,11 +135,43 @@ You can __switch to six-button__ controller by pressing the button combination `
 If you want to connect only one gamepad to the ControlBlock you can set the element `onlyOneGamepad` to `true`: It enables only one gamepad in the system (e.g., if only Player-1 buttons are wired to the ControlBlock in your setup, this prevents a ghost gamepad from being selected as default player 2 in retroarch)
 
 
-### 4-Player Extension
+### Power Switch Functionality
 
-The driver can handle up to two ControlBlocks. This means that you can stack two ControlBlock on top of each other to have inputs for four players. To do so make sure that you set different addresses for each of the ControlBlocks. You can set the address of each ControlBlock by setting the two solder jumpers of each ControlBlock accordingly. The values of the solder jumpers have to be set in the configuration file with the elements `SJ1` and `SJ2`. Also, you have to enable the second ControlBlock by setting the element `enabled` for the second ControlBlock to `true`.
+To enable or disable the power switch functionality you can set the element `powerswitchOn` to `true` or `false`:
 
-A usual 4-player configuration that enables two ControlBlocks with arcade mode would look like this:
+ - ```true```: Activates the handling of the power switch signals of the ControlBlock.
+ - ```false```: Deactivates the handling of the power switch signals of the ControlBlock.
+
+
+### Shutdown Script
+
+When the driver observes a shutdown signal from the ControlBlock, a shutdown Bash script is called. You can find and edit it at `/etc/controlblockswitchoff.sh`.
+
+
+### 4-Player Extension with two ControlBlocks
+
+The driver can handle up to two ControlBlocks. This means that you can stack two ControlBlock on top of each other to have inputs for four players. 
+
+#### Setting Base Addess with the Solder Jumpers
+
+In order to use two ControlBlocks on top of each other, you need to change the base address of one of the ControlBlocks to a different value than the default one. The base address is used by the ControlBlock driver to identifz and distinguish the two ControlBlocks from each other. The base address can be set with the solder jumpers SJ1 and SJ2. To change the base address, you need to use a solder iron and set, e.g., SJ1 to "1". The following image shows the solder jumpers:
+
+![Solder jumpers SJ1 and SJ2 for setting the base address](https://github.com/petrockblog/ControlBlockService2/raw/master/supplementary/4playerCB3.jpg)
+
+#### Interrupting the Signal Lines for the Power Switch on the Second ControlBlock
+
+It is important that you interrupt the signal lines for the power switch to the second ControlBlock. If you do not interrupt the signals to the top ControlBlock, the system will shutdown immediately after the system start. To interrupt the signal lines you can snap off or bend the pins 11 and 12 on the bottom ControlBlock. The power switch functionality and all game pad functionalities are still given!  Here are two images that show how the pins could be bent:
+
+![Bending pins for 4-player functionality, view 1](https://github.com/petrockblog/ControlBlockService2/raw/master/supplementary/4playerCB1.jpg)
+
+![Bending pins for 4-player functionality, view 2](https://github.com/petrockblog/ControlBlockService2/raw/master/supplementary/4playerCB2.jpg)
+
+
+#### Adapting the Configuration File for Four Players
+
+The values of the solder jumpers have to be set in the configuration file with the elements `SJ1` and `SJ2`. Also, you have to enable the second ControlBlock by setting the element `enabled` for the second ControlBlock to `true`.
+
+If you have set the solder jumper SJ1 to 1, a usual 4-player configuration that enables two ControlBlocks with arcade mode would look like this:
 ```
 {
     "controlblocks" : [
@@ -147,24 +198,6 @@ A usual 4-player configuration that enables two ControlBlocks with arcade mode w
 }
 ```
 
-__Attention:__ It is important that you interrupt the signal lines for the power switch to the second ControlBlock. For that you need to snap off or bend the pins 11 and 12 on the bottom ControlBlock. The power switch functionality and all game pad functionalities are still given! _If you do not interrupt the signals to the top ControlBlock, the system will shutdown immediately after the system start_. Here are two images that show how the pins could be bent:
-
-![Bending pins for 4-player functionality, view 1](https://github.com/petrockblog/ControlBlockService2/raw/master/supplementary/4playerCB1.jpg)
-
-![Bending pins for 4-player functionality, view 2](https://github.com/petrockblog/ControlBlockService2/raw/master/supplementary/4playerCB2.jpg)
-
-
-### Power Switch Functionality
-
-To enable or disable the power switch functionality you can set the element `powerswitchOn` to `true` or `false`:
-
- - ```true```: Activates the handling of the power switch signals of the ControlBlock.
- - ```false```: Deactivates the handling of the power switch signals of the ControlBlock.
-
-
-### Shutdown Script
-
-When the driver observes a shutdown signal from the ControlBlock, a shutdown Bash script is called. You can find and edit it at `/etc/controlblockswitchoff.sh`.
 
 ## Troubleshooting
 
