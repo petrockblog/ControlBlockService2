@@ -153,9 +153,9 @@ When the driver observes a shutdown signal from the ControlBlock, a shutdown Bas
 
 The driver can handle up to two ControlBlocks. This means that you can stack two ControlBlock on top of each other to have inputs for four players. 
 
-#### Setting Base Addess with the Solder Jumpers
+#### Setting Base Address with the Solder Jumpers
 
-In order to use two ControlBlocks on top of each other, you need to change the base address of one of the ControlBlocks to a different value than the default one. The base address is used by the ControlBlock driver to identifz and distinguish the two ControlBlocks from each other. The base address can be set with the solder jumpers SJ1 and SJ2. To change the base address, you need to use a solder iron and set, e.g., SJ1 to "1". The following image shows the solder jumpers:
+In order to use two ControlBlocks on top of each other, you need to change the base address of one of the ControlBlocks to a different value than the default one. The base address is used by the ControlBlock driver to identify and distinguish the two ControlBlocks from each other. The base address can be set with the solder jumpers SJ1 and SJ2. To change the base address, you need to _use a solder iron_ and set, e.g., SJ1 to "1". Make sure that only two of the three solder pads are connected with each other! The following image shows the solder jumpers:
 
 ![Solder jumpers SJ1 and SJ2 for setting the base address](https://github.com/petrockblog/ControlBlockService2/raw/master/supplementary/4playerCB3.jpg)
 
