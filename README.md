@@ -17,11 +17,11 @@ This is the driver for the petrockblock.com ControlBlock, which is an extension 
  - [Make the Driver Start at Boot](#installation-as-service)
  - [Uninstalling the driver and the service](#uninstalling-the-service-andor-the-binary)
  - [Configuration](#configuration)
-    - [Using only One Game Pad](#using-only-one-game-pad)
     - [Setting the Type of Game Pad](#setting-the-type-of-gamepad)
+    - [Using only One Game Pad](#using-only-one-game-pad)
     - [Enabling or Disabling the Power Switch Functionality](#enabling-or-disabling-the-power-switch-functionality)
  - [Custom Actions at Shutdown](#custom-actions-at-shutdown)
- - [4-Player Extension with two ControlBlocks](#4player-extension-with-two-controlblocks)
+ - [4-Player Extension with two ControlBlocks](#4-player-extension-with-two-controlblocks)
  - [Troubleshooting](#troubleshooting)
 
 
@@ -130,12 +130,12 @@ You can also connect a latching __reset button__ to `Player-2, Input B`. If the 
  ![GenesisMapping](https://github.com/petrockblog/ControlBlockService2/raw/master/supplementary/ControlBlockLayoutGenesis.png)
 You can __switch to six-button__ controller by pressing the button combination `START, A, B, C, UP` at the same time.
 
-### Only one Gamepad
+### Using Only one Gamepad
 
 If you want to connect only one gamepad to the ControlBlock you can set the element `onlyOneGamepad` to `true`: It enables only one gamepad in the system (e.g., if only Player-1 buttons are wired to the ControlBlock in your setup, this prevents a ghost gamepad from being selected as default player 2 in retroarch)
 
 
-### Power Switch Functionality
+### Enabling or Disabling the Power Switch Functionality
 
 To enable or disable the power switch functionality you can set the element `powerswitchOn` to `true` or `false`:
 
@@ -143,7 +143,7 @@ To enable or disable the power switch functionality you can set the element `pow
  - ```false```: Deactivates the handling of the power switch signals of the ControlBlock.
 
 
-### Shutdown Script
+### Custom Actions at Shutdown
 
 When the driver observes a shutdown signal from the ControlBlock, a shutdown Bash script is called. You can find and edit it at `/etc/controlblockswitchoff.sh`.
 
