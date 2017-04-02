@@ -22,6 +22,7 @@ This is the driver for the petrockblock.com ControlBlock, which is an extension 
     - [Enabling or Disabling the Power Switch Functionality](#enabling-or-disabling-the-power-switch-functionality)
  - [Custom Actions at Shutdown](#custom-actions-at-shutdown)
  - [4-Player Extension with two ControlBlocks](#4-player-extension-with-two-controlblocks)
+     + [Four Player Hardware Setup Example](#four-player-hardware-setup-example)
  - [Troubleshooting](#troubleshooting)
 
 
@@ -198,6 +199,18 @@ If you have set the solder jumper SJ1 to 1, a usual 4-player configuration that 
 }
 ```
 
+
+#### Four Player Hardware Setup Example
+
+Here is an image that shows an exemplary 4-player hardware setup:
+
+![Four Player Hardware Setup Example](https://github.com/petrockblog/ControlBlockService2/raw/master/supplementary/4playerCB4.jpg)
+
+Things to note:
+
+ 1. The ControlBlock with the interrupted signal lines for the power switch is directly attached to the Raspberry Pi. The other ControlBlock is on top of that.
+ 2. If you want to use a power switch, you need to attach the switch and the optional LED to the "lower" ControlBlock, which is directly attached to the Raspberry Pi.
+ 3. The micro USB connector for the supply power is attached to the lower ControlBlock, which is directly attached to the Raspberry Pi.
 
 ## Troubleshooting
 
