@@ -70,12 +70,12 @@ void SNESGamepad::update()
 
     uint16_t state = getSNESControllerState();
 
-    if (channel == InputDevice::CHANNEL_2) {
-        IDigitalIn::DI_Level_e resetLevel = digitalIn->getLevel(IDigitalIn::DI_CHANNEL_P2_B, IDigitalIn::BOARD_0);
-        if (resetLevel == IDigitalIn::DI_LEVEL_LOW)
+    if (channel == InputDevice::CHANNEL_1) {
+        IDigitalIn::DI_Level_e resetLevel = digitalIn->getLevel(IDigitalIn::DI_CHANNEL_P1_B, IDigitalIn::BOARD_0);
+        if (resetLevel == IDigitalIn::DI_LEVEL_HIGH)
         {
-            state &= ~(1 << GPAD_SNES_SELECT);
-            state &= ~(1 << GPAD_SNES_START);
+            state |= GPAD_SNES_SELECT;
+            state |= GPAD_SNES_START;
             keyboard->setKeyState(KEY_ESC, 0, EV_KEY);
         }
         else
