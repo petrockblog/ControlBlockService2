@@ -70,6 +70,21 @@ void SNESGamepad::update()
 
     uint16_t state = getSNESControllerState();
 
+    if (channel == InputDevice::CHANNEL_1) {
+        IDigitalIn::DI_Level_e resetLevel = digitalIn->getLevel(IDigitalIn::DI_CHANNEL_P1_B, IDigitalIn::BOARD_0);
+        if (resetLevel == IDigitalIn::DI_LEVEL_HIGH)
+        {
+            state |= GPAD_SNES_SELECT;
+            state |= GPAD_SNES_START;
+            keyboard->setKeyState(KEY_ESC, 0, EV_KEY);
+        }
+        else
+        {
+            keyboard->setKeyState(KEY_ESC, 1, EV_KEY);
+        }
+        keyboard->sync();
+    }
+
     // left-right axis
     if ((state & GPAD_SNES_LEFT) == GPAD_SNES_LEFT) {
         gamepad->setKeyState(ABS_X, 0, EV_ABS);
@@ -102,12 +117,6 @@ void SNESGamepad::update()
     gamepad->setKeyState(BTN_START, (state & GPAD_SNES_START) == GPAD_SNES_START ? 1 : 0, EV_KEY);
     gamepad->setKeyState(BTN_SELECT, (state & GPAD_SNES_SELECT) == GPAD_SNES_SELECT ? 1 : 0, EV_KEY);
     gamepad->sync();
-
-    if (channel == InputDevice::CHANNEL_2) {
-        IDigitalIn::DI_Level_e resetLevel = digitalIn->getLevel(IDigitalIn::DI_CHANNEL_P2_B, IDigitalIn::BOARD_0);
-        keyboard->setKeyState(KEY_ESC, resetLevel == IDigitalIn::DI_LEVEL_LOW ? 0 : 1, EV_KEY);
-        keyboard->sync();
-    }
 }
 
 uint16_t SNESGamepad::getSNESControllerState()

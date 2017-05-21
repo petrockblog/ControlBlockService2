@@ -54,8 +54,8 @@ void DigitalIn::configureDevice(DI_Device device)
         expander[0]->setPullupMode(10, MCP23S17PI::PULLUP_ENABLED);
 
         // for reset button
-        expander[1]->setPinMode(8, MCP23S17PI::DIR_INPUT);
-        expander[1]->setPullupMode(8, MCP23S17PI::PULLUP_ENABLED);
+        expander[1]->setPinMode(7, MCP23S17PI::DIR_INPUT);
+        expander[1]->setPullupMode(7, MCP23S17PI::PULLUP_ENABLED);
 
         expander[2]->setPinMode(11, MCP23S17PI::DIR_INPUT);
         expander[2]->setPullupMode(11, MCP23S17PI::PULLUP_ENABLED);
@@ -64,8 +64,8 @@ void DigitalIn::configureDevice(DI_Device device)
         expander[2]->setPullupMode(10, MCP23S17PI::PULLUP_ENABLED);
 
         // for reset button
-        expander[3]->setPinMode(8, MCP23S17PI::DIR_INPUT);
-        expander[3]->setPullupMode(8, MCP23S17PI::PULLUP_ENABLED);
+        expander[3]->setPinMode(7, MCP23S17PI::DIR_INPUT);
+        expander[3]->setPullupMode(7, MCP23S17PI::PULLUP_ENABLED);
         break;
     case DI_DEVICE_GENESIS:
         // Player 1
