@@ -125,7 +125,7 @@ To set the type of the gamepad you need to set the value of the element `gamepad
  ![MAMEMapping](https://github.com/petrockblog/ControlBlockService2/raw/master/supplementary/ControlBlockLayoutMAME.png)
  - ```snes```: Enables two game pads in the system and maps the attached SNES/NES controllers accordingly.<br>
  ![SNESMapping](https://github.com/petrockblog/ControlBlockService2/raw/master/supplementary/ControlBlockLayoutSNES.png)
-You can also connect a latching __reset button__ to `Player-2, Input B`. If the button is pressed a virtual ESC-key press will be triggered.
+You can also connect a latching __reset button__ to `Player-1, Input B`. If the button is pressed a virtual ESC-key press will be triggered as well as a simultaneous press of the start and select buttons for player 1.
 
  - ```genesis```: Enables two game pads in the system and maps the attached Genesis/Megadrive/Atari controllers accordingly.<br>
  ![GenesisMapping](https://github.com/petrockblog/ControlBlockService2/raw/master/supplementary/ControlBlockLayoutGenesis.png)
