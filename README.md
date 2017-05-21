@@ -59,7 +59,8 @@ sudo ./install.sh
 ```
 
 Here is a video of a typical quick installation procedure:
-[![Alt text](https://img.youtube.com/vi/JHM_osExNWI/0.jpg)](https://www.youtube.com/watch?v=JHM_osExNWI)
+
+[![Video of the quick installation procedure for the ControlBlock](https://img.youtube.com/vi/JHM_osExNWI/0.jpg)](https://www.youtube.com/watch?v=JHM_osExNWI)
 
 ## Building and Installation
 
