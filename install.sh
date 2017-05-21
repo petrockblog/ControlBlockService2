@@ -49,8 +49,12 @@ else
 fi
 
 # check that the service is running
-ps -ef | grep controlblockservice | grep -v grep
-[ $?  -eq "0" ] && echo "[SUCCESS] The ControlBlock service is running" || echo "[ERROR] The ControlBlock service is not running"
+isServiceRunning=$(service controlblockservice status | grep running | wc -l)
+if [[ $isServiceRunning -eq 1 ]]; then
+ 	echo "[SUCCESS] The ControlBlock service is running"
+else
+    echo "[ERROR] The ControlBlock service is not running"
+fi 
 
 echo "You can find the configuration file at /etc/controlblockconfig.cfg".
 
