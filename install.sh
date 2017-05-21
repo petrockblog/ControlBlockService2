@@ -35,6 +35,7 @@ make install || (c=$?; echo "Error during installation of binary"; (exit $c))
 
 # install the driver as a service
 make installservice || (c=$?; echo "Error during installation of service"; (exit $c))
+sleep 3
 
 # change back into the original folder
 popd
