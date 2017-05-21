@@ -25,7 +25,6 @@ cmake .. || (c=$?; echo "Error while generating Makefiles"; (exit $c))
 
 # ensure that no old instance of the driver is running and installed
 make uninstallservice
-make uninstall
 
 # build driver binary
 make || (c=$?; echo "Error during building binary"; (exit $c))
