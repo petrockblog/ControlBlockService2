@@ -25,7 +25,7 @@ cmake .. || (c=$?; echo "Error while generating Makefiles"; (exit $c))
 
 # ensure that no old instance of the driver is running
 isOldServiceRunning=$(service controlblockservice status | grep running | wc -l)
-if [[ $isServiceRunning -eq 1 ]]; then
+if [[ $isOldServiceRunning -eq 1 ]]; then
     make uninstallservice
 fi 
 
