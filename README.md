@@ -46,6 +46,18 @@ git clone --recursive https://github.com/petrockblog/ControlBlockService2.git
 
 Note that the above command also takes care for downloading the included Git submodules.
 
+## Quick Installation
+
+There comes an installation script with this reposity that does all the steps described below: `install.sh` This script compiles the driver, installs the binary and configuration files, and installs the ControlBlock service. 
+
+To run the quick installation, change into the ControlBlockService2 directory and call the script:
+
+```bash
+cd ControlBlockService2
+sudo ./install.sh
+```
+
+
 ## Building and Installation
 
 To build _controlblock_ follow these commands:
