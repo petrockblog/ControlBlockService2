@@ -13,6 +13,7 @@ This is the driver for the petrockblock.com ControlBlock, which is an extension 
 
  - [Prerequisites](#prerequisites)
  - [Downloading](#downloading) 
+ - [Quick Installation](#quick-installation)
  - [Building and Installation](#building-and-installation)
  - [Make the Driver Start at Boot](#installation-as-service)
  - [Uninstalling the driver and the service](#uninstalling-the-service-andor-the-binary)
@@ -57,6 +58,8 @@ cd ControlBlockService2
 sudo ./install.sh
 ```
 
+Here is a video of a typical quick installation procedure:
+[![Alt text](https://img.youtube.com/vi/JHM_osExNWI/0.jpg)](https://www.youtube.com/watch?v=JHM_osExNWI)
 
 ## Building and Installation
 
