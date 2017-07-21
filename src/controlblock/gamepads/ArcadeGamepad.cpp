@@ -48,22 +48,22 @@ void ArcadeGamepad::update()
     if ((channel == InputDevice::CHANNEL_1) || (channel == InputDevice::CHANNEL_3)) {
         // axes
         if (digitalIn.getLevel(IDigitalIn::DI_CHANNEL_P1_LEFT, boardIn) == IDigitalIn::DI_LEVEL_HIGH) {
-            gamepad->setKeyState(ABS_Y, 0, EV_ABS);
+            gamepad->setKeyState(ABS_X, 0, EV_ABS);
         }
         else if (digitalIn.getLevel(IDigitalIn::DI_CHANNEL_P1_RIGHT, boardIn) == IDigitalIn::DI_LEVEL_HIGH) {
+            gamepad->setKeyState(ABS_X, 4, EV_ABS);
+        }
+        else {
+            gamepad->setKeyState(ABS_X, 2, EV_ABS);
+        }
+        if (digitalIn.getLevel(IDigitalIn::DI_CHANNEL_P1_UP, boardIn) == IDigitalIn::DI_LEVEL_HIGH) {
+            gamepad->setKeyState(ABS_Y, 0, EV_ABS);
+        }
+        else if (digitalIn.getLevel(IDigitalIn::DI_CHANNEL_P1_DOWN, boardIn) == IDigitalIn::DI_LEVEL_HIGH) {
             gamepad->setKeyState(ABS_Y, 4, EV_ABS);
         }
         else {
             gamepad->setKeyState(ABS_Y, 2, EV_ABS);
-        }
-        if (digitalIn.getLevel(IDigitalIn::DI_CHANNEL_P1_UP, boardIn) == IDigitalIn::DI_LEVEL_HIGH) {
-            gamepad->setKeyState(ABS_X, 4, EV_ABS);
-        }
-        else if (digitalIn.getLevel(IDigitalIn::DI_CHANNEL_P1_DOWN, boardIn) == IDigitalIn::DI_LEVEL_HIGH) {
-            gamepad->setKeyState(ABS_X, 0, EV_ABS);
-        }
-        else {
-            gamepad->setKeyState(ABS_X, 2, EV_ABS);
         }
 
         // buttons
@@ -99,23 +99,23 @@ void ArcadeGamepad::update()
     else if ((channel == InputDevice::CHANNEL_2) || (channel == InputDevice::CHANNEL_4)) {
         // axes
         if (digitalIn.getLevel(IDigitalIn::DI_CHANNEL_P2_LEFT, boardIn) == IDigitalIn::DI_LEVEL_HIGH) {
-            gamepad->setKeyState(ABS_Y, 0, EV_ABS);
+            gamepad->setKeyState(ABS_X, 0, EV_ABS);
         }
         else if (digitalIn.getLevel(IDigitalIn::DI_CHANNEL_P2_RIGHT, boardIn) == IDigitalIn::DI_LEVEL_HIGH) {
+            gamepad->setKeyState(ABS_X, 4, EV_ABS);
+        }
+        else {
+            gamepad->setKeyState(ABS_X, 2, EV_ABS);
+        }
+
+        if (digitalIn.getLevel(IDigitalIn::DI_CHANNEL_P2_UP, boardIn) == IDigitalIn::DI_LEVEL_HIGH) {
+            gamepad->setKeyState(ABS_Y, 0, EV_ABS);
+        }
+        else if (digitalIn.getLevel(IDigitalIn::DI_CHANNEL_P2_DOWN, boardIn) == IDigitalIn::DI_LEVEL_HIGH) {
             gamepad->setKeyState(ABS_Y, 4, EV_ABS);
         }
         else {
             gamepad->setKeyState(ABS_Y, 2, EV_ABS);
-        }
-
-        if (digitalIn.getLevel(IDigitalIn::DI_CHANNEL_P2_UP, boardIn) == IDigitalIn::DI_LEVEL_HIGH) {
-            gamepad->setKeyState(ABS_X, 4, EV_ABS);
-        }
-        else if (digitalIn.getLevel(IDigitalIn::DI_CHANNEL_P2_DOWN, boardIn) == IDigitalIn::DI_LEVEL_HIGH) {
-            gamepad->setKeyState(ABS_X, 0, EV_ABS);
-        }
-        else {
-            gamepad->setKeyState(ABS_X, 2, EV_ABS);
         }
 
         // buttons
