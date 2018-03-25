@@ -98,6 +98,11 @@ TEST(SNESGamepadTest, update)
     EXPECT_CALL(doMock,
             setLevel(IDigitalOut::DO_CHANNEL_P1P2_CLOCK, IDigitalOut::DO_LEVEL_LOW, IDigitalOut::BOARD_0)).Times(12);
 
+    // reset button
+    EXPECT_CALL(diMock, getLevel(IDigitalIn::DI_CHANNEL_P1_B, IDigitalIn::BOARD_0)).WillOnce(Return(IDigitalIn::DI_LEVEL_HIGH));
+    EXPECT_CALL(*keyboardMock, setKeyState(KEY_ESC, 0, EV_KEY));
+    EXPECT_CALL(*keyboardMock, sync());
+
     EXPECT_CALL(*gamepadMock, setKeyState(ABS_X, 2, EV_ABS));
     EXPECT_CALL(*gamepadMock, setKeyState(ABS_Y, 2, EV_ABS));
 
@@ -107,8 +112,8 @@ TEST(SNESGamepadTest, update)
     EXPECT_CALL(*gamepadMock, setKeyState(BTN_Y, 0, EV_KEY));
     EXPECT_CALL(*gamepadMock, setKeyState(BTN_TL, 0, EV_KEY));
     EXPECT_CALL(*gamepadMock, setKeyState(BTN_TR, 0, EV_KEY));
-    EXPECT_CALL(*gamepadMock, setKeyState(BTN_START, 0, EV_KEY));
-    EXPECT_CALL(*gamepadMock, setKeyState(BTN_SELECT, 0, EV_KEY));
+    EXPECT_CALL(*gamepadMock, setKeyState(BTN_START, 1, EV_KEY));
+    EXPECT_CALL(*gamepadMock, setKeyState(BTN_SELECT, 1, EV_KEY));
 
     EXPECT_CALL(*gamepadMock, sync());
 

@@ -63,10 +63,10 @@ TEST(ArcadeGamepadTest, updateLeftUpAndAllButtonsPressed)
 
     // axes
     EXPECT_CALL(di, getLevel(IDigitalIn::DI_CHANNEL_P1_LEFT, IDigitalIn::BOARD_0)).WillOnce(Return(IDigitalIn::DI_LEVEL_HIGH));
-    EXPECT_CALL(*gamepadMock, setKeyState(ABS_Y, 0, EV_ABS));
+    EXPECT_CALL(*gamepadMock, setKeyState(ABS_X, 0, EV_ABS));
 
     EXPECT_CALL(di, getLevel(IDigitalIn::DI_CHANNEL_P1_UP, IDigitalIn::BOARD_0)).WillOnce(Return(IDigitalIn::DI_LEVEL_HIGH));
-    EXPECT_CALL(*gamepadMock, setKeyState(ABS_X, 4, EV_ABS));
+    EXPECT_CALL(*gamepadMock, setKeyState(ABS_Y, 0, EV_ABS));
 
     // buttons
     EXPECT_CALL(di, getLevel(IDigitalIn::DI_CHANNEL_P1_SW1, IDigitalIn::BOARD_0)).WillOnce(Return(IDigitalIn::DI_LEVEL_HIGH));
@@ -123,11 +123,11 @@ TEST(ArcadeGamepadTest, updateRightDownAndAllButtonsReleased)
     // axes
     EXPECT_CALL(di, getLevel(IDigitalIn::DI_CHANNEL_P1_LEFT, IDigitalIn::BOARD_0)).WillOnce(Return(IDigitalIn::DI_LEVEL_LOW));
     EXPECT_CALL(di, getLevel(IDigitalIn::DI_CHANNEL_P1_RIGHT, IDigitalIn::BOARD_0)).WillOnce(Return(IDigitalIn::DI_LEVEL_HIGH));
-    EXPECT_CALL(*gamepadMock, setKeyState(ABS_Y, 4, EV_ABS));
+    EXPECT_CALL(*gamepadMock, setKeyState(ABS_X, 4, EV_ABS));
 
     EXPECT_CALL(di, getLevel(IDigitalIn::DI_CHANNEL_P1_UP, IDigitalIn::BOARD_0)).WillOnce(Return(IDigitalIn::DI_LEVEL_LOW));
     EXPECT_CALL(di, getLevel(IDigitalIn::DI_CHANNEL_P1_DOWN, IDigitalIn::BOARD_0)).WillOnce(Return(IDigitalIn::DI_LEVEL_HIGH));
-    EXPECT_CALL(*gamepadMock, setKeyState(ABS_X, 0, EV_ABS));
+    EXPECT_CALL(*gamepadMock, setKeyState(ABS_Y, 4, EV_ABS));
 
     // buttons
     EXPECT_CALL(di, getLevel(IDigitalIn::DI_CHANNEL_P1_SW1, IDigitalIn::BOARD_0)).WillOnce(Return(IDigitalIn::DI_LEVEL_LOW));
