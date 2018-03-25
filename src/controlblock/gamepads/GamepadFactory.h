@@ -12,7 +12,7 @@ class GamepadFactory: public IGamepadFactory
 {
 public:
     GamepadFactory(IUInputFactory& uiFactoryRef, IDigitalIn& digitalInRef, IDigitalOut& digitalOutRef);
-    virtual std::unique_ptr<InputDevice> createGamepad(InputDevice::GamepadType_e gamepadType);
+    virtual InputDevice* createGamepad(InputDevice::GamepadType_e gamepadType);
 
 private:
     IUInputFactory* uiFactory;

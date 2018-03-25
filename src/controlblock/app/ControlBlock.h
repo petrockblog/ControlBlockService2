@@ -69,7 +69,7 @@ private:
 
     uint8_t m_numberOfGamepads;
     PowerSwitch* powerSwitch;
-    std::unique_ptr<InputDevice> gamepads[MAX_NUMBER_OF_CONTROLBLOCKS];
+    InputDevice* gamepads[MAX_NUMBER_OF_CONTROLBLOCKS];
     InputDevice::Channel_e getInputDeviceChannel(int counterValue);
 
 };

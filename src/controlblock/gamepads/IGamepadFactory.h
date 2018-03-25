@@ -23,13 +23,12 @@
 #ifndef CONTROLBLOCKSERVICE2_IGAMEPADFACTORY_H
 #define CONTROLBLOCKSERVICE2_IGAMEPADFACTORY_H
 
-#include <memory>
 #include "InputDevice.h"
 
 class IGamepadFactory
 {
 public:
-    virtual std::unique_ptr<InputDevice> createGamepad(InputDevice::GamepadType_e gamepadType) = 0;
+    virtual InputDevice* createGamepad(InputDevice::GamepadType_e gamepadType) = 0;
 };
 
 #endif //CONTROLBLOCKSERVICE2_IGAMEPADFACTORY_H

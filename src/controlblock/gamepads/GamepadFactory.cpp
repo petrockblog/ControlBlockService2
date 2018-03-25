@@ -13,20 +13,25 @@ GamepadFactory::GamepadFactory(IUInputFactory& uiFactoryRef, IDigitalIn& digital
 {
 }
 
-std::unique_ptr<InputDevice> GamepadFactory::createGamepad(InputDevice::GamepadType_e gamepadType)
+InputDevice* GamepadFactory::createGamepad(InputDevice::GamepadType_e gamepadType)
 {
 #ifndef NDEBUG
     std::cout << "Creating gamepad of type " << gamepadType << std::endl;
 #endif
-    switch (gamepadType) {
-    case InputDevice::GAMEPAD_ARCADE:return std::unique_ptr<InputDevice>(new ArcadeGamepad(*uiFactory, *digitalIn));
+    switch (gamepadType)
+    {
+    case InputDevice::GAMEPAD_ARCADE:
+        return new ArcadeGamepad(*uiFactory, *digitalIn);
     case InputDevice::GAMEPAD_SNES:
-        return std::unique_ptr<InputDevice>(new SNESGamepad(*uiFactory, *digitalIn, *digitalOut));
-    case InputDevice::GAMEPAD_MAME:return std::unique_ptr<InputDevice>(new MAMEGamepad(*uiFactory, *digitalIn));
+        return new SNESGamepad(*uiFactory, *digitalIn, *digitalOut);
+    case InputDevice::GAMEPAD_MAME:
+        return new MAMEGamepad(*uiFactory, *digitalIn);
     case InputDevice::GAMEPAD_GENESIS:
-        return std::unique_ptr<InputDevice>(new GenesisGamepad(*uiFactory, *digitalIn, *digitalOut));
-    case InputDevice::GAMEPAD_NONE:return std::unique_ptr<InputDevice>(new NONEGamepad());
-    default:std::cout << "Error while configuring gamepad type ..." << std::endl;
+        return new GenesisGamepad(*uiFactory, *digitalIn, *digitalOut);
+    case InputDevice::GAMEPAD_NONE:
+        return new NONEGamepad();
+    default:
+        std::cout << "Error while configuring gamepad type ..." << std::endl;
         throw 1;
     }
 }

@@ -32,9 +32,9 @@ public:
     GamepadFactoryMock() { }
     virtual ~GamepadFactoryMock() { }
 
-    virtual std::unique_ptr<InputDevice> createGamepad(InputDevice::GamepadType_e gamepadType)
+    virtual InputDevice* createGamepad(InputDevice::GamepadType_e gamepadType)
     {
-        return std::unique_ptr<InputDevice>(createGamepadProxy(gamepadType));
+        return createGamepadProxy(gamepadType);
     }
 
     MOCK_METHOD1(createGamepadProxy, InputDevice*(InputDevice::GamepadType_e gamepadType));

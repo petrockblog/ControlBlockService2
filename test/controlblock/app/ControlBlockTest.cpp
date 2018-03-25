@@ -26,8 +26,10 @@
 #include "hal/DigitalInMock.h"
 #include "uinput/UInputFactoryMock.h"
 #include "app/ControlBlock.h"
+#include "config/ControlBlockConfiguration.h"
 #include "config/ControlBlockConfigurationMock.h"
 #include "gamepads/GamepadFactoryMock.h"
+#include "gamepads/GamepadFactory.h"
 #include "gamepads/InputDeviceMock.h"
 
 using ::testing::Return;
@@ -70,6 +72,52 @@ TEST(ControlBlockTest, Constructor)
 
     testing::Mock::AllowLeak(static_cast<void*>(inputDevice0));
     testing::Mock::AllowLeak(static_cast<void*>(inputDevice1));
+}
+
+TEST(ControlBlockTest, Constructor_2CBs)
+{
+    DigitalOutMock doMock;
+    DigitalInMock diMock;
+    UInputFactoryMock uiFactory;
+    ControlBlockConfigurationMock configMock;
+    GamepadFactoryMock gpadFactoryMock;
+    InputDeviceMock* inputDevice0 = new InputDeviceMock();
+    InputDeviceMock* inputDevice1 = new InputDeviceMock();
+    InputDeviceMock* inputDevice2 = new InputDeviceMock();
+    InputDeviceMock* inputDevice3 = new InputDeviceMock();
+
+    SingleConfiguration config_board0(true, 0u, "snes", true, false);
+    SingleConfiguration config_board1(true, 1u, "snes", false, false);
+
+    EXPECT_CALL(configMock, loadConfiguration());
+    EXPECT_CALL(configMock, getConfiguration(0)).WillRepeatedly(ReturnRef(config_board0));
+    EXPECT_CALL(configMock, getConfiguration(1)).WillRepeatedly(ReturnRef(config_board1));
+
+    using ::testing::InSequence;
+    {
+        InSequence dummy;  // configuration expectations
+
+        EXPECT_CALL(doMock, configureDevice(IDigitalOut::DO_DEVICE_POWERSWITCH));
+        EXPECT_CALL(diMock, configureDevice(IDigitalIn::DI_DEVICE_POWERSWITCH));
+        EXPECT_CALL(doMock, setLevel(IDigitalOut::DO_CHANNEL_TOPOWERSWITCH, IDigitalOut::DO_LEVEL_HIGH, IDigitalOut::BOARD_0));
+
+        // gamepad expectations
+        EXPECT_CALL(gpadFactoryMock, createGamepadProxy(InputDevice::GAMEPAD_SNES)).WillOnce(Return(inputDevice0));
+        EXPECT_CALL(*inputDevice0, initialize(InputDevice::CHANNEL_1));
+        EXPECT_CALL(gpadFactoryMock, createGamepadProxy(InputDevice::GAMEPAD_SNES)).WillOnce(Return(inputDevice1));
+        EXPECT_CALL(*inputDevice1, initialize(InputDevice::CHANNEL_2));
+        EXPECT_CALL(gpadFactoryMock, createGamepadProxy(InputDevice::GAMEPAD_SNES)).WillOnce(Return(inputDevice2));
+        EXPECT_CALL(*inputDevice2, initialize(InputDevice::CHANNEL_3));
+        EXPECT_CALL(gpadFactoryMock, createGamepadProxy(InputDevice::GAMEPAD_SNES)).WillOnce(Return(inputDevice3));
+        EXPECT_CALL(*inputDevice3, initialize(InputDevice::CHANNEL_4));
+    }
+
+    ControlBlock controlBlock{uiFactory, diMock, doMock, configMock, gpadFactoryMock};
+
+    testing::Mock::AllowLeak(static_cast<void*>(inputDevice0));
+    testing::Mock::AllowLeak(static_cast<void*>(inputDevice1));
+    testing::Mock::AllowLeak(static_cast<void*>(inputDevice2));
+    testing::Mock::AllowLeak(static_cast<void*>(inputDevice3));
 }
 
 TEST(ControlBlockTest, Update_TwoGamepads)
