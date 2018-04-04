@@ -23,8 +23,8 @@
 #include <iostream>
 #include "GenesisGamepad.h"
 
-const IDigitalOut::DO_Channel_e GenesisGamepad::CHN_SELECT[] = {IDigitalOut::DO_CHANNEL_GENESIS_P1_SELECT,
-                                                                IDigitalOut::DO_CHANNEL_GENESIS_P2_SELECT};  //!< Controller DB9 Pin 7 Mapping
+const IDigitalIO::DIO_Channel_e GenesisGamepad::CHN_SELECT[] = {IDigitalIO::DIO_CHANNEL_GENESIS_P1_SELECT,
+                                                                IDigitalIO::DIO_CHANNEL_GENESIS_P2_SELECT};  //!< Controller DB9 Pin 7 Mapping
 
 /**
  * Controller DB9 Pin to Button Flag Mappings
@@ -33,29 +33,26 @@ const IDigitalOut::DO_Channel_e GenesisGamepad::CHN_SELECT[] = {IDigitalOut::DO_
  * attached to, remaing columns are the button flags
  */
 const GenesisGamepad::Input GenesisGamepad::inputMap[] = {
-        {0, IDigitalIn::DI_CHANNEL_P1_RIGHT, UP,    UP,    Z}, // P0 DB9 Pin 1
-        {0, IDigitalIn::DI_CHANNEL_P1_LEFT,  DOWN,  DOWN,  Y}, // P0 DB9 Pin 2
-        {0, IDigitalIn::DI_CHANNEL_P1_UP,    ON,    LEFT,  X}, // P0 DB9 Pin 3
-        {0, IDigitalIn::DI_CHANNEL_P1_DOWN,  ON,    RIGHT, MODE}, // P0 DB9 Pin 4
-        {0, IDigitalIn::DI_CHANNEL_P1_SW2,   A,     B, 0}, // P0 DB9 Pin 6
-        {0, IDigitalIn::DI_CHANNEL_P1_SW5,   START, C, 0}, // P0 DB9 Pin 9
-        {1, IDigitalIn::DI_CHANNEL_P2_RIGHT, UP,    UP,    Z}, // P1 DB9 Pin 1
-        {1, IDigitalIn::DI_CHANNEL_P2_LEFT,  DOWN,  DOWN,  Y}, // P1 DB9 Pin 2
-        {1, IDigitalIn::DI_CHANNEL_P2_UP,    ON,    LEFT,  X}, // P1 DB9 Pin 3
-        {1, IDigitalIn::DI_CHANNEL_P2_DOWN,  ON,    RIGHT, MODE}, // P1 DB9 Pin 4
-        {1, IDigitalIn::DI_CHANNEL_P2_SW2,   A,     B, 0}, // P1 DB9 Pin 6
-        {1, IDigitalIn::DI_CHANNEL_P2_SW5,   START, C, 0}, // P1 DB9 Pin 9
+        {0, IDigitalIO::DIO_CHANNEL_P1_RIGHT, UP,    UP,    Z}, // P0 DB9 Pin 1
+        {0, IDigitalIO::DIO_CHANNEL_P1_LEFT,  DOWN,  DOWN,  Y}, // P0 DB9 Pin 2
+        {0, IDigitalIO::DIO_CHANNEL_P1_UP,    ON,    LEFT,  X}, // P0 DB9 Pin 3
+        {0, IDigitalIO::DIO_CHANNEL_P1_DOWN,  ON,    RIGHT, MODE}, // P0 DB9 Pin 4
+        {0, IDigitalIO::DIO_CHANNEL_P1_SW2,   A,     B, 0}, // P0 DB9 Pin 6
+        {0, IDigitalIO::DIO_CHANNEL_P1_SW5,   START, C, 0}, // P0 DB9 Pin 9
+        {1, IDigitalIO::DIO_CHANNEL_P2_RIGHT, UP,    UP,    Z}, // P1 DB9 Pin 1
+        {1, IDigitalIO::DIO_CHANNEL_P2_LEFT,  DOWN,  DOWN,  Y}, // P1 DB9 Pin 2
+        {1, IDigitalIO::DIO_CHANNEL_P2_UP,    ON,    LEFT,  X}, // P1 DB9 Pin 3
+        {1, IDigitalIO::DIO_CHANNEL_P2_DOWN,  ON,    RIGHT, MODE}, // P1 DB9 Pin 4
+        {1, IDigitalIO::DIO_CHANNEL_P2_SW2,   A,     B, 0}, // P1 DB9 Pin 6
+        {1, IDigitalIO::DIO_CHANNEL_P2_SW5,   START, C, 0}, // P1 DB9 Pin 9
 };
 
-GenesisGamepad::GenesisGamepad(IUInputFactory& uiFactory, IDigitalIn& digitalInRef, IDigitalOut& digitalOutRef) :
+GenesisGamepad::GenesisGamepad(IUInputFactory& uiFactory, IDigitalIO& digitalIORef) :
         channel(InputDevice::CHANNEL_UNDEFINED),
-        digitalIn(digitalInRef),
-        digitalOut(digitalOutRef),
+        digitalIO(digitalIORef),
         isInSixButtonMode(false),
         currentState(0u),
         lastState(0xFFFF),
-        boardIn(IDigitalIn::BOARD_0),
-        boardOut(IDigitalOut::BOARD_0),
         playerIndex(0u),
         gamepad(uiFactory.getUInputDevice(IUInputDevice::TYPE_GAMEPAD_GENESIS))
 {
@@ -63,16 +60,6 @@ GenesisGamepad::GenesisGamepad(IUInputFactory& uiFactory, IDigitalIn& digitalInR
 
 void GenesisGamepad::initialize(InputDevice::Channel_e channel)
 {
-    if ((channel == InputDevice::CHANNEL_1) || (channel == InputDevice::CHANNEL_2))
-    {
-        boardIn = IDigitalIn::BOARD_0;
-        boardOut = IDigitalOut::BOARD_0;
-    }
-    else {
-        boardIn = IDigitalIn::BOARD_1;
-        boardOut = IDigitalOut::BOARD_1;
-    }
-
     if ((channel == InputDevice::CHANNEL_1) || (channel == InputDevice::CHANNEL_3))
     {
         playerIndex = 0u;
@@ -82,8 +69,7 @@ void GenesisGamepad::initialize(InputDevice::Channel_e channel)
         playerIndex = 1u;
     }
 
-    digitalIn.configureDevice(IDigitalIn::DI_DEVICE_GENESIS);
-    digitalOut.configureDevice(IDigitalOut::DO_DEVICE_GENESIS);
+    digitalIO.configureDevice(IDigitalIO::DIO_DEVICE_GENESIS);
 
     this->channel = channel;
 }
@@ -115,19 +101,19 @@ void GenesisGamepad::resetState()
 void GenesisGamepad::read3buttons(int player)
 {
     // Set SELECT LOW and read lowFlag
-    digitalOut.setLevel(CHN_SELECT[player], IDigitalOut::DO_LEVEL_LOW, boardOut);
+    digitalIO.setLevel(CHN_SELECT[player], IDigitalIO::DIO_LEVEL_LOW);
     for (int i = 0; i < sizeof(inputMap) / sizeof(Input); i++) {
         if ((inputMap[i].player == player)
-                && (digitalIn.getLevel(inputMap[i].inputChannel, boardIn) == IDigitalIn::DI_LEVEL_HIGH)) {
+                && (digitalIO.getLevel(inputMap[i].inputChannel) == IDigitalIO::DIO_LEVEL_HIGH)) {
             currentState |= inputMap[i].lowFlag;
         }
     }
 
     // Set SELECT HIGH and read highFlag
-    digitalOut.setLevel(CHN_SELECT[player], IDigitalOut::DO_LEVEL_HIGH, boardOut);
+    digitalIO.setLevel(CHN_SELECT[player], IDigitalIO::DIO_LEVEL_HIGH);
     for (int i = 0; i < sizeof(inputMap) / sizeof(Input); i++) {
         if ((inputMap[i].player == player)
-                && (digitalIn.getLevel(inputMap[i].inputChannel, boardIn) == IDigitalIn::DI_LEVEL_HIGH)) {
+                && (digitalIO.getLevel(inputMap[i].inputChannel) == IDigitalIO::DIO_LEVEL_HIGH)) {
             currentState |= inputMap[i].highFlag;
         }
     }
@@ -152,12 +138,12 @@ void GenesisGamepad::read6buttons(int player)
 
     // After two three-button polls, pulse the SELECT line
     // so the six-button reports the higher button states
-    digitalOut.setLevel(CHN_SELECT[player], IDigitalOut::DO_LEVEL_LOW, boardOut);
-    digitalOut.setLevel(CHN_SELECT[player], IDigitalOut::DO_LEVEL_HIGH, boardOut);
+    digitalIO.setLevel(CHN_SELECT[player], IDigitalIO::DIO_LEVEL_LOW);
+    digitalIO.setLevel(CHN_SELECT[player], IDigitalIO::DIO_LEVEL_HIGH);
 
     for (int i = 0; i < sizeof(inputMap) / sizeof(Input); i++) {
         if ((inputMap[i].player == player)
-                && (digitalIn.getLevel(inputMap[i].inputChannel, boardIn) == IDigitalIn::DI_LEVEL_HIGH)) {
+                && (digitalIO.getLevel(inputMap[i].inputChannel) == IDigitalIO::DIO_LEVEL_HIGH)) {
             currentState |= inputMap[i].pulse3Flag;
         }
     }

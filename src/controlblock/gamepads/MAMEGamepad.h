@@ -24,13 +24,13 @@
 #define MAMEGAMEPAD_H
 
 #include "InputDevice.h"
-#include "hal/IDigitalIn.h"
+#include "hal/IDigitalIO.h"
 #include "uinput/IUInputFactory.h"
 
 class MAMEGamepad: public InputDevice
 {
 public:
-    MAMEGamepad(IUInputFactory& uiFactory, IDigitalIn& digitalInRef);
+    MAMEGamepad(IUInputFactory& uiFactory, IDigitalIO& digitalIORef);
     ~MAMEGamepad() = default;
 
     virtual void initialize(InputDevice::Channel_e channel);
@@ -38,8 +38,8 @@ public:
 
 private:
     InputDevice::Channel_e channel;
-    IDigitalIn* digitalIn;
-    std::unique_ptr<IUInputDevice> keyboard;
+    IDigitalIO& digitalIO;
+    IUInputDevice* keyboard;
 };
 
 #endif

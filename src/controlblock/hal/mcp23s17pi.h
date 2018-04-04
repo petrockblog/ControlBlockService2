@@ -37,8 +37,8 @@ public:
      */
     enum ChipSelectPin
     {
-        CHIPSELECT_0,  //!< Chip select pin CS0
-        CHIPSELECT_1   //!< Chip select pin CS1
+        CHIPSELECT_0 = 0,  //!< Chip select pin CS0
+        CHIPSELECT_1 = 1  //!< Chip select pin CS1
     };
 
     /**
@@ -76,15 +76,17 @@ public:
      */
     explicit MCP23S17PI(ChipSelectPin chipSelectPin, uint8_t deviceID);
 
+    ~MCP23S17PI();
+
     /**
      * @brief Initializes the communication interface for the MCP23S17 instance
      */
-    void begin();
+    static void begin();
 
     /**
      * @brief Deinitializes the communication interface for the MCP23S17 instance
      */
-    void end();
+    static void end();
 
     /**
      * @brief Sets the port direction of a given pin
@@ -185,7 +187,14 @@ private:
     // Default initialization mode
     static const uint8_t IOCON_INIT = 0x28; // IOCON_SEQOP and IOCON_HAEN from above
 
+    // static const unsigned char spi_mode = 0;  // SPI_MODE_0;
+    // static const unsigned char spi_bitsPerWord = 8;
+    // static const unsigned int spi_speed = 3900000;
+    // static int spi_cs0_fd;             //file descriptor for the SPI device
+    // static int spi_cs1_fd;             //file descriptor for the SPI device
+
     bcm2835SPIChipSelect _chipSelectPin;
+    // ChipSelectPin _chipSelectPin;
     uint8_t _deviceID;
 
     uint8_t _GPIOA;
@@ -199,5 +208,9 @@ private:
     void writeRegisterWord(const uint8_t &regAddress, uint16_t &data);
     uint8_t readRegister(uint8_t regaddress);
     uint16_t readRegisterWord(uint8_t regaddress);
+
+    // static int SpiOpenPort (int spi_device);
+    // static int SpiClosePort (int spi_device);
+    // int SpiWriteAndRead (int spi_device, unsigned char *data, int length);
 };
 #endif

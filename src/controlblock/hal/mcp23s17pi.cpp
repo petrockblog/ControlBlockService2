@@ -22,7 +22,19 @@
 
 #include "mcp23s17pi.h"
 
+#include <fcntl.h>              //Needed for SPI port
+#include <sys/ioctl.h>          //Needed for SPI port
+#include <linux/spi/spidev.h>   //Needed for SPI port
+#include <unistd.h>         //Needed for SPI port
+#include <stdio.h>
+#include <stdlib.h>
+#include <string>
 #include <iostream>
+#include <unistd.h>
+#include <cstring>
+#include <iostream>
+
+bool MCP23S17PI::isBCM2835Initialized = false;
 
 MCP23S17PI::MCP23S17PI(ChipSelectPin chipSelectPin, uint8_t deviceID) :
                 _deviceID(deviceID),
@@ -41,9 +53,13 @@ MCP23S17PI::MCP23S17PI(ChipSelectPin chipSelectPin, uint8_t deviceID) :
     {
         _chipSelectPin = BCM2835_SPI_CS1;
     }
+
+    writeRegister(MCP23S17PI_IOCON, IOCON_INIT);
 }
 
-bool MCP23S17PI::isBCM2835Initialized = false;
+MCP23S17PI::~MCP23S17PI()
+{
+}
 
 void MCP23S17PI::begin()
 {
@@ -51,16 +67,19 @@ void MCP23S17PI::begin()
     {
         if (!bcm2835_init())
         {
-            printf("Error initializing GPIO.");
+            printf("Error bcm2835_init\n");
             throw 1;
         }
 
-        bcm2835_spi_begin();
+        if (!bcm2835_spi_begin())
+        {
+            printf("Error bcm2835_spi_begin\n");
+            throw 1;
+        }
 
-        bcm2835_spi_setClockDivider (BCM2835_SPI_CLOCK_DIVIDER_32);    // 3.9 MHz
-        bcm2835_spi_chipSelect(_chipSelectPin);                      // The default
-
-        writeRegister(MCP23S17PI_IOCON, IOCON_INIT);
+        bcm2835_spi_setClockDivider (BCM2835_SPI_CLOCK_DIVIDER_64);    // 3.9 MHz
+        bcm2835_spi_setDataMode(BCM2835_SPI_MODE0);
+        bcm2835_spi_chipSelect(BCM2835_SPI_CS0);                      // The default
 
         isBCM2835Initialized = true;
     }
@@ -209,7 +228,7 @@ void MCP23S17PI::writeRegister(uint8_t regAddress, uint8_t data)
     spiData[0] = MCP23S08_CMD_WRITE | ((_deviceID) << 1u);
     spiData[1] = regAddress;
     spiData[2] = data;
-    bcm2835_spi_transfern(spiData, 3);
+    bcm2835_spi_transfern(&spiData[0], 3);
 }
 
 void MCP23S17PI::writeRegisterWord(const uint8_t& regAddress, uint16_t& data)
@@ -223,7 +242,8 @@ uint8_t MCP23S17PI::readRegister(uint8_t regAddress)
     char spiData[3];
     spiData[0] = MCP23S08_CMD_READ | ((_deviceID) << 1u);
     spiData[1] = regAddress;
-    bcm2835_spi_transfern(spiData, 3);
+    bcm2835_spi_transfern(&spiData[0], 3);
+
     return spiData[2];
 }
 
@@ -240,4 +260,5 @@ uint16_t MCP23S17PI::readRegisterWord(uint8_t regAddress)
 void MCP23S17PI::end()
 {
     bcm2835_spi_end();
+    bcm2835_close();
 }

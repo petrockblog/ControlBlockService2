@@ -24,15 +24,12 @@
 #include <iostream>
 #include "PowerSwitch.h"
 
-PowerSwitch::PowerSwitch(IDigitalIn& digitalInReference, IDigitalOut& digitalOutReference,
-        ShutdownActivated_e doShutdownValue) :
+PowerSwitch::PowerSwitch(IDigitalIO& digitalIOReference, ShutdownActivated_e doShutdownValue) :
         doShutdown(doShutdownValue),
         isShutdownInitiatedValue(false),
-        digitalIn(digitalInReference),
-        digitalOut(digitalOutReference)
+        digitalIO(digitalIOReference)
 {
-    digitalOut.configureDevice(IDigitalOut::DO_DEVICE_POWERSWITCH);
-    digitalIn.configureDevice(IDigitalIn::DI_DEVICE_POWERSWITCH);
+    digitalIO.configureDevice(IDigitalIO::DIO_DEVICE_POWERSWITCH);
     setPowerSignal(PowerSwitch::STATE_ON);
 
 #ifndef NDEBUG
@@ -57,17 +54,17 @@ bool PowerSwitch::isShutdownInitiated() const
 void PowerSwitch::setPowerSignal(PowerState_e state)
 {
     if (state == STATE_OFF) {
-        digitalOut.setLevel(IDigitalOut::DO_CHANNEL_TOPOWERSWITCH, IDigitalOut::DO_LEVEL_LOW);
+        digitalIO.setLevel(IDigitalIO::DIO_CHANNEL_TOPOWERSWITCH, IDigitalIO::DIO_LEVEL_LOW);
     }
     else {
-        digitalOut.setLevel(IDigitalOut::DO_CHANNEL_TOPOWERSWITCH, IDigitalOut::DO_LEVEL_HIGH);
+        digitalIO.setLevel(IDigitalIO::DIO_CHANNEL_TOPOWERSWITCH, IDigitalIO::DIO_LEVEL_HIGH);
     }
 }
 
 PowerSwitch::ShutdownSignal_e PowerSwitch::getShutdownSignal()
 {
     ShutdownSignal_e signal;
-    if (digitalIn.getLevel(IDigitalIn::DI_CHANNEL_FROMPOWERSWITCH) == IDigitalIn::DI_LEVEL_LOW) {
+    if (digitalIO.getLevel(IDigitalIO::DIO_CHANNEL_FROMPOWERSWITCH) == IDigitalIO::DIO_LEVEL_LOW) {
         signal = SHUTDOWN_FALSE;
     }
     else {

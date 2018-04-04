@@ -26,8 +26,16 @@ int main(int argc, char **argv)
 //        bcm2835_set_debug(1);
     
     if (!bcm2835_init())
-	return 1;
-    
+    {
+      printf("bcm2835_init failed. Are you running as root??\n");
+      return 1;
+    }
+
+    if (!bcm2835_spi_begin())
+    {
+      printf("bcm2835_spi_begin failed. Are you running as root??\n");
+      return 1;
+    }
     bcm2835_spi_begin();
     bcm2835_spi_setBitOrder(BCM2835_SPI_BIT_ORDER_MSBFIRST);      // The default
     bcm2835_spi_setDataMode(BCM2835_SPI_MODE0);                   // The default

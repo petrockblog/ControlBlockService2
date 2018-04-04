@@ -27,8 +27,7 @@
 #include "InputDevice.h"
 #include "uinput/IUInputDevice.h"
 #include "uinput/IUInputFactory.h"
-#include "hal/IDigitalIn.h"
-#include "hal/IDigitalOut.h"
+#include "hal/IDigitalIO.h"
 
 /**
  * Models a Genesis/Megadrive gamepad. Polls the controller and sends the corresponding
@@ -43,7 +42,7 @@ public:
      * @param digitalInRef
      * @param digitalOutRef
      */
-    GenesisGamepad(IUInputFactory& uiFactory, IDigitalIn& digitalInRef, IDigitalOut& digitalOutRef);
+    GenesisGamepad(IUInputFactory& uiFactory, IDigitalIO& digitalIORef);
 
     /**
      * Default Destructor
@@ -64,7 +63,7 @@ private:
     struct Input
     {
         int player;
-        IDigitalIn::DI_Channel_e inputChannel;
+        IDigitalIO::DIO_Channel_e inputChannel;
         int lowFlag;
         int highFlag;
         int pulse3Flag;
@@ -85,22 +84,19 @@ private:
     static const uint32_t Z     = 0x0800;
     static const uint32_t MODE  = 0x1000;
 
-    static const IDigitalOut::DO_Channel_e CHN_SELECT[];
+    static const IDigitalIO::DIO_Channel_e CHN_SELECT[];
     static const Input inputMap[];
 
     static const uint32_t SHORTDELAY = 20u;
     static const uint32_t LONGDELAY = 1000u;
 
     InputDevice::Channel_e channel;
-    std::unique_ptr<IUInputDevice> gamepad;
-    IDigitalIn& digitalIn;
-    IDigitalOut& digitalOut;
+    IUInputDevice* gamepad;
+    IDigitalIO& digitalIO;
 
     bool isInSixButtonMode;
     uint32_t currentState;
     uint32_t lastState;
-    IDigitalIn::BoardNumber_e boardIn;
-    IDigitalOut::BoardNumber_e boardOut;
     uint32_t playerIndex;
 
     void readButtons();

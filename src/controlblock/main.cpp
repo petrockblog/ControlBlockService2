@@ -25,11 +25,14 @@
 #include <thread>
 #include <bcm2835.h>
 #include <signal.h>
+#include "hal/mcp23s17pi.h"
 
 #include "app/ControlBlock.h"
 #include "config/ControlBlockConfiguration.h"
 #include "hal/DigitalIn.h"
 #include "hal/DigitalOut.h"
+#include "hal/DigitalIO.h"
+#include "gamepads/SNESGamepad.h"
 #include "uinput/UInputFactory.h"
 #include "gamepads/GamepadFactory.h"
 
@@ -64,21 +67,17 @@ void register_signalhandlers()
 
 int main(int argc, char** argv)
 {
-    if (!bcm2835_init()) {
-        std::cout << "Error while initializing BCM2835 library." << std::endl;
-        return 1;
-    };
+    register_signalhandlers();
+    MCP23S17PI::begin();
 
     try {
-        register_signalhandlers();
-
         UInputFactory uiFactory;
-        DigitalIn digitalIn;
-        DigitalOut digitalOut;
         ControlBlockConfiguration config;
-        GamepadFactory gamepadFactory(uiFactory, digitalIn, digitalOut);
+        GamepadFactory gamepadFactory(uiFactory);
 
-        ControlBlock controlBlock{uiFactory, digitalIn, digitalOut, config, gamepadFactory};
+        ControlBlock controlBlock{uiFactory, config, gamepadFactory};
+        
+        std::cout << "[ControlBlockService] Starting gamepad polling ... " << std::endl;
         while (doRun) {
             controlBlock.update();
             std::this_thread::sleep_for(std::chrono::milliseconds(25));
@@ -88,7 +87,7 @@ int main(int argc, char** argv)
         std::cout << "Error while running main loop. Error number: " << errno << std::endl;
     }
 
-    bcm2835_close();
+    MCP23S17PI::end();
 
     return 0;
 }

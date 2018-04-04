@@ -30,8 +30,7 @@
 #include "PowerSwitch.h"
 #include "gamepads/IGamepadFactory.h"
 #include "uinput/IUInputFactory.h"
-#include "hal/IDigitalIn.h"
-#include "hal/IDigitalOut.h"
+#include "hal/IDigitalIO.h"
 
 /**
  * This class models the functionalities of the ControlBlock
@@ -47,8 +46,7 @@ public:
      * @param configRef - Reference with IControlBlockConfiguration interface
      * @param gamepadFactory
      */
-    ControlBlock(IUInputFactory& uiFactoryRef, IDigitalIn& digitalInRef, IDigitalOut& digitalOutRef,
-            IControlBlockConfiguration& configRef, IGamepadFactory& gamepadFactory);
+    ControlBlock(IUInputFactory& uiFactoryRef, IControlBlockConfiguration& configRef, IGamepadFactory& gamepadFactory);
 
     /**
      * Destructor
@@ -69,8 +67,12 @@ private:
 
     uint8_t m_numberOfGamepads;
     PowerSwitch* powerSwitch;
+    MCP23S17PI* mcp23s17[MAX_NUMBER_OF_INPUTDEVICES];
+    IDigitalIO* digitalIO[MAX_NUMBER_OF_CONTROLBLOCKS];
+
     InputDevice* gamepads[MAX_NUMBER_OF_CONTROLBLOCKS];
     InputDevice::Channel_e getInputDeviceChannel(int counterValue);
+    void configureDevice(IDigitalIO* digitalIO, InputDevice::GamepadType_e type);
 
 };
 

@@ -5,11 +5,13 @@
 //
 // Author: Mike McCauley
 // Copyright (C) 2011-2013 Mike McCauley
-// $Id: test.c,v 1.5 2015/03/28 05:27:32 mikem Exp $
+// $Id: test.c,v 1.6 2018/01/16 21:55:07 mikem Exp mikem $
 
 #include <bcm2835.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
+#include <sys/types.h>
 
 int main(int argc, char **argv)
 {

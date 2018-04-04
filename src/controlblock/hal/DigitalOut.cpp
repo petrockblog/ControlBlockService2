@@ -21,25 +21,39 @@
  */
 
 #include "DigitalOut.h"
+#include <iostream>
 
 DigitalOut::DigitalOut()
 {
-    expander[0] = &HALFactory::getInstance().getMCP23S17(HALFactory::MCPCHANNEL_1);
-    expander[1] = &HALFactory::getInstance().getMCP23S17(HALFactory::MCPCHANNEL_2);
-    expander[2] = &HALFactory::getInstance().getMCP23S17(HALFactory::MCPCHANNEL_3);
-    expander[3] = &HALFactory::getInstance().getMCP23S17(HALFactory::MCPCHANNEL_4);
+    expander[0] = HALFactory::getInstance().getMCP23S17(HALFactory::MCPCHANNEL_1);
+    expander[1] = HALFactory::getInstance().getMCP23S17(HALFactory::MCPCHANNEL_2);
+    expander[2] = HALFactory::getInstance().getMCP23S17(HALFactory::MCPCHANNEL_3);
+    expander[3] = HALFactory::getInstance().getMCP23S17(HALFactory::MCPCHANNEL_4);
 }
 
 DigitalOut::~DigitalOut()
 {
+    std::cout << "~DigitalOut()" << std::endl;
+    HALFactory::deinitialize();
+}
+
+void DigitalOut::initialize()
+{
+    HALFactory::initialize();
+    expander[0] = HALFactory::getInstance().getMCP23S17(HALFactory::MCPCHANNEL_1);
+    expander[1] = HALFactory::getInstance().getMCP23S17(HALFactory::MCPCHANNEL_2);
+    expander[2] = HALFactory::getInstance().getMCP23S17(HALFactory::MCPCHANNEL_3);
+    expander[3] = HALFactory::getInstance().getMCP23S17(HALFactory::MCPCHANNEL_4);
 }
 
 void DigitalOut::configureDevice(DO_Device device)
 {
     switch (device) {
-    case DO_DEVICE_POWERSWITCH:bcm2835_gpio_fsel(RPI_GPIO_P1_11, BCM2835_GPIO_FSEL_OUTP);
+    case DO_DEVICE_POWERSWITCH:
+        bcm2835_gpio_fsel(RPI_GPIO_P1_11, BCM2835_GPIO_FSEL_OUTP);
         break;
-    case DO_DEVICE_SNES:expander[0]->setPinMode(12, MCP23S17PI::DIR_OUTPUT);
+    case DO_DEVICE_SNES:
+        expander[0]->setPinMode(12, MCP23S17PI::DIR_OUTPUT);
         expander[0]->setPinMode(13, MCP23S17PI::DIR_OUTPUT);
         expander[0]->setPinMode(14, MCP23S17PI::DIR_OUTPUT);
         expander[0]->setPinMode(15, MCP23S17PI::DIR_OUTPUT);

@@ -7,17 +7,16 @@
 #include "uinput/IUInputFactory.h"
 #include "hal/IDigitalIn.h"
 #include "hal/IDigitalOut.h"
+#include "hal/IDigitalIO.h"
 
 class GamepadFactory: public IGamepadFactory
 {
 public:
-    GamepadFactory(IUInputFactory& uiFactoryRef, IDigitalIn& digitalInRef, IDigitalOut& digitalOutRef);
-    virtual InputDevice* createGamepad(InputDevice::GamepadType_e gamepadType);
+    GamepadFactory(IUInputFactory& uiFactoryRef);
+    virtual InputDevice* createGamepad(InputDevice::GamepadType_e gamepadType, IDigitalIO& digitalIO);
 
 private:
-    IUInputFactory* uiFactory;
-    IDigitalIn* digitalIn;
-    IDigitalOut* digitalOut;
+    IUInputFactory& uiFactory;
 
 };
 

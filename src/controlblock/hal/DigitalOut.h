@@ -47,6 +47,8 @@ public:
      */
     ~DigitalOut();
 
+    void initialize();
+
     /**
      * @brief Configures port direction, pullup-mode, and initial signal level
      *        for a given device.

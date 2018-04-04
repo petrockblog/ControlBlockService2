@@ -25,7 +25,7 @@
 
 #include "InputDevice.h"
 #include "uinput/IUInputDevice.h"
-#include "hal/IDigitalIn.h"
+#include "hal/IDigitalIO.h"
 #include "uinput/IUInputFactory.h"
 
 /**
@@ -40,7 +40,7 @@ public:
      * @param uiFactory - Reference with IUInputFactory interface
      * @param digitalInRef - Reference with IigitalIn interface
      */
-    ArcadeGamepad(IUInputFactory& uiFactory, IDigitalIn& digitalInRef);
+    ArcadeGamepad(IUInputFactory& uiFactory, IDigitalIO& digitalIORef);
 
     /**
      * Destructor
@@ -59,8 +59,8 @@ public:
 
 private:
     InputDevice::Channel_e channel;
-    std::unique_ptr<IUInputDevice> gamepad;
-    IDigitalIn& digitalIn;
+    IUInputDevice* gamepad;
+    IDigitalIO& digitalIO;
 };
 
 #endif

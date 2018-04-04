@@ -23,8 +23,7 @@
 #ifndef POWERSWITCH_H
 #define POWERSWITCH_H
 
-#include "hal/IDigitalOut.h"
-#include "hal/IDigitalIn.h"
+#include "hal/IDigitalIO.h"
 
 /**
  * This class models the power switch functionalities of the ControlBlock.
@@ -65,8 +64,7 @@ public:
      * @param digitalOutReference - Reference with IDigitalOut interface
      * @param doShutdownValue - Power switch function is enabled or not
      */
-    explicit PowerSwitch(IDigitalIn& digitalInReference, IDigitalOut& digitalOutReference,
-            ShutdownActivated_e doShutdownValue);
+    explicit PowerSwitch(IDigitalIO& digitalIOReference, ShutdownActivated_e doShutdownValue);
 
     /**
      * Destructor
@@ -90,8 +88,7 @@ public:
 private:
     ShutdownActivated_e doShutdown;
     bool isShutdownInitiatedValue;
-    IDigitalIn& digitalIn;
-    IDigitalOut& digitalOut;
+    IDigitalIO& digitalIO;
 
     void setPowerSignal(PowerState_e state);
     ShutdownSignal_e getShutdownSignal();

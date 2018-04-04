@@ -12,6 +12,8 @@
 // gcc -o pwm -I ../../src ../../src/bcm2835.c pwm.c
 // sudo ./pwm
 //
+// Connect an LED between GPIO18 (pin 12) and GND to observe the LED changing in brightness
+//
 // Author: Mike McCauley
 // Copyright (C) 2013 Mike McCauley
 // $Id: RF22.h,v 1.21 2012/05/30 01:51:25 mikem Exp $
@@ -45,18 +47,19 @@ int main(int argc, char **argv)
     bcm2835_pwm_set_range(PWM_CHANNEL, RANGE);
 
     // Vary the PWM m/s ratio between 1/RANGE and (RANGE-1)/RANGE
-    int direction = 1;
+    // over the course of a a few seconds
+    int direction = 1; // 1 is increase, -1 is decrease
     int data = 1;
     while (1)
-      {
+    {
 	if (data == 1)
-	  direction = 1;
+	    direction = 1;   // Switch to increasing
 	else if (data == RANGE-1)
-	  direction = -1;
+	    direction = -1;  // Switch to decreasing
 	data += direction;
-	  bcm2835_pwm_set_data(PWM_CHANNEL, data);
-	bcm2835_delay(50);
-      }
+	bcm2835_pwm_set_data(PWM_CHANNEL, data);
+	bcm2835_delay(1);
+    }
 
     bcm2835_close();
     return 0;

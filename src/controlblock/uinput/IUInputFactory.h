@@ -29,7 +29,7 @@
 class IUInputFactory
 {
 public:
-    virtual std::unique_ptr<IUInputDevice> getUInputDevice(IUInputDevice::DeviceType type) = 0;
+    virtual IUInputDevice* getUInputDevice(IUInputDevice::DeviceType type) = 0;
 };
 
 #endif //CONTROLBLOCKSERVICE2_IUINPUTFACTORY_H

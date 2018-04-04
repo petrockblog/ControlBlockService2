@@ -24,11 +24,12 @@
 #define CONTROLBLOCKSERVICE2_IGAMEPADFACTORY_H
 
 #include "InputDevice.h"
+#include "hal/DigitalIO.h"
 
 class IGamepadFactory
 {
 public:
-    virtual InputDevice* createGamepad(InputDevice::GamepadType_e gamepadType) = 0;
+    virtual InputDevice* createGamepad(InputDevice::GamepadType_e gamepadType, IDigitalIO& digitalIO) = 0;
 };
 
 #endif //CONTROLBLOCKSERVICE2_IGAMEPADFACTORY_H

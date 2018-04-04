@@ -226,10 +226,22 @@ int main(int argc, char **argv) {
     // parse the command line
     if (comparse(argc, argv) == EXIT_FAILURE) return showusage (EXIT_FAILURE);
 
-    if (!bcm2835_init()) return 1;
+    if (!bcm2835_init())
+    {
+      printf("bcm2835_init failed. Are you running as root??\n");
+      return 1;
+    }
       
     // I2C begin if specified    
-    if (init == I2C_BEGIN) bcm2835_i2c_begin();
+    if (init == I2C_BEGIN)
+    {
+      if (!bcm2835_i2c_begin())
+      {
+        printf("bcm2835_i2c_begin failed. Are you running as root??\n");
+	return 1;
+      }
+    }
+	  
 
     // If len is 0, no need to continue, but do I2C end if specified
     if (len == 0) {

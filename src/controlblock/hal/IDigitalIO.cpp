@@ -23,18 +23,18 @@
 #include <stdint.h>
 #include <iostream>
 
-#include "DigitalIn.h"
+#include "DigitalIO.h"
 
-DigitalIn::DigitalIn()
+DigitalIO::DigitalIO()
 {
 }
 
-DigitalIn::~DigitalIn()
+DigitalIO::~DigitalIO()
 {
-    std::cout << "~DigitalIn()" << std::endl;
+    std::cout << "~DigitalIO()" << std::endl;
 }
 
-void DigitalIn::initialize()
+void DigitalIO::initialize()
 {
     HALFactory::initialize();
     expander[0] = HALFactory::getInstance().getMCP23S17(HALFactory::MCPCHANNEL_1);
@@ -43,9 +43,9 @@ void DigitalIn::initialize()
     expander[3] = HALFactory::getInstance().getMCP23S17(HALFactory::MCPCHANNEL_4);
 }
 
-void DigitalIn::configureDevice(DI_Device device)
+void DigitalIO::configureDevice(DI_Device device)
 {
-    std::cout << "DigitalIn::configureDevice " << device << std::endl;
+    std::cout << "DigitalIO::configureDevice " << device << std::endl;
     switch (device) {
     case DI_DEVICE_POWERSWITCH:bcm2835_gpio_fsel(RPI_GPIO_P1_12, BCM2835_GPIO_FSEL_INPT);
         break;
@@ -119,14 +119,14 @@ void DigitalIn::configureDevice(DI_Device device)
         expander[1]->setPullupMode(15, MCP23S17PI::PULLUP_ENABLED);
         break;
     default:
-      std::cout << "DigitalIn: Unknown device type" << std::endl;
+      std::cout << "DigitalIO: Unknown device type" << std::endl;
       throw 50;
     }
 }
 
-DigitalIn::DI_Level_e DigitalIn::getLevel(DigitalIn::DI_Channel_e channel, BoardNumber_e board)
+DigitalIO::DI_Level_e DigitalIO::getLevel(DigitalIO::DI_Channel_e channel, BoardNumber_e board)
 {
-          std::cout << "DigitalIn::getLevel. channel: " << channel << ", board: " << board << std::endl;
+          std::cout << "DigitalIO::getLevel. channel: " << channel << ", board: " << board << std::endl;
 
     DI_Level_e returnLevel = DI_LEVEL_LOW;
 

@@ -6,28 +6,23 @@
 #include "GenesisGamepad.h"
 #include "NONEGamepad.h"
 
-GamepadFactory::GamepadFactory(IUInputFactory& uiFactoryRef, IDigitalIn& digitalInRef, IDigitalOut& digitalOutRef) :
-        uiFactory(&uiFactoryRef),
-        digitalIn(&digitalInRef),
-        digitalOut(&digitalOutRef)
+GamepadFactory::GamepadFactory(IUInputFactory& uiFactoryRef) :
+        uiFactory(uiFactoryRef)
 {
 }
 
-InputDevice* GamepadFactory::createGamepad(InputDevice::GamepadType_e gamepadType)
+InputDevice* GamepadFactory::createGamepad(InputDevice::GamepadType_e gamepadType, IDigitalIO& digitalIO)
 {
-#ifndef NDEBUG
-    std::cout << "Creating gamepad of type " << gamepadType << std::endl;
-#endif
     switch (gamepadType)
     {
     case InputDevice::GAMEPAD_ARCADE:
-        return new ArcadeGamepad(*uiFactory, *digitalIn);
+        return new ArcadeGamepad(uiFactory, digitalIO);
     case InputDevice::GAMEPAD_SNES:
-        return new SNESGamepad(*uiFactory, *digitalIn, *digitalOut);
+        return new SNESGamepad(uiFactory, digitalIO);
     case InputDevice::GAMEPAD_MAME:
-        return new MAMEGamepad(*uiFactory, *digitalIn);
+        return new MAMEGamepad(uiFactory, digitalIO);
     case InputDevice::GAMEPAD_GENESIS:
-        return new GenesisGamepad(*uiFactory, *digitalIn, *digitalOut);
+        return new GenesisGamepad(uiFactory, digitalIO);
     case InputDevice::GAMEPAD_NONE:
         return new NONEGamepad();
     default:

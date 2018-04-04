@@ -62,12 +62,12 @@ void ControlBlockConfiguration::loadConfiguration()
 
         singleConfiguration[0] = new SingleConfiguration(root["controlblocks"][0]["enabled"].asBool(),
                 (uint8_t) (root["controlblocks"][0]["address"]["SJ2"].asInt() << 2
-                        || root["controlblocks"][0]["address"]["SJ1"].asInt() << 1),
+                         | root["controlblocks"][0]["address"]["SJ1"].asInt() << 1),
                 root["controlblocks"][0]["gamepadtype"].asString(), root["controlblocks"][0]["powerswitchOn"].asBool(),
                 root["controlblocks"][0]["onlyOneGamepad"].asBool());
         singleConfiguration[1] = new SingleConfiguration(root["controlblocks"][1]["enabled"].asBool(),
                 (uint8_t) (root["controlblocks"][1]["address"]["SJ2"].asInt() << 2
-                        || root["controlblocks"][1]["address"]["SJ1"].asInt() << 1),
+                         | root["controlblocks"][1]["address"]["SJ1"].asInt() << 1),
                 root["controlblocks"][1]["gamepadtype"].asString(), root["controlblocks"][1]["powerswitchOn"].asBool(),
                 root["controlblocks"][1]["onlyOneGamepad"].asBool());
     }

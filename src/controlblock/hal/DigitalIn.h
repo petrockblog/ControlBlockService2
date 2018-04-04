@@ -45,7 +45,9 @@ public:
     /**
      * @brief Destructor
      */
-    ~DigitalIn() = default;
+    ~DigitalIn();
+
+    void initialize();
 
     /**
      * @brief Sets port direction and pullup mode for the given device type

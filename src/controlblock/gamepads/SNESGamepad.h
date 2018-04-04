@@ -25,8 +25,9 @@
 
 #include <stdint.h>
 #include <uinput/IUInputFactory.h>
-#include "hal/IDigitalIn.h"
-#include "hal/IDigitalOut.h"
+// #include "hal/IDigitalIn.h"
+// #include "hal/IDigitalOut.h"
+#include "hal/DigitalIO.h"
 #include "InputDevice.h"
 
 class SNESGamepad: public InputDevice
@@ -47,7 +48,7 @@ public:
     static const uint16_t GPAD_SNES_R = 0x800;
     static const uint16_t GPAD_SNES_RESET = 0x1000;
 
-    SNESGamepad(IUInputFactory& uiFactoryRef, IDigitalIn& digitalInRef, IDigitalOut& digitalOutRef);
+    SNESGamepad(IUInputFactory& uiFactoryRef, IDigitalIO& digitalIORef);
     ~SNESGamepad() = default;
 
     virtual void initialize(InputDevice::Channel_e channel);
@@ -57,14 +58,20 @@ private:
     static const uint32_t STROBEDELAY = 1u;
     static const uint32_t NUMBER_OF_BUTTONS = 12u;
 
-    IUInputFactory* uiFactory;
-    IDigitalIn* digitalIn;
-    IDigitalOut* digitalOut;
+    static const IDigitalIO::DIO_Channel_e DIO_CHANNEL_P1P2_STROBE = IDigitalIO::DIO_CHANNEL_P2_UP;
+    static const IDigitalIO::DIO_Channel_e DIO_CHANNEL_P1P2_CLOCK = IDigitalIO::DIO_CHANNEL_P2_DOWN;
+    static const IDigitalIO::DIO_Channel_e DIO_CHANNEL_VCC_1 = IDigitalIO::DIO_CHANNEL_P2_RIGHT;
+    static const IDigitalIO::DIO_Channel_e DIO_CHANNEL_VCC_2 = IDigitalIO::DIO_CHANNEL_P2_LEFT;
+    static const IDigitalIO::DIO_Channel_e DIO_CHANNEL_P1_DATA = IDigitalIO::DIO_CHANNEL_P1_SW1;
+    static const IDigitalIO::DIO_Channel_e DIO_CHANNEL_P2_DATA = IDigitalIO::DIO_CHANNEL_P1_SW2;
+
+    IUInputFactory& uiFactory;
+    IDigitalIO& digitalIO;
 
     bool isInitialized;
     InputDevice::Channel_e channel;
-    std::unique_ptr<IUInputDevice> gamepad;
-    std::unique_ptr<IUInputDevice> keyboard;
+    IUInputDevice* gamepad;
+    IUInputDevice* keyboard;
 
     uint16_t getSNESControllerState();
 };

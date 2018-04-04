@@ -56,18 +56,25 @@ public:
         return halFactory;
     }
 
+    static void initialize();
+
+    static void deinitialize();
+
     /**
      * Returns the singleton instance that corresponds to
      * the given channel
      * @param channel - The channel whose MCP instance should be returned
      * @return Reference to the MCP instance
      */
-    MCP23S17PI& getMCP23S17(MCPChannel channel);
+    MCP23S17PI* getMCP23S17(MCPChannel channel);
 
 private:
     HALFactory();
 
-    MCP23S17PI* mcp23s17[MCPCHANNEL_NUMBERELEMENTS];
+    MCP23S17PI mcp23s17_1;
+    MCP23S17PI mcp23s17_2;
+    MCP23S17PI mcp23s17_3;
+    MCP23S17PI mcp23s17_4;
 };
 
 #endif  // HALFACTORY_H

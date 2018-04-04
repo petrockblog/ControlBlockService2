@@ -20,44 +20,31 @@
  * in future versions.
  */
 
-#include "HALFactory.h"
-#include <stddef.h>
+#ifndef CONTROLBLOCKSERVICE2_DIGITALIO_H
+#define CONTROLBLOCKSERVICE2_DIGITALIO_H
 
-HALFactory::HALFactory() : mcp23s17_1(MCP23S17PI::CHIPSELECT_0, 0b000), 
-                        mcp23s17_2(MCP23S17PI::CHIPSELECT_0, 0b001), 
-                        mcp23s17_3(MCP23S17PI::CHIPSELECT_0, 0b010), 
-                        mcp23s17_4(MCP23S17PI::CHIPSELECT_0, 0b011)
-{
-}
+#include "hal/IDigitalIO.h"
 
-void HALFactory::initialize()
-{
-    MCP23S17PI::begin();
-    // MCP23S17PI::begin(MCP23S17PI::CHIPSELECT_0);
-}
+class DigitalIO : public IDigitalIO {
+public:
+    DigitalIO(MCP23S17PI& mcp1ref, MCP23S17PI& mcp2ref);
 
-void HALFactory::deinitialize()
-{
-    MCP23S17PI::end();
-    // MCP23S17PI::end(MCP23S17PI::CHIPSELECT_0);
-}
+    virtual void configureDevice(DIO_Device mode);
 
-HALFactory::~HALFactory()
-{
-}
+    virtual DIO_Level_e getLevel(DIO_Channel_e channel);
 
-MCP23S17PI* HALFactory::getMCP23S17(MCPChannel channel)
-{
-    if (channel == MCPCHANNEL_1) {
-        return &mcp23s17_1;
-    }
-    else if (channel == MCPCHANNEL_2) {
-        return &mcp23s17_2;
-    }
-    else if (channel == MCPCHANNEL_3) {
-        return &mcp23s17_3;
-    }
-    else {
-        return &mcp23s17_4;
-    }
-}
+      /**
+     * @brief Sets a logical signal level of a given channel
+     *
+     * @param channel The channel whose signal level should be set
+     * @param level The signal level to be set
+     */
+    virtual void setLevel(DIO_Channel_e channel, DIO_Level_e level);
+
+private:
+  MCP23S17PI& mcp1;
+  MCP23S17PI& mcp2;
+
+};
+
+#endif //CONTROLBLOCKSERVICE2_DIGITALIO_H

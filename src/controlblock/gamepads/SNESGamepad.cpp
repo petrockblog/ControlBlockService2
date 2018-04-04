@@ -23,45 +23,37 @@
 #include <chrono>
 #include <thread>
 #include <assert.h>
+#include <iostream>
 #include "SNESGamepad.h"
 
-SNESGamepad::SNESGamepad(IUInputFactory& uiFactoryRef, IDigitalIn& digitalInRef, IDigitalOut& digitalOutRef) :
-        uiFactory(&uiFactoryRef),
-        digitalIn(&digitalInRef),
-        digitalOut(&digitalOutRef),
+SNESGamepad::SNESGamepad(IUInputFactory& uiFactoryRef, IDigitalIO& digitalIORef) :
+        uiFactory(uiFactoryRef),
+        digitalIO(digitalIORef),
         isInitialized(false),
         channel(InputDevice::CHANNEL_UNDEFINED)
 {
-    gamepad = uiFactory->getUInputDevice(IUInputDevice::TYPE_GAMEPAD_SNES);
-    keyboard = uiFactory->getUInputDevice(IUInputDevice::TYPE_KEYVBOARD);
+    gamepad = uiFactory.getUInputDevice(IUInputDevice::TYPE_GAMEPAD_SNES);
+    keyboard = uiFactory.getUInputDevice(IUInputDevice::TYPE_KEYVBOARD);
 }
 
 void SNESGamepad::initialize(InputDevice::Channel_e channel)
 {
-    IDigitalOut::BoardNumber_e boardOut;
-    if ((channel == InputDevice::CHANNEL_1) || (channel == InputDevice::CHANNEL_2)) {
-        boardOut = IDigitalOut::BOARD_0;
-    }
-    else {
-        boardOut = IDigitalOut::BOARD_1;
-    }
-
-    digitalIn->configureDevice(IDigitalIn::DI_DEVICE_SNES);
-    digitalOut->configureDevice(IDigitalOut::DO_DEVICE_SNES);
+    assert(digitalIn != NULL);
+    assert(digitalOut != NULL);
 
     this->channel = channel;
 
     if (channel == InputDevice::CHANNEL_1) {
-        digitalOut->setLevel(IDigitalOut::DO_CHANNEL_P1P2_STROBE, IDigitalOut::DO_LEVEL_LOW, boardOut);
-        digitalOut->setLevel(IDigitalOut::DO_CHANNEL_P1P2_CLOCK, IDigitalOut::DO_LEVEL_LOW, boardOut);
-        digitalOut->setLevel(IDigitalOut::DO_CHANNEL_P1_VCC, IDigitalOut::DO_LEVEL_HIGH, boardOut);
+        digitalIO.setLevel(DIO_CHANNEL_P1P2_STROBE, IDigitalIO::DIO_LEVEL_LOW);  // player 1,2 strobe/latch
+        digitalIO.setLevel(DIO_CHANNEL_P1P2_CLOCK, IDigitalIO::DIO_LEVEL_LOW);  // player 1,2 clock
+        digitalIO.setLevel(DIO_CHANNEL_VCC_1, IDigitalIO::DIO_LEVEL_HIGH);  // player 1 VCC
     }
     else {
-        digitalOut->setLevel(IDigitalOut::DO_CHANNEL_P2_VCC, IDigitalOut::DO_LEVEL_HIGH, boardOut);
+        digitalIO.setLevel(DIO_CHANNEL_VCC_2, IDigitalIO::DIO_LEVEL_HIGH);  // player 2 VCC
         // strobe and clock were already initialized with player 1 initialization.
     }
 
-    isInitialized = true;
+    isInitialized = true;    
 }
 
 void SNESGamepad::update()
@@ -71,8 +63,8 @@ void SNESGamepad::update()
     uint16_t state = getSNESControllerState();
 
     if (channel == InputDevice::CHANNEL_1) {
-        IDigitalIn::DI_Level_e resetLevel = digitalIn->getLevel(IDigitalIn::DI_CHANNEL_P1_B, IDigitalIn::BOARD_0);
-        if (resetLevel == IDigitalIn::DI_LEVEL_HIGH)
+        IDigitalIO::DIO_Level_e resetLevel = digitalIO.getLevel(IDigitalIO::DIO_CHANNEL_P1_B);
+        if (resetLevel == IDigitalIO::DIO_LEVEL_HIGH)
         {
             state |= GPAD_SNES_SELECT;
             state |= GPAD_SNES_START;
@@ -124,38 +116,33 @@ uint16_t SNESGamepad::getSNESControllerState()
     const std::chrono::microseconds dura(STROBEDELAY);
     uint16_t state = 0u;
 
-    IDigitalIn::BoardNumber_e boardIn;
-    IDigitalOut::BoardNumber_e boardOut;
-    if ((channel == InputDevice::CHANNEL_1) || (channel == InputDevice::CHANNEL_2)) {
-        boardIn = IDigitalIn::BOARD_0;
-        boardOut = IDigitalOut::BOARD_0;
-    }
-    else {
-        boardIn = IDigitalIn::BOARD_1;
-        boardOut = IDigitalOut::BOARD_1;
-    }
-
-    digitalOut->setLevel(IDigitalOut::DO_CHANNEL_P1P2_STROBE, IDigitalOut::DO_LEVEL_HIGH, boardOut);
+    // std::cout << "SNESGamepad::update LINE a" << std::endl;
+    digitalIO.setLevel(DIO_CHANNEL_P1P2_STROBE, IDigitalIO::DIO_LEVEL_HIGH);
     std::this_thread::sleep_for(2 * dura);
-    digitalOut->setLevel(IDigitalOut::DO_CHANNEL_P1P2_STROBE, IDigitalOut::DO_LEVEL_LOW, boardOut);
-    std::this_thread::sleep_for(dura);
+    // std::cout << "SNESGamepad::update LINE b" << std::endl;
+    digitalIO.setLevel(DIO_CHANNEL_P1P2_STROBE, IDigitalIO::DIO_LEVEL_LOW);
+    // std::this_thread::sleep_for(dura);
 
     for (uint8_t i = 0u; i < NUMBER_OF_BUTTONS; i++) {
-        IDigitalIn::DI_Level_e curpin;
+        IDigitalIO::DIO_Level_e curpin;
         if (channel == InputDevice::CHANNEL_1) {
-            curpin = digitalIn->getLevel(IDigitalIn::DI_CHANNEL_P1_DATA, boardIn);
+            // std::cout << "SNESGamepad::update LINE 1" << std::endl;
+            curpin = digitalIO.getLevel(DIO_CHANNEL_P1_DATA);
+            // std::cout << "SNESGamepad::update LINE 1" << std::endl;
         }
         else {
-            curpin = digitalIn->getLevel(IDigitalIn::DI_CHANNEL_P2_DATA, boardIn);
+            // std::cout << "SNESGamepad::update LINE 2" << std::endl;
+            curpin = digitalIO.getLevel(DIO_CHANNEL_P2_DATA);
+            // std::cout << "SNESGamepad::update LINE 2" << std::endl;
         }
 
-        if (curpin == IDigitalIn::DI_LEVEL_HIGH) {
+        if (curpin == IDigitalIO::DIO_LEVEL_HIGH) {
             state |= (1u << i);
         }
 
-        digitalOut->setLevel(IDigitalOut::DO_CHANNEL_P1P2_CLOCK, IDigitalOut::DO_LEVEL_HIGH, boardOut);
+        digitalIO.setLevel(DIO_CHANNEL_P1P2_CLOCK, IDigitalIO::DIO_LEVEL_HIGH);
         std::this_thread::sleep_for(dura);
-        digitalOut->setLevel(IDigitalOut::DO_CHANNEL_P1P2_CLOCK, IDigitalOut::DO_LEVEL_LOW, boardOut);
+        digitalIO.setLevel(DIO_CHANNEL_P1P2_CLOCK, IDigitalIO::DIO_LEVEL_LOW);
         std::this_thread::sleep_for(dura);
     }
 
