@@ -8,11 +8,11 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -O3 -g")
 set(EXECUTABLE_NAME "controlblock")
 
 include_directories(src/controlblock)
-include_directories(src/lib/bcm2835-1.48/src)
+include_directories(src/lib/bcm2835-1.55/src)
 include_directories(src/lib/jsoncpp/include)
 
 add_subdirectory(src/lib/jsoncpp)
-add_subdirectory(src/lib/bcm2835-1.48/src)
+add_subdirectory(src/lib/bcm2835-1.55/src)
 add_subdirectory(src/controlblock/app)
 add_subdirectory(src/controlblock/config)
 add_subdirectory(src/controlblock/hal)
@@ -58,5 +58,5 @@ add_custom_target(uninstallservice
 # Doxygen documentation target
 add_subdirectory(doc)
 
-enable_testing()
-add_subdirectory(test)
+# enable_testing()
+# add_subdirectory(test)

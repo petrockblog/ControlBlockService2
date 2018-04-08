@@ -24,8 +24,8 @@ pushd build || (c=$?; echo "Error while changing into the folder build"; (exit $
 cmake .. || (c=$?; echo "Error while generating Makefiles"; (exit $c))
 
 # ensure that no old instance of the driver is running
-isOldServiceRunning=$(service controlblockservice status | grep running | wc -l)
-if [[ $isOldServiceRunning -eq 1 ]]; then
+isOldServiceRunning=$(ps -ef | grep controlblock | grep -v grep)
+if [[ ! -z $isOldServiceRunning ]]; then
     make uninstallservice
 fi 
 
@@ -51,8 +51,8 @@ else
 fi
 
 # check that the service is running
-isServiceRunning=$(service controlblockservice status | grep running | wc -l)
-if [[ $isServiceRunning -eq 1 ]]; then
+isServiceRunning=$(ps -ef | grep controlblock | grep -v grep)
+if [[ ! -z $isServiceRunning ]]; then
     echo "[SUCCESS] The ControlBlock service is running"
 else
     echo "[ERROR] The ControlBlock service is not running"
