@@ -54,8 +54,7 @@ There comes an installation script with this reposity that does all the steps de
 To run the quick installation, change into the ControlBlockService2 directory and call the script:
 
 ```bash
-cd ControlBlockService2
-sudo ./install.sh
+wget -O - https://raw.githubusercontent.com/petrockblog/ControlBlockService2/master/install.sh | sudo bash
 ```
 
 Here is a video of a typical quick installation procedure:
