@@ -59,7 +59,7 @@ wget -O - https://raw.githubusercontent.com/petrockblog/ControlBlockService2/mas
 
 Here is a video of a typical quick installation procedure:
 
-[![Video of the quick installation procedure for the ControlBlock](https://img.youtube.com/vi/JHM_osExNWI/0.jpg)](https://www.youtube.com/watch?v=JHM_osExNWI)
+[![asciicast](https://asciinema.org/a/lOGtRU99jT0MDulxSc3ZGuPRd.png)](https://asciinema.org/a/lOGtRU99jT0MDulxSc3ZGuPRd)
 
 ## Building and Installation
 
