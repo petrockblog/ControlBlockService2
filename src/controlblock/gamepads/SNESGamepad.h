@@ -55,15 +55,15 @@ public:
     virtual void update();
 
 private:
-    static const uint32_t STROBEDELAY = 1u;
+    static const uint32_t STROBEDELAY_US = 4u;
     static const uint32_t NUMBER_OF_BUTTONS = 12u;
 
+    static const IDigitalIO::DIO_Channel_e DIO_CHANNEL_P1_VCC = IDigitalIO::DIO_CHANNEL_P2_RIGHT;
+    static const IDigitalIO::DIO_Channel_e DIO_CHANNEL_P2_VCC = IDigitalIO::DIO_CHANNEL_P2_LEFT;
     static const IDigitalIO::DIO_Channel_e DIO_CHANNEL_P1P2_STROBE = IDigitalIO::DIO_CHANNEL_P2_UP;
     static const IDigitalIO::DIO_Channel_e DIO_CHANNEL_P1P2_CLOCK = IDigitalIO::DIO_CHANNEL_P2_DOWN;
-    static const IDigitalIO::DIO_Channel_e DIO_CHANNEL_VCC_1 = IDigitalIO::DIO_CHANNEL_P2_RIGHT;
-    static const IDigitalIO::DIO_Channel_e DIO_CHANNEL_VCC_2 = IDigitalIO::DIO_CHANNEL_P2_LEFT;
-    static const IDigitalIO::DIO_Channel_e DIO_CHANNEL_P1_DATA = IDigitalIO::DIO_CHANNEL_P1_SW1;
-    static const IDigitalIO::DIO_Channel_e DIO_CHANNEL_P2_DATA = IDigitalIO::DIO_CHANNEL_P1_SW2;
+    static const IDigitalIO::DIO_Channel_e DIO_CHANNEL_P1_DATA = IDigitalIO::DIO_CHANNEL_P2_SW1;
+    static const IDigitalIO::DIO_Channel_e DIO_CHANNEL_P2_DATA = IDigitalIO::DIO_CHANNEL_P2_SW2;
 
     IUInputFactory& uiFactory;
     IDigitalIO& digitalIO;
