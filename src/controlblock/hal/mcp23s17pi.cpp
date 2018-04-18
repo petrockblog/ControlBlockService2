@@ -152,6 +152,7 @@ MCP23S17PI::Level MCP23S17PI::digitalRead(uint8_t pin)
     if (pin < 8)
     {
         _GPIOA = readRegister(MCP23S17PI_GPIOA);
+
         if ((_GPIOA & (1 << pin)) != 0)
         {
             return LEVEL_HIGH;

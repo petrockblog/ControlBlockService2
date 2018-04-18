@@ -66,10 +66,6 @@ public:
       DIO_CHANNEL_P2_B,
       DIO_CHANNEL_FROMPOWERSWITCH,
       DIO_CHANNEL_TOPOWERSWITCH,
-      DIO_CHANNEL_P1P2_STROBE,        //!< Strobe/latch signal for SNES controller
-      DIO_CHANNEL_P1P2_CLOCK,         //!< Clock signal for SNES controller
-      DIO_CHANNEL_P1_VCC,             //!< Supply voltage for SNES controller, player 1
-      DIO_CHANNEL_P2_VCC,             //!< Supply voltage for SNES controller, player 2
       DIO_CHANNEL_GENESIS_P1_SELECT,  //!< Select signal for Genesis controller, player 1
       DIO_CHANNEL_GENESIS_P2_SELECT,  //!< Select signal for Genesis controller, player 2
 
