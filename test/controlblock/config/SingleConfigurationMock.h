@@ -33,6 +33,7 @@ public:
     MOCK_METHOD0(getDeviceAddress, uint8_t());
     MOCK_METHOD0(getGamepadType, GamepadType_e());
     MOCK_METHOD0(isPowerSwitchEnabled, bool());
+    MOCK_METHOD0(isPowerSwitchMomentary, bool());
     MOCK_METHOD0(isOnlyOneGamepadEnabled, bool());
 };
 

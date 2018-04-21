@@ -37,7 +37,7 @@ TEST(PowerSwitchTest, Constructor)
     EXPECT_CALL(doMock, configureDevice(IDigitalOut::DO_DEVICE_POWERSWITCH));
     EXPECT_CALL(doMock, setLevel(IDigitalOut::DO_CHANNEL_TOPOWERSWITCH, IDigitalOut::DO_LEVEL_HIGH, IDigitalOut::BOARD_0));
     EXPECT_CALL(diMock, configureDevice(IDigitalIn::DI_DEVICE_POWERSWITCH));
-    PowerSwitch powerSwitch(diMock, doMock, PowerSwitch::SHUTDOWN_ACTIVATED);
+    PowerSwitch powerSwitch(diMock, doMock, PowerSwitch::POWERSWITCH_ENABLED, PowerSwitch::SWITCHTYPE_LATCHING);
     EXPECT_FALSE(powerSwitch.isShutdownInitiated());
 }
 
@@ -45,17 +45,17 @@ TEST(PowerSwitchTest, updateWithNoShutdownActivated_ExpectNoShutdown)
 {
     NiceMock<DigitalOutMock> doMock;
     NiceMock<DigitalInMock> diMock;
-    PowerSwitch powerSwitch(diMock, doMock, PowerSwitch::SHUTDOWN_DEACTIVATED);
+    PowerSwitch powerSwitch(diMock, doMock, PowerSwitch::POWERSWITCH_DISABLED, PowerSwitch::SWITCHTYPE_LATCHING);
 
     powerSwitch.update();
     EXPECT_FALSE(powerSwitch.isShutdownInitiated());
 }
 
-TEST(PowerSwitchTest, updateAndExpectShutdown)
+TEST(PowerSwitchTest, updateAndExpectShutdownLatching)
 {
     NiceMock<DigitalOutMock> doMock;
     NiceMock<DigitalInMock> diMock;
-    PowerSwitch powerSwitch(diMock, doMock, PowerSwitch::SHUTDOWN_ACTIVATED);
+    PowerSwitch powerSwitch(diMock, doMock, PowerSwitch::POWERSWITCH_ENALBED, PowerSwitch::SWITCHTYPE_LATCHING);
 
     EXPECT_CALL(diMock, getLevel(IDigitalIn::DI_CHANNEL_FROMPOWERSWITCH, IDigitalIn::BOARD_0)).WillOnce(Return(IDigitalIn::DI_LEVEL_HIGH));
 
@@ -63,13 +63,37 @@ TEST(PowerSwitchTest, updateAndExpectShutdown)
     EXPECT_TRUE(powerSwitch.isShutdownInitiated());
 }
 
-TEST(PowerSwitchTest, updateAndExpectNoShutdown)
+TEST(PowerSwitchTest, updateAndExpectNoShutdownLatching)
 {
     NiceMock<DigitalOutMock> doMock;
     NiceMock<DigitalInMock> diMock;
-    PowerSwitch powerSwitch(diMock, doMock, PowerSwitch::SHUTDOWN_ACTIVATED);
+    PowerSwitch powerSwitch(diMock, doMock, PowerSwitch::POWERSWITCH_ENABLED, PowerSwitch::SWITCHTYPE_LATCHING);
 
     EXPECT_CALL(diMock, getLevel(IDigitalIn::DI_CHANNEL_FROMPOWERSWITCH, IDigitalIn::BOARD_0)).WillOnce(Return(IDigitalIn::DI_LEVEL_LOW));
+
+    powerSwitch.update();
+    EXPECT_FALSE(powerSwitch.isShutdownInitiated());
+}
+
+TEST(PowerSwitchTest, updateAndExpectShutdownMomentary)
+{
+    NiceMock<DigitalOutMock> doMock;
+    NiceMock<DigitalInMock> diMock;
+    PowerSwitch powerSwitch(diMock, doMock, PowerSwitch::POWERSWITCH_ENALBED, PowerSwitch::SWITCHTYPE_MOMENTARY);
+
+    EXPECT_CALL(diMock, getLevel(IDigitalIn::DI_CHANNEL_FROMPOWERSWITCH, IDigitalIn::BOARD_0)).WillOnce(Return(IDigitalIn::DI_LEVEL_LOW));
+
+    powerSwitch.update();
+    EXPECT_TRUE(powerSwitch.isShutdownInitiated());
+}
+
+TEST(PowerSwitchTest, updateAndExpectNoShutdownMomentary)
+{
+    NiceMock<DigitalOutMock> doMock;
+    NiceMock<DigitalInMock> diMock;
+    PowerSwitch powerSwitch(diMock, doMock, PowerSwitch::POWERSWITCH_ENABLED, PowerSwitch::SWITCHTYPE_MOMENTARY);
+
+    EXPECT_CALL(diMock, getLevel(IDigitalIn::DI_CHANNEL_FROMPOWERSWITCH, IDigitalIn::BOARD_0)).WillOnce(Return(IDigitalIn::DI_LEVEL_HIGH));
 
     powerSwitch.update();
     EXPECT_FALSE(powerSwitch.isShutdownInitiated());
