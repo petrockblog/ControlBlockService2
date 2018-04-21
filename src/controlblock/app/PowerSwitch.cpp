@@ -40,10 +40,12 @@ PowerSwitch::PowerSwitch(IDigitalIO& digitalIOReference, PowerSwitchEnabled_e po
 
 void PowerSwitch::update()
 {
-    if ((powerSwitchEnabled == POWERSWITCH_ENABLED) && (getPowerSwitchStatus() == POWERSWITCH_UNPRESSED)
-            && (!isShutdownInitiatedValue)) {
-        system("/etc/controlblockswitchoff.sh");
-        isShutdownInitiatedValue = true;
+    if ((powerSwitchEnabled == POWERSWITCH_ENABLED) && (!isShutdownInitiatedValue)) {
+        if (((powerSwitchType == SWITCHTYPE_LATCHING) && (getPowerSwitchStatus() == POWERSWITCH_UNPRESSED)) ||
+            ((powerSwitchType == SWITCHTYPE_MOMENTARY) && (getPowerSwitchStatus() == POWERSWITCH_PRESSED))) {
+            system("/etc/controlblockswitchoff.sh");
+            isShutdownInitiatedValue = true;
+        }
     }
 }
 
