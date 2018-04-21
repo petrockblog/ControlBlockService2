@@ -38,9 +38,10 @@ public:
      * @param address - The hardware address
      * @param type - The type of the gamepad
      * @param pwrSwitch - Whether the power switch functionality is enabled (=true) or not (=false)
+     * @param momentSwitch - Whether the power switch is momentary (=true) or latching (=false)
      * @param oneGp - Whether one (=true) or two (=false) gamepads should be registered
      */
-    SingleConfiguration(bool enabled, uint8_t address, std::string type, bool pwrSwitch, bool oneGp);
+    SingleConfiguration(bool enabled, uint8_t address, std::string type, bool pwrSwitch, bool momentSwitch, bool oneGp);
 
     /**
      * Destructor
@@ -76,6 +77,14 @@ public:
     virtual bool isPowerSwitchEnabled();
 
     /**
+     * Returns whether the power switch is momentary or not
+     * @return
+     *  - true, if the power switch is momentary,
+     *  - false, if the power switch is latching.
+     */
+    virtual bool isPowerSwitchMomentary();
+
+    /**
      * Returns whether only one gamepad should be enabled or not
      * @return
      *  - true, if only one gamepad should be enabled,
@@ -88,6 +97,7 @@ private:
     uint8_t deviceAddress;
     InputDevice::GamepadType_e padType;
     bool isPowerSwitchEnabledValue;
+    bool isPowerSwitchMomentaryValue;
     bool isOnlyOneGamepadEnabledValue;
 };
 

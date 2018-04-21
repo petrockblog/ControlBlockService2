@@ -24,10 +24,11 @@
 #include "SingleConfiguration.h"
 
 SingleConfiguration::SingleConfiguration(bool enabled, uint8_t address, std::string pType, bool pwrSwitch,
-        bool oneGp) :
+        bool momentSwitch, bool oneGp) :
                 isEnabledValue(enabled),
                 deviceAddress(address),
                 isPowerSwitchEnabledValue(pwrSwitch),
+                isPowerSwitchMomentaryValue(momentSwitch),
                 isOnlyOneGamepadEnabledValue(oneGp)
 {
     if (pType.compare("arcade") == 0)
@@ -78,6 +79,11 @@ InputDevice::GamepadType_e SingleConfiguration::getGamepadType()
 bool SingleConfiguration::isPowerSwitchEnabled()
 {
     return isPowerSwitchEnabledValue;
+}
+
+bool SingleConfiguration::isPowerSwitchMomentary()
+{
+    return isPowerSwitchMomentaryValue;
 }
 
 bool SingleConfiguration::isOnlyOneGamepadEnabled()
