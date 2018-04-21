@@ -41,12 +41,12 @@ public:
     };
 
     /**
-     * Shutdown signal identifiers
+     * Power switch button status
      */
-    enum ShutdownSignal_e
+    enum PowerSwitchStatus_e
     {
-        SHUTDOWN_FALSE = 0,  //!< Shutdown signal is not set
-        SHUTDOWN_TRUE        //!< Shutdown signal is set
+        POWERSWITCH_PRESSED = 0,  //!< The power switch button is pressed
+        POWERSWITCH_UNPRESSED     //!< The power switch button is not pressed
     };
 
     /**
@@ -102,7 +102,7 @@ private:
     IDigitalIO& digitalIO;
 
     void setPowerSignal(PowerState_e state);
-    ShutdownSignal_e getShutdownSignal();
+    PowerSwitchStatus_e getShutdownSignal();
 
 };
 

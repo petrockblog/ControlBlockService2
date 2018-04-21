@@ -40,7 +40,7 @@ PowerSwitch::PowerSwitch(IDigitalIO& digitalIOReference, PowerSwitchEnabled_e po
 
 void PowerSwitch::update()
 {
-    if ((powerSwitchEnabled == POWERSWITCH_ENABLED) && (getShutdownSignal() == SHUTDOWN_TRUE)
+    if ((powerSwitchEnabled == POWERSWITCH_ENABLED) && (getShutdownSignal() == POWERSWITCH_UNPRESSED)
             && (!isShutdownInitiatedValue)) {
         system("/etc/controlblockswitchoff.sh");
         isShutdownInitiatedValue = true;
@@ -62,14 +62,14 @@ void PowerSwitch::setPowerSignal(PowerState_e state)
     }
 }
 
-PowerSwitch::ShutdownSignal_e PowerSwitch::getShutdownSignal()
+PowerSwitch::PowerSwitchStatus_e PowerSwitch::getShutdownSignal()
 {
-    ShutdownSignal_e signal;
+    PowerSwitchStatus_e signal;
     if (digitalIO.getLevel(IDigitalIO::DIO_CHANNEL_FROMPOWERSWITCH) == IDigitalIO::DIO_LEVEL_LOW) {
-        signal = SHUTDOWN_FALSE;
+        signal = POWERSWITCH_PRESSED;
     }
     else {
-        signal = SHUTDOWN_TRUE;
+        signal = POWERSWITCH_UNPRESSED;
     }
     return signal;
 }
