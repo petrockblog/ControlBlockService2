@@ -31,7 +31,7 @@ PowerSwitch::PowerSwitch(IDigitalIO& digitalIOReference, PowerSwitchEnabled_e po
         digitalIO(digitalIOReference)
 {
     digitalIO.configureDevice(IDigitalIO::DIO_DEVICE_POWERSWITCH);
-    setPowerSignal(PowerSwitch::STATE_ON);
+    setPowerState(PowerSwitch::STATE_ON);
 
 #ifndef NDEBUG
     std::cout << "Created PowerSwitch. powerSwitchEnabled: " << powerSwitchEnabledValue << ", powerSwitchType: " << powerSwitchTypeValue << std::endl;
@@ -52,7 +52,7 @@ bool PowerSwitch::isShutdownInitiated() const
     return isShutdownInitiatedValue;
 }
 
-void PowerSwitch::setPowerSignal(PowerState_e state)
+void PowerSwitch::setPowerState(PowerState_e state)
 {
     if (state == STATE_OFF) {
         digitalIO.setLevel(IDigitalIO::DIO_CHANNEL_TOPOWERSWITCH, IDigitalIO::DIO_LEVEL_LOW);

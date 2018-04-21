@@ -101,7 +101,7 @@ private:
     bool isShutdownInitiatedValue;
     IDigitalIO& digitalIO;
 
-    void setPowerSignal(PowerState_e state);
+    void setPowerState(PowerState_e state);
     PowerSwitchStatus_e getPowerSwitchStatus();
 
 };
