@@ -58,13 +58,23 @@ public:
         POWERSWITCH_ENABLED       //!< Power switch is enabled
     };
 
+    /***
+     * Indicates what type of power switch that is used
+     */
+    enum PowerSwitchType_e
+    {
+        SWITCHTYPE_MOMENTARY = 0, //!< Power switch is a momentary switch
+        SWITCHTYPE_LATCHING       //!< Power switch is a latching switch
+    };
+
     /**
      * Constructor
      * @param digitalInReference - Reference with IDigitalIn interface
      * @param digitalOutReference - Reference with IDigitalOut interface
      * @param powerSwitchEnabledValue - Power switch function is enabled or not
+     * @param powerSwitchTypeValue - Type of power switch used
      */
-    explicit PowerSwitch(IDigitalIO& digitalIOReference, PowerSwitchEnabled_e powerSwitchEnabledValue);
+    explicit PowerSwitch(IDigitalIO& digitalIOReference, PowerSwitchEnabled_e powerSwitchEnabledValue, PowerSwitchType_e powerSwitchTypeValue);
 
     /**
      * Destructor
@@ -87,6 +97,7 @@ public:
 
 private:
     PowerSwitchEnabled_e powerSwitchEnabled;
+    PowerSwitchType_e powerSwitchType;
     bool isShutdownInitiatedValue;
     IDigitalIO& digitalIO;
 

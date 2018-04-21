@@ -24,8 +24,9 @@
 #include <iostream>
 #include "PowerSwitch.h"
 
-PowerSwitch::PowerSwitch(IDigitalIO& digitalIOReference, PowerSwitchEnabled_e powerSwitchEnabledValue) :
+PowerSwitch::PowerSwitch(IDigitalIO& digitalIOReference, PowerSwitchEnabled_e powerSwitchEnabledValue, PowerSwitchType_e powerSwitchTypeValue) :
         powerSwitchEnabled(powerSwitchEnabledValue),
+        powerSwitchType(powerSwitchTypeValue),
         isShutdownInitiatedValue(false),
         digitalIO(digitalIOReference)
 {
@@ -33,7 +34,7 @@ PowerSwitch::PowerSwitch(IDigitalIO& digitalIOReference, PowerSwitchEnabled_e po
     setPowerSignal(PowerSwitch::STATE_ON);
 
 #ifndef NDEBUG
-    std::cout << "Created PowerSwitch. powerSwitchEnabled: " << powerSwitchEnabledValue << std::endl;
+    std::cout << "Created PowerSwitch. powerSwitchEnabled: " << powerSwitchEnabledValue << ", powerSwitchType: " << powerSwitchTypeValue << std::endl;
 #endif
 }
 
