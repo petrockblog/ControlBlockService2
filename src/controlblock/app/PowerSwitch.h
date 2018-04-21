@@ -52,19 +52,19 @@ public:
     /**
      * Indicates whether the power switch functionality is enabled or not
      */
-    enum ShutdownActivated_e
+    enum PowerSwitchEnabled_e
     {
-        SHUTDOWN_DEACTIVATED = 0, //!< Power switch is disabled
-        SHUTDOWN_ACTIVATED        //!< Power switch is enabled
+        POWERSWITCH_DISABLED = 0, //!< Power switch is disabled
+        POWERSWITCH_ENABLED       //!< Power switch is enabled
     };
 
     /**
      * Constructor
      * @param digitalInReference - Reference with IDigitalIn interface
      * @param digitalOutReference - Reference with IDigitalOut interface
-     * @param doShutdownValue - Power switch function is enabled or not
+     * @param powerSwitchEnabledValue - Power switch function is enabled or not
      */
-    explicit PowerSwitch(IDigitalIO& digitalIOReference, ShutdownActivated_e doShutdownValue);
+    explicit PowerSwitch(IDigitalIO& digitalIOReference, PowerSwitchEnabled_e powerSwitchEnabledValue);
 
     /**
      * Destructor
@@ -86,7 +86,7 @@ public:
     bool isShutdownInitiated() const;
 
 private:
-    ShutdownActivated_e doShutdown;
+    PowerSwitchEnabled_e powerSwitchEnabled;
     bool isShutdownInitiatedValue;
     IDigitalIO& digitalIO;
 

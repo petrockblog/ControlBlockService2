@@ -24,8 +24,8 @@
 #include <iostream>
 #include "PowerSwitch.h"
 
-PowerSwitch::PowerSwitch(IDigitalIO& digitalIOReference, ShutdownActivated_e doShutdownValue) :
-        doShutdown(doShutdownValue),
+PowerSwitch::PowerSwitch(IDigitalIO& digitalIOReference, PowerSwitchEnabled_e powerSwitchEnabledValue) :
+        powerSwitchEnabled(powerSwitchEnabledValue),
         isShutdownInitiatedValue(false),
         digitalIO(digitalIOReference)
 {
@@ -33,13 +33,13 @@ PowerSwitch::PowerSwitch(IDigitalIO& digitalIOReference, ShutdownActivated_e doS
     setPowerSignal(PowerSwitch::STATE_ON);
 
 #ifndef NDEBUG
-    std::cout << "Created PowerSwitch. doShutdown: " << doShutdownValue << std::endl;
+    std::cout << "Created PowerSwitch. powerSwitchEnabled: " << powerSwitchEnabledValue << std::endl;
 #endif
 }
 
 void PowerSwitch::update()
 {
-    if ((doShutdown == SHUTDOWN_ACTIVATED) && (getShutdownSignal() == SHUTDOWN_TRUE)
+    if ((powerSwitchEnabled == POWERSWITCH_ENABLED) && (getShutdownSignal() == SHUTDOWN_TRUE)
             && (!isShutdownInitiatedValue)) {
         system("/etc/controlblockswitchoff.sh");
         isShutdownInitiatedValue = true;
