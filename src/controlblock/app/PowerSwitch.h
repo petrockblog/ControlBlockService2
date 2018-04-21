@@ -102,7 +102,7 @@ private:
     IDigitalIO& digitalIO;
 
     void setPowerSignal(PowerState_e state);
-    PowerSwitchStatus_e getShutdownSignal();
+    PowerSwitchStatus_e getPowerSwitchStatus();
 
 };
 
