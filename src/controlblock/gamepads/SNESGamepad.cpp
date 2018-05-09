@@ -74,7 +74,6 @@ void SNESGamepad::update()
         {
             keyboard->setKeyState(KEY_ESC, 1, EV_KEY);
         }
-        keyboard->sync();
 
         IDigitalIO::DIO_Level_e levelButton2 = digitalIO.getLevel(IDigitalIO::DIO_CHANNEL_P1_A);
         if (levelButton2 == IDigitalIO::DIO_LEVEL_HIGH)
