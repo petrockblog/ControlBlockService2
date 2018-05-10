@@ -37,6 +37,7 @@ public:
         GAMEPAD_ARCADE = 0,  //!< Arcade gamepad type
         GAMEPAD_MAME,        //!< MAME gamepad type
         GAMEPAD_SNES,        //!< SNES gamepad type
+        GAMEPAD_NES,        //!< SNES gamepad type
         GAMEPAD_GENESIS,     //!< Genesis gamepad type
         GAMEPAD_NONE         //!< Neutral gamepad type
     };

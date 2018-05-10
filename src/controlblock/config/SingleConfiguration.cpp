@@ -42,6 +42,10 @@ SingleConfiguration::SingleConfiguration(bool enabled, uint8_t address, std::str
     {
         padType = InputDevice::GAMEPAD_SNES;
     }
+    else if (pType.compare("nes") == 0)
+    {
+        padType = InputDevice::GAMEPAD_NES;
+    }
     else if (pType.compare("none") == 0)
     {
         padType = InputDevice::GAMEPAD_NONE;

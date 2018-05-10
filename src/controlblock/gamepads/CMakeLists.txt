@@ -3,6 +3,7 @@ add_library(controlblock-gamepads STATIC
         MAMEGamepad.cpp
         NONEGamepad.cpp
         SNESGamepad.cpp
+        NESGamepad.cpp
         GenesisGamepad.cpp
         GamepadFactory.cpp
         )

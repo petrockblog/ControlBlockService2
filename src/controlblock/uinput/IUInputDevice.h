@@ -31,8 +31,9 @@ public:
     {
       TYPE_GAMEPAD_ARCADE = 0,
       TYPE_GAMEPAD_SNES,
+      TYPE_GAMEPAD_NES,
       TYPE_GAMEPAD_GENESIS,
-      TYPE_KEYVBOARD
+      TYPE_KEYBOARD
     };
 
     /**

@@ -124,7 +124,7 @@ void DigitalIO::configureDevice(DIO_Device mode)
 
         break;
     default:
-      std::cout << "DigitalIn: Unknown device type" << std::endl;
+      std::cout << "DigitalIO: Unknown device type" << std::endl;
       throw 50;
     }
 }
