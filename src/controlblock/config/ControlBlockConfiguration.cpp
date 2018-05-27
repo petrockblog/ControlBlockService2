@@ -56,7 +56,7 @@ void ControlBlockConfiguration::loadConfiguration()
         bool parsingSuccessful = reader.parse(config_doc, root);
         if (!parsingSuccessful) {
             // report to the user the failure and their locations in the document.
-            std::cout << "Failed to parse configuration\n" << reader.getFormattedErrorMessages();
+            std::cout << "ControlBlockConfiguration: Failed to parse configuration\n" << reader.getFormattedErrorMessages();
             throw (1);
         }
 
@@ -72,7 +72,7 @@ void ControlBlockConfiguration::loadConfiguration()
                 root["controlblocks"][1]["onlyOneGamepad"].asBool());
     }
     catch (int errno) {
-        std::cout << "Error while initializing ControlBlockConfiguration instance. Error number: " << errno
+        std::cout << "ControlBlockConfiguration: Error while initializing ControlBlockConfiguration instance. Error number: " << errno
                   << std::endl;
     }
     hasLoadedConfiguration = true;

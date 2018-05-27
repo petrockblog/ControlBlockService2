@@ -33,13 +33,11 @@ HALFactory::HALFactory() : mcp23s17_1(MCP23S17PI::CHIPSELECT_0, 0b000),
 void HALFactory::initialize()
 {
     MCP23S17PI::begin();
-    // MCP23S17PI::begin(MCP23S17PI::CHIPSELECT_0);
 }
 
 void HALFactory::deinitialize()
 {
     MCP23S17PI::end();
-    // MCP23S17PI::end(MCP23S17PI::CHIPSELECT_0);
 }
 
 HALFactory::~HALFactory()

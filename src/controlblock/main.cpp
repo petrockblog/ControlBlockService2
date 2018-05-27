@@ -29,10 +29,6 @@
 
 #include "app/ControlBlock.h"
 #include "config/ControlBlockConfiguration.h"
-#include "hal/DigitalIn.h"
-#include "hal/DigitalOut.h"
-#include "hal/DigitalIO.h"
-#include "gamepads/SNESGamepad.h"
 #include "uinput/UInputFactory.h"
 #include "gamepads/GamepadFactory.h"
 

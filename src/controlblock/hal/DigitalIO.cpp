@@ -32,9 +32,13 @@ void DigitalIO::configureDevice(DIO_Device mode)
         mcp1.setPinMode(10, MCP23S17PI::DIR_INPUT);
         mcp1.setPullupMode(10, MCP23S17PI::PULLUP_ENABLED);
 
-        // for reset button
+        // for ESC key
         mcp2.setPinMode(7, MCP23S17PI::DIR_INPUT);
         mcp2.setPullupMode(7, MCP23S17PI::PULLUP_ENABLED);
+
+        // for F1 key
+        mcp2.setPinMode(6, MCP23S17PI::DIR_INPUT);
+        mcp2.setPullupMode(6, MCP23S17PI::PULLUP_ENABLED);
 
         mcp1.setPinMode(12, MCP23S17PI::DIR_OUTPUT);
         mcp1.setPinMode(13, MCP23S17PI::DIR_OUTPUT);
@@ -120,7 +124,7 @@ void DigitalIO::configureDevice(DIO_Device mode)
 
         break;
     default:
-      std::cout << "DigitalIn: Unknown device type" << std::endl;
+      std::cout << "DigitalIO: Unknown device type" << std::endl;
       throw 50;
     }
 }

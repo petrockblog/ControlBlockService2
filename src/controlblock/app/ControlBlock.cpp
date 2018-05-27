@@ -109,7 +109,7 @@ void ControlBlock::update()
         }
     }
     catch (int errno) {
-        std::cout << "Error while updating the gamepad devices. Error number: " << errno << std::endl;
+        std::cout << "ControlBlock.cpp: Error while updating the gamepad devices. Error number: " << errno << std::endl;
     }
 
     try {
@@ -119,7 +119,7 @@ void ControlBlock::update()
         }
     }
     catch (int errno) {
-        std::cout << "Error while updating the power switch instance. Error number: " << errno << std::endl;
+        std::cout << "ControlBlock.cpp: Error while updating the power switch instance. Error number: " << errno << std::endl;
     }
 }
 
@@ -138,7 +138,7 @@ InputDevice::Channel_e ControlBlock::getInputDeviceChannel(int counterValue)
     case 3:channel = InputDevice::CHANNEL_4;
         break;
     default:
-        std::cout << "Unknown counter value" << std::endl;
+        std::cout << "ControlBlock.cpp: Unknown counter value" << std::endl;
         throw 1;
     }
     return channel;
@@ -159,6 +159,9 @@ void ControlBlock::configureDevice(IDigitalIO* digitalIO, InputDevice::GamepadTy
         case InputDevice::GAMEPAD_SNES:
             digitalIO->configureDevice(IDigitalIO::DIO_DEVICE_SNES);
             break;
+        case InputDevice::GAMEPAD_NES:
+            digitalIO->configureDevice(IDigitalIO::DIO_DEVICE_SNES);
+            break;
         case InputDevice::GAMEPAD_GENESIS:
             digitalIO->configureDevice(IDigitalIO::DIO_DEVICE_GENESIS);
             break;
@@ -166,7 +169,7 @@ void ControlBlock::configureDevice(IDigitalIO* digitalIO, InputDevice::GamepadTy
             // do nothing
             break;
         default:
-            std::cout << "Unknown type" << std::endl;
+            std::cout << "ControlBlock.cpp: Unknown type" << std::endl;
             throw 1;
     }
     

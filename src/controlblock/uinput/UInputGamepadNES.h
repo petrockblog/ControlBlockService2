@@ -20,28 +20,23 @@
  * in future versions.
  */
 
-#include "UInputFactory.h"
+#ifndef UINPUTGAMEPADNES_H
+#define UINPUTGAMEPADNES_H
 
-#include "UInputGamepadArcade.h"
-#include "UInputKeyboard.h"
-#include "UInputGamepadSNES.h"
-#include "UInputGamepadNES.h"
-#include "UInputGamepadGenesis.h"
+#include "UInputDevice.h"
 
-IUInputDevice* UInputFactory::getUInputDevice(IUInputDevice::DeviceType type)
+class UInputGamepadNES : public UInputDevice
 {
-    switch (type) {
-    case IUInputDevice::TYPE_GAMEPAD_ARCADE:
-        return new UInputGamepadArcade();
-    case IUInputDevice::TYPE_GAMEPAD_SNES:
-        return new UInputGamepadSNES();
-    case IUInputDevice::TYPE_GAMEPAD_NES:
-        return new UInputGamepadNES();
-    case IUInputDevice::TYPE_GAMEPAD_GENESIS:
-        return new UInputGamepadGenesis();
-    case IUInputDevice::TYPE_KEYBOARD:
-        return new UInputKeyboard();
-    default:
-        throw 1;
-    }
-}
+public:
+    /**
+     * Constructor
+     */
+    UInputGamepadNES();
+
+    /**
+     * Destructor
+     */
+    virtual ~UInputGamepadNES();
+};
+
+#endif

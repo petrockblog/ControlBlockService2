@@ -25,7 +25,7 @@
 MAMEGamepad::MAMEGamepad(IUInputFactory& uiFactory, IDigitalIO& digitalIORef) :
         channel(CHANNEL_UNDEFINED),
         digitalIO(digitalIORef),
-        keyboard(uiFactory.getUInputDevice(IUInputDevice::TYPE_KEYVBOARD))
+        keyboard(uiFactory.getUInputDevice(IUInputDevice::TYPE_KEYBOARD))
 {
 }
 
