@@ -24,25 +24,28 @@
 #include <iostream>
 #include "PowerSwitch.h"
 
-PowerSwitch::PowerSwitch(IDigitalIO& digitalIOReference, ShutdownActivated_e doShutdownValue) :
-        doShutdown(doShutdownValue),
+PowerSwitch::PowerSwitch(IDigitalIO& digitalIOReference, PowerSwitchEnabled_e powerSwitchEnabledValue, PowerSwitchType_e powerSwitchTypeValue) :
+        powerSwitchEnabled(powerSwitchEnabledValue),
+        powerSwitchType(powerSwitchTypeValue),
         isShutdownInitiatedValue(false),
         digitalIO(digitalIOReference)
 {
     digitalIO.configureDevice(IDigitalIO::DIO_DEVICE_POWERSWITCH);
-    setPowerSignal(PowerSwitch::STATE_ON);
+    setPowerState(PowerSwitch::STATE_ON);
 
 #ifndef NDEBUG
-    std::cout << "Created PowerSwitch. doShutdown: " << doShutdownValue << std::endl;
+    std::cout << "Created PowerSwitch. powerSwitchEnabled: " << powerSwitchEnabledValue << ", powerSwitchType: " << powerSwitchTypeValue << std::endl;
 #endif
 }
 
 void PowerSwitch::update()
 {
-    if ((doShutdown == SHUTDOWN_ACTIVATED) && (getShutdownSignal() == SHUTDOWN_TRUE)
-            && (!isShutdownInitiatedValue)) {
-        system("/etc/controlblockswitchoff.sh");
-        isShutdownInitiatedValue = true;
+    if ((powerSwitchEnabled == POWERSWITCH_ENABLED) && (!isShutdownInitiatedValue)) {
+        if (((powerSwitchType == SWITCHTYPE_LATCHING) && (getPowerSwitchStatus() == POWERSWITCH_UNPRESSED)) ||
+            ((powerSwitchType == SWITCHTYPE_MOMENTARY) && (getPowerSwitchStatus() == POWERSWITCH_PRESSED))) {
+            system("/etc/controlblockswitchoff.sh");
+            isShutdownInitiatedValue = true;
+        }
     }
 }
 
@@ -51,7 +54,7 @@ bool PowerSwitch::isShutdownInitiated() const
     return isShutdownInitiatedValue;
 }
 
-void PowerSwitch::setPowerSignal(PowerState_e state)
+void PowerSwitch::setPowerState(PowerState_e state)
 {
     if (state == STATE_OFF) {
         digitalIO.setLevel(IDigitalIO::DIO_CHANNEL_TOPOWERSWITCH, IDigitalIO::DIO_LEVEL_LOW);
@@ -61,14 +64,14 @@ void PowerSwitch::setPowerSignal(PowerState_e state)
     }
 }
 
-PowerSwitch::ShutdownSignal_e PowerSwitch::getShutdownSignal()
+PowerSwitch::PowerSwitchStatus_e PowerSwitch::getPowerSwitchStatus()
 {
-    ShutdownSignal_e signal;
+    PowerSwitchStatus_e signal;
     if (digitalIO.getLevel(IDigitalIO::DIO_CHANNEL_FROMPOWERSWITCH) == IDigitalIO::DIO_LEVEL_LOW) {
-        signal = SHUTDOWN_FALSE;
+        signal = POWERSWITCH_PRESSED;
     }
     else {
-        signal = SHUTDOWN_TRUE;
+        signal = POWERSWITCH_UNPRESSED;
     }
     return signal;
 }

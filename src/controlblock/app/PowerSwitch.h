@@ -41,30 +41,40 @@ public:
     };
 
     /**
-     * Shutdown signal identifiers
+     * Power switch button status
      */
-    enum ShutdownSignal_e
+    enum PowerSwitchStatus_e
     {
-        SHUTDOWN_FALSE = 0,  //!< Shutdown signal is not set
-        SHUTDOWN_TRUE        //!< Shutdown signal is set
+        POWERSWITCH_PRESSED = 0,  //!< The power switch button is pressed
+        POWERSWITCH_UNPRESSED     //!< The power switch button is not pressed
     };
 
     /**
      * Indicates whether the power switch functionality is enabled or not
      */
-    enum ShutdownActivated_e
+    enum PowerSwitchEnabled_e
     {
-        SHUTDOWN_DEACTIVATED = 0, //!< Power switch is disabled
-        SHUTDOWN_ACTIVATED        //!< Power switch is enabled
+        POWERSWITCH_DISABLED = 0, //!< Power switch is disabled
+        POWERSWITCH_ENABLED       //!< Power switch is enabled
+    };
+
+    /***
+     * Indicates what type of power switch that is used
+     */
+    enum PowerSwitchType_e
+    {
+        SWITCHTYPE_MOMENTARY = 0, //!< Power switch is a momentary switch
+        SWITCHTYPE_LATCHING       //!< Power switch is a latching switch
     };
 
     /**
      * Constructor
      * @param digitalInReference - Reference with IDigitalIn interface
      * @param digitalOutReference - Reference with IDigitalOut interface
-     * @param doShutdownValue - Power switch function is enabled or not
+     * @param powerSwitchEnabledValue - Power switch function is enabled or not
+     * @param powerSwitchTypeValue - Type of power switch used
      */
-    explicit PowerSwitch(IDigitalIO& digitalIOReference, ShutdownActivated_e doShutdownValue);
+    explicit PowerSwitch(IDigitalIO& digitalIOReference, PowerSwitchEnabled_e powerSwitchEnabledValue, PowerSwitchType_e powerSwitchTypeValue);
 
     /**
      * Destructor
@@ -86,12 +96,13 @@ public:
     bool isShutdownInitiated() const;
 
 private:
-    ShutdownActivated_e doShutdown;
+    PowerSwitchEnabled_e powerSwitchEnabled;
+    PowerSwitchType_e powerSwitchType;
     bool isShutdownInitiatedValue;
     IDigitalIO& digitalIO;
 
-    void setPowerSignal(PowerState_e state);
-    ShutdownSignal_e getShutdownSignal();
+    void setPowerState(PowerState_e state);
+    PowerSwitchStatus_e getPowerSwitchStatus();
 
 };
 
