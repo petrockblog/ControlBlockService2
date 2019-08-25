@@ -25,8 +25,8 @@
 
 #include <stdint.h>
 #include <uinput/IUInputFactory.h>
-// #include "hal/IDigitalIn.h"
-// #include "hal/IDigitalOut.h"
+ #include "hal/IDigitalIn.h"
+ #include "hal/IDigitalOut.h"
 #include "hal/DigitalIO.h"
 #include "InputDevice.h"
 

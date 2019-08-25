@@ -2,25 +2,30 @@ cmake_minimum_required(VERSION 2.8.5)
 
 project(ControlBlockService2)
 
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 14)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -O3")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3")
 set(EXECUTABLE_NAME "controlblock")
 
 include_directories(src/controlblock)
-include_directories(src/lib/bcm2835-1.55/src)
 include_directories(src/lib/jsoncpp/include)
+include_directories(src/lib/pispi)
+include_directories(src/lib/LIO/src)
 
 add_subdirectory(src/lib/jsoncpp)
-add_subdirectory(src/lib/bcm2835-1.55/src)
+add_subdirectory(src/lib/pispi)
+add_subdirectory(src/lib/LIO/src)
+
 add_subdirectory(src/controlblock/app)
 add_subdirectory(src/controlblock/config)
 add_subdirectory(src/controlblock/hal)
 add_subdirectory(src/controlblock/gamepads)
 add_subdirectory(src/controlblock/uinput)
 
+add_subdirectory(doc)  # Doxygen documentation target
+
 add_executable(${EXECUTABLE_NAME} "src/controlblock/main.cpp")
-target_link_libraries(${EXECUTABLE_NAME} controlblock-app bcm2835 controlblock-config controlblock-hal controlblock-gamepads controlblock-uinput)
+target_link_libraries(${EXECUTABLE_NAME} controlblock-app controlblock-config controlblock-hal controlblock-gamepads controlblock-uinput pispi LIOlib)
 
 install(FILES ${CMAKE_BINARY_DIR}/${EXECUTABLE_NAME} DESTINATION /usr/bin
         PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ
@@ -54,9 +59,3 @@ add_custom_target(uninstallservice
         WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/../scripts
         COMMENT "Uninstalling service."
         )
-
-# Doxygen documentation target
-add_subdirectory(doc)
-
-# enable_testing()
-# add_subdirectory(test)

@@ -23,10 +23,12 @@
 #ifndef DIGITALOUT_H
 #define DIGITALOUT_H
 
-#include "bcm2835.h"
+//#include "bcm2835.h"
 #include <stdint.h>
+#include <OutputPort.h>
 #include "HALFactory.h"
 #include "IDigitalOut.h"
+
 
 /**
  * @brief Abstracts digital output signals of the application.
@@ -69,6 +71,7 @@ private:
     static const uint8_t MAX_NUMBER_OF_MCPS = 4u;
 
     MCP23S17PI* expander[MAX_NUMBER_OF_MCPS];
+    std::shared_ptr<OutputPort> powerSwitchOut_port_;
 };
 
 #endif // DIGITALOUT_H

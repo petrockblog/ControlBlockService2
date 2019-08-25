@@ -5,5 +5,3 @@ add_library(controlblock-hal STATIC
         HALFactory.cpp
         mcp23s17pi.cpp
         )
-
-target_link_libraries(controlblock-hal bcm2835)

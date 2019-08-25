@@ -38,8 +38,8 @@ SNESGamepad::SNESGamepad(IUInputFactory& uiFactoryRef, IDigitalIO& digitalIORef)
 
 void SNESGamepad::initialize(InputDevice::Channel_e channel)
 {
-    assert(digitalIn != NULL);
-    assert(digitalOut != NULL);
+//    assert(digitalIn != NULL);
+//    assert(digitalOut != NULL);
 
     this->channel = channel;
 

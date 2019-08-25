@@ -23,7 +23,7 @@
 #ifndef DIGITALIN_H
 #define DIGITALIN_H
 
-#include "bcm2835.h"
+//#include "bcm2835.h"
 #include <stdint.h>
 #include "HALFactory.h"
 #include "IDigitalIn.h"
@@ -66,6 +66,7 @@ private:
     static const uint8_t TOTAL_NUMBER_OF_CHANNELS = 16u;
     static const uint8_t MAX_NUMBER_OF_MCPS = 4u;
 
+    std::shared_ptr<InputPort> powerSwitchIn_port_;
     MCP23S17PI* expander[MAX_NUMBER_OF_MCPS];
 };
 

@@ -1,5 +1,5 @@
 #include "hal/DigitalIO.h"
-#include "bcm2835.h"
+//#include "bcm2835.h"
 #include <iostream>
 
 DigitalIO::DigitalIO(MCP23S17PI& mcp1ref, MCP23S17PI& mcp2ref) :
@@ -12,8 +12,8 @@ void DigitalIO::configureDevice(DIO_Device mode)
 {
     switch (mode) {
     case IDigitalIO::DIO_DEVICE_POWERSWITCH:
-    	bcm2835_gpio_fsel(RPI_GPIO_P1_12, BCM2835_GPIO_FSEL_INPT);
-    	bcm2835_gpio_fsel(RPI_GPIO_P1_11, BCM2835_GPIO_FSEL_OUTP);
+//    	bcm2835_gpio_fsel(RPI_GPIO_P1_12, BCM2835_GPIO_FSEL_INPT);
+//    	bcm2835_gpio_fsel(RPI_GPIO_P1_11, BCM2835_GPIO_FSEL_OUTP);
         break;
     case IDigitalIO::DIO_DEVICE_ALLIN:
         for (uint8_t i = 0u; i < TOTAL_NUMBER_OF_CHANNELS; ++i) {
@@ -134,7 +134,8 @@ IDigitalIO::DIO_Level_e DigitalIO::getLevel(DIO_Channel_e channel)
     DIO_Level_e returnLevel = DIO_LEVEL_LOW;
 
     switch (channel) {
-    case DIO_CHANNEL_FROMPOWERSWITCH: returnLevel = bcm2835_gpio_lev(RPI_GPIO_P1_12) == LOW ? DIO_LEVEL_LOW : DIO_LEVEL_HIGH;
+    case DIO_CHANNEL_FROMPOWERSWITCH:
+//      returnLevel = bcm2835_gpio_lev(RPI_GPIO_P1_12) == LOW ? DIO_LEVEL_LOW : DIO_LEVEL_HIGH;
         break;
     case DIO_CHANNEL_P1_RIGHT: returnLevel = mcp1.digitalRead(0) == MCP23S17PI::LEVEL_HIGH ? DIO_LEVEL_LOW : DIO_LEVEL_HIGH;
         break;
@@ -219,7 +220,8 @@ void DigitalIO::setLevel(DIO_Channel_e channel, DIO_Level_e level)
     }
 
     switch (channel) {
-    case DIO_CHANNEL_TOPOWERSWITCH:bcm2835_gpio_write(RPI_GPIO_P1_11, mcpLevel == MCP23S17PI::LEVEL_LOW ? LOW : HIGH);
+    case DIO_CHANNEL_TOPOWERSWITCH:
+//      bcm2835_gpio_write(RPI_GPIO_P1_11, mcpLevel == MCP23S17PI::LEVEL_LOW ? LOW : HIGH);
         break;
     case DIO_CHANNEL_P1_RIGHT: mcp1.digitalWrite(0, mcpLevel);
         break;

@@ -38,8 +38,8 @@ NESGamepad::NESGamepad(IUInputFactory& uiFactoryRef, IDigitalIO& digitalIORef) :
 
 void NESGamepad::initialize(InputDevice::Channel_e channel)
 {
-    assert(digitalIn != NULL);
-    assert(digitalOut != NULL);
+//    assert(digitalIn != NULL);
+//    assert(digitalOut != NULL);
 
     this->channel = channel;
 

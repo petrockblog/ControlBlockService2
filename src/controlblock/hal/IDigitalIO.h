@@ -24,6 +24,7 @@
 #define CONTROLBLOCKSERVICE2_IDIGITALIO_H
 
 #include "hal/mcp23s17pi.h"
+#include <stdint.h>
 
 class IDigitalIO {
 public:

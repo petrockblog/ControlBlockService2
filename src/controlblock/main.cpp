@@ -23,7 +23,7 @@
 #include <stdio.h>
 #include <iostream>
 #include <thread>
-#include <bcm2835.h>
+//#include <bcm2835.h>
 #include <signal.h>
 #include "hal/mcp23s17pi.h"
 

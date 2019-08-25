@@ -24,7 +24,8 @@
 #define MCP23S17PI_H
 
 #include <stdint.h>
-#include "bcm2835.h"
+//#include "bcm2835.h"
+#include "pispi.h"
 
 /**
  * @brief This class abstracts a port expander MCP23S17
@@ -193,8 +194,7 @@ private:
     // static int spi_cs0_fd;             //file descriptor for the SPI device
     // static int spi_cs1_fd;             //file descriptor for the SPI device
 
-    bcm2835SPIChipSelect _chipSelectPin;
-    // ChipSelectPin _chipSelectPin;
+     ChipSelectPin _chipSelectPin;
     uint8_t _deviceID;
 
     uint8_t _GPIOA;
@@ -209,8 +209,5 @@ private:
     uint8_t readRegister(uint8_t regaddress);
     uint16_t readRegisterWord(uint8_t regaddress);
 
-    // static int SpiOpenPort (int spi_device);
-    // static int SpiClosePort (int spi_device);
-    // int SpiWriteAndRead (int spi_device, unsigned char *data, int length);
 };
 #endif

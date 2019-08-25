@@ -29,6 +29,8 @@ DigitalOut::DigitalOut()
     expander[1] = HALFactory::getInstance().getMCP23S17(HALFactory::MCPCHANNEL_2);
     expander[2] = HALFactory::getInstance().getMCP23S17(HALFactory::MCPCHANNEL_3);
     expander[3] = HALFactory::getInstance().getMCP23S17(HALFactory::MCPCHANNEL_4);
+
+    powerSwitchOut_port_ = std::make_shared<OutputPort>(17);
 }
 
 DigitalOut::~DigitalOut()
@@ -50,7 +52,7 @@ void DigitalOut::configureDevice(DO_Device device)
 {
     switch (device) {
     case DO_DEVICE_POWERSWITCH:
-        bcm2835_gpio_fsel(RPI_GPIO_P1_11, BCM2835_GPIO_FSEL_OUTP);
+//        bcm2835_gpio_fsel(RPI_GPIO_P1_11, BCM2835_GPIO_FSEL_OUTP);
         break;
     case DO_DEVICE_SNES:
         expander[0]->setPinMode(12, MCP23S17PI::DIR_OUTPUT);
@@ -126,7 +128,9 @@ void DigitalOut::setLevel(DO_Channel_e channel, DO_Level_e level, BoardNumber_e 
 
     const uint32_t offset = (board == BOARD_0 ? 0u : 2u);
     switch (channel) {
-    case DO_CHANNEL_TOPOWERSWITCH:bcm2835_gpio_write(RPI_GPIO_P1_11, outlevel == MCP23S17PI::LEVEL_LOW ? LOW : HIGH);
+    case DO_CHANNEL_TOPOWERSWITCH:
+//      bcm2835_gpio_write(RPI_GPIO_P1_11, outlevel == MCP23S17PI::LEVEL_LOW ? LOW : HIGH);
+        powerSwitchOut_port_->Write(outlevel != MCP23S17PI::LEVEL_LOW);
         break;
     case DO_CHANNEL_P1P2_CLOCK:expander[0 + offset]->digitalWrite(12, outlevel);
         break;
