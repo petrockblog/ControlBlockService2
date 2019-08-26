@@ -23,39 +23,31 @@
 #include "HALFactory.h"
 #include <stddef.h>
 
-HALFactory::HALFactory() : mcp23s17_1(MCP23S17PI::CHIPSELECT_0, 0b000), 
-                        mcp23s17_2(MCP23S17PI::CHIPSELECT_0, 0b001), 
-                        mcp23s17_3(MCP23S17PI::CHIPSELECT_0, 0b010), 
-                        mcp23s17_4(MCP23S17PI::CHIPSELECT_0, 0b011)
-{
+HALFactory::HALFactory() : mcp23s17_1(MCP23S17PI::CHIPSELECT_0, 0b000),
+                           mcp23s17_2(MCP23S17PI::CHIPSELECT_0, 0b001),
+                           mcp23s17_3(MCP23S17PI::CHIPSELECT_0, 0b010),
+                           mcp23s17_4(MCP23S17PI::CHIPSELECT_0, 0b011) {
 }
 
-void HALFactory::initialize()
-{
-    MCP23S17PI::begin();
+void HALFactory::initialize() {
+  MCP23S17PI::begin();
 }
 
-void HALFactory::deinitialize()
-{
-    MCP23S17PI::end();
+void HALFactory::deinitialize() {
+  MCP23S17PI::end();
 }
 
-HALFactory::~HALFactory()
-{
+HALFactory::~HALFactory() {
 }
 
-MCP23S17PI* HALFactory::getMCP23S17(MCPChannel channel)
-{
-    if (channel == MCPCHANNEL_1) {
-        return &mcp23s17_1;
-    }
-    else if (channel == MCPCHANNEL_2) {
-        return &mcp23s17_2;
-    }
-    else if (channel == MCPCHANNEL_3) {
-        return &mcp23s17_3;
-    }
-    else {
-        return &mcp23s17_4;
-    }
+MCP23S17PI *HALFactory::getMCP23S17(MCPChannel channel) {
+  if (channel == MCPCHANNEL_1) {
+    return &mcp23s17_1;
+  } else if (channel == MCPCHANNEL_2) {
+    return &mcp23s17_2;
+  } else if (channel == MCPCHANNEL_3) {
+    return &mcp23s17_3;
+  } else {
+    return &mcp23s17_4;
+  }
 }

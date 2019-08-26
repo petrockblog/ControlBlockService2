@@ -46,7 +46,6 @@ void DigitalIn::configureDevice(DI_Device device) {
   std::cout << "DigitalIn::configureDevice " << device << std::endl;
   switch (device) {
     case DI_DEVICE_POWERSWITCH:
-//      bcm2835_gpio_fsel(RPI_GPIO_P1_12, BCM2835_GPIO_FSEL_INPT);
       // do nothing
       break;
     case DI_DEVICE_ALLIN:
@@ -130,9 +129,7 @@ DigitalIn::DI_Level_e DigitalIn::getLevel(DigitalIn::DI_Channel_e channel, Board
 
   const uint32_t offset = (board == BOARD_0 ? 0u : 2u);
   switch (channel) {
-    case DI_CHANNEL_FROMPOWERSWITCH:
-//      returnLevel = bcm2835_gpio_lev(RPI_GPIO_P1_12) == LOW ? DI_LEVEL_LOW : DI_LEVEL_HIGH;
-        returnLevel = !powerSwitchIn_port_->Read() ? DI_LEVEL_LOW : DI_LEVEL_HIGH;
+    case DI_CHANNEL_FROMPOWERSWITCH:returnLevel = !powerSwitchIn_port_->Read() ? DI_LEVEL_LOW : DI_LEVEL_HIGH;
       break;
     case DI_CHANNEL_P1_RIGHT:
       returnLevel =

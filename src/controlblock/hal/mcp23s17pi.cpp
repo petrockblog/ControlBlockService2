@@ -45,12 +45,6 @@ MCP23S17PI::MCP23S17PI(ChipSelectPin chipSelectPin, uint8_t deviceID) :
     IODIRB_(0),
     GPPUA_(0),
     GPPUB_(0) {
-//  if (chipSelectPin == CHIPSELECT_0) {
-//    chipSelectPin_ = BCM2835_SPI_CS0;
-//  } else {
-//    chipSelectPin_ = BCM2835_SPI_CS1;
-//  }
-
   writeRegister(MCP23S17PI_IOCON, IOCON_INIT);
 }
 
@@ -59,19 +53,6 @@ MCP23S17PI::~MCP23S17PI() {
 
 void MCP23S17PI::begin() {
   if (!isBCM2835Initialized_) {
-//    if (!bcm2835_init()) {
-//      printf("Error bcm2835_init\n");
-//      throw 1;
-//    }
-//
-//    if (!bcm2835_spi_begin()) {
-//      printf("Error bcm2835_spi_begin\n");
-//      throw 1;
-//    }
-//
-//    bcm2835_spi_setClockDivider(BCM2835_SPI_CLOCK_DIVIDER_64);    // 3.9 MHz
-//    bcm2835_spi_setDataMode(BCM2835_SPI_MODE0);
-//    bcm2835_spi_chipSelect(BCM2835_SPI_CS0);                      // The default
     spi_cs0_fd_ = mcp23s17_open(0, 0);
 
     isBCM2835Initialized_ = true;
@@ -179,13 +160,7 @@ uint16_t MCP23S17PI::readGPIO() {
 }
 
 void MCP23S17PI::writeRegister(uint8_t regAddress, uint8_t data) {
-//  char spiData[3];
-//  spiData[0] = MCP23S08_CMD_WRITE | ((deviceID_) << 1u);
-//  spiData[1] = regAddress;
-//  spiData[2] = data;
-//  bcm2835_spi_transfern(&spiData[0], 3);
-//    mcp23s17_write_reg(data, regAddress, ((deviceID_) << 1u), spi_cs0_fd_);
-    mcp23s17_write_reg(data, regAddress, deviceID_, spi_cs0_fd_);
+  mcp23s17_write_reg(data, regAddress, deviceID_, spi_cs0_fd_);
 }
 
 void MCP23S17PI::writeRegisterWord(const uint8_t &regAddress, uint16_t &data) {
@@ -194,13 +169,7 @@ void MCP23S17PI::writeRegisterWord(const uint8_t &regAddress, uint16_t &data) {
 }
 
 uint8_t MCP23S17PI::readRegister(uint8_t regAddress) {
-//  char spiData[3];
-//  spiData[0] = MCP23S08_CMD_READ | ((deviceID_) << 1u);
-//  spiData[1] = regAddress;
-////  bcm2835_spi_transfern(&spiData[0], 3);
-//  return spiData[2];
-//    return mcp23s17_read_reg(regAddress, ((deviceID_) << 1u), spi_cs0_fd_);
-    return mcp23s17_read_reg(regAddress, deviceID_, spi_cs0_fd_);
+  return mcp23s17_read_reg(regAddress, deviceID_, spi_cs0_fd_);
 }
 
 uint16_t MCP23S17PI::readRegisterWord(uint8_t regAddress) {
@@ -213,7 +182,5 @@ uint16_t MCP23S17PI::readRegisterWord(uint8_t regAddress) {
 }
 
 void MCP23S17PI::end() {
-//  bcm2835_spi_end();
-//  bcm2835_close();
   close(spi_cs0_fd_);
 }
