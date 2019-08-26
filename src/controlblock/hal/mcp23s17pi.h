@@ -25,7 +25,7 @@
 
 #include <stdint.h>
 //#include "bcm2835.h"
-#include "pispi.h"
+#include "mcp23s17.h"
 
 /**
  * @brief This class abstracts a port expander MCP23S17
@@ -157,8 +157,6 @@ public:
     uint16_t readGPIO();
 
 private:
-    static bool isBCM2835Initialized;
-
     static const uint8_t MCP23S17_DEFAULT_SLAVE_ADDRESS = 0x00;
     static const uint8_t MCP23S17PI_IODIRA = 0x00;
     static const uint8_t MCP23S17PI_IODIRB = 0x01;
@@ -188,21 +186,24 @@ private:
     // Default initialization mode
     static const uint8_t IOCON_INIT = 0x28; // IOCON_SEQOP and IOCON_HAEN from above
 
+    static bool isBCM2835Initialized_;
+    static int spi_cs0_fd_;
+
     // static const unsigned char spi_mode = 0;  // SPI_MODE_0;
     // static const unsigned char spi_bitsPerWord = 8;
     // static const unsigned int spi_speed = 3900000;
-    // static int spi_cs0_fd;             //file descriptor for the SPI device
+    // static int spi_cs0_fd_;             //file descriptor for the SPI device
     // static int spi_cs1_fd;             //file descriptor for the SPI device
 
-     ChipSelectPin _chipSelectPin;
-    uint8_t _deviceID;
+     ChipSelectPin chipSelectPin_;
+    uint8_t deviceID_;
 
-    uint8_t _GPIOA;
-    uint8_t _GPIOB;
-    uint8_t _IODIRA;
-    uint8_t _IODIRB;
-    uint8_t _GPPUA;
-    uint8_t _GPPUB;
+    uint8_t GPIOA_;
+    uint8_t GPIOB_;
+    uint8_t IODIRA_;
+    uint8_t IODIRB_;
+    uint8_t GPPUA_;
+    uint8_t GPPUB_;
 
     void writeRegister(uint8_t regaddress, uint8_t val);
     void writeRegisterWord(const uint8_t &regAddress, uint16_t &data);

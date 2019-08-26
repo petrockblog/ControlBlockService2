@@ -34,21 +34,22 @@
 #include <cstring>
 #include <iostream>
 
-bool MCP23S17PI::isBCM2835Initialized = false;
+bool MCP23S17PI::isBCM2835Initialized_ = false;
+int MCP23S17PI::spi_cs0_fd_ = 0;
 
 MCP23S17PI::MCP23S17PI(ChipSelectPin chipSelectPin, uint8_t deviceID) :
-    _deviceID(deviceID),
-    _GPIOA(0),
-    _GPIOB(0),
-    _IODIRA(0),
-    _IODIRB(0),
-    _GPPUA(0),
-    _GPPUB(0) {
-  if (chipSelectPin == CHIPSELECT_0) {
-//    _chipSelectPin = BCM2835_SPI_CS0;
-  } else {
-//    _chipSelectPin = BCM2835_SPI_CS1;
-  }
+    deviceID_(deviceID),
+    GPIOA_(0),
+    GPIOB_(0),
+    IODIRA_(0),
+    IODIRB_(0),
+    GPPUA_(0),
+    GPPUB_(0) {
+//  if (chipSelectPin == CHIPSELECT_0) {
+//    chipSelectPin_ = BCM2835_SPI_CS0;
+//  } else {
+//    chipSelectPin_ = BCM2835_SPI_CS1;
+//  }
 
   writeRegister(MCP23S17PI_IOCON, IOCON_INIT);
 }
@@ -57,7 +58,7 @@ MCP23S17PI::~MCP23S17PI() {
 }
 
 void MCP23S17PI::begin() {
-  if (!isBCM2835Initialized) {
+  if (!isBCM2835Initialized_) {
 //    if (!bcm2835_init()) {
 //      printf("Error bcm2835_init\n");
 //      throw 1;
@@ -71,8 +72,9 @@ void MCP23S17PI::begin() {
 //    bcm2835_spi_setClockDivider(BCM2835_SPI_CLOCK_DIVIDER_64);    // 3.9 MHz
 //    bcm2835_spi_setDataMode(BCM2835_SPI_MODE0);
 //    bcm2835_spi_chipSelect(BCM2835_SPI_CS0);                      // The default
+    spi_cs0_fd_ = mcp23s17_open(0, 0);
 
-    isBCM2835Initialized = true;
+    isBCM2835Initialized_ = true;
   }
 }
 
@@ -83,11 +85,11 @@ void MCP23S17PI::setPinMode(uint8_t pin, Direction dir) {
 
     if (pin < 8) {
       reg = MCP23S17PI_IODIRA;
-      data = &_IODIRA;
+      data = &IODIRA_;
     } else {
       reg = MCP23S17PI_IODIRB;
       pin &= 0x07;
-      data = &_IODIRB;
+      data = &IODIRB_;
     }
 
     if (DIR_INPUT == dir) {
@@ -106,11 +108,11 @@ void MCP23S17PI::setPullupMode(uint8_t pin, Pullup mode) {
 
     if (pin < 8) {
       reg = MCP23S17PI_GPPUA;
-      data = &_GPPUA;
+      data = &GPPUA_;
     } else {
       reg = MCP23S17PI_GPPUB;
       pin &= 0x07;
-      data = &_GPPUB;
+      data = &GPPUB_;
     }
 
     if (PULLUP_ENABLED == mode) {
@@ -124,17 +126,17 @@ void MCP23S17PI::setPullupMode(uint8_t pin, Pullup mode) {
 
 MCP23S17PI::Level MCP23S17PI::digitalRead(uint8_t pin) {
   if (pin < 8) {
-    _GPIOA = readRegister(MCP23S17PI_GPIOA);
+    GPIOA_ = readRegister(MCP23S17PI_GPIOA);
 
-    if ((_GPIOA & (1 << pin)) != 0) {
+    if ((GPIOA_ & (1 << pin)) != 0) {
       return LEVEL_HIGH;
     } else {
       return LEVEL_LOW;
     }
   } else if (pin < 16) {
-    _GPIOB = readRegister(MCP23S17PI_GPIOB);
+    GPIOB_ = readRegister(MCP23S17PI_GPIOB);
     pin &= 0x07;
-    if ((_GPIOB & (1 << pin)) != 0) {
+    if ((GPIOB_ & (1 << pin)) != 0) {
       return LEVEL_HIGH;
     } else {
       return LEVEL_LOW;
@@ -152,11 +154,11 @@ void MCP23S17PI::digitalWrite(uint8_t pin, Level level) {
 
     if (pin < 8) {
       reg = MCP23S17PI_GPIOA;
-      data = &_GPIOA;
+      data = &GPIOA_;
     } else {
       reg = MCP23S17PI_GPIOB;
       pin &= 0x07;
-      data = &_GPIOB;
+      data = &GPIOB_;
     }
 
     if (LEVEL_HIGH == level) {
@@ -177,11 +179,12 @@ uint16_t MCP23S17PI::readGPIO() {
 }
 
 void MCP23S17PI::writeRegister(uint8_t regAddress, uint8_t data) {
-  char spiData[3];
-  spiData[0] = MCP23S08_CMD_WRITE | ((_deviceID) << 1u);
-  spiData[1] = regAddress;
-  spiData[2] = data;
+//  char spiData[3];
+//  spiData[0] = MCP23S08_CMD_WRITE | ((deviceID_) << 1u);
+//  spiData[1] = regAddress;
+//  spiData[2] = data;
 //  bcm2835_spi_transfern(&spiData[0], 3);
+  mcp23s17_write_reg(data, regAddress, ((deviceID_) << 1u), spi_cs0_fd_);
 }
 
 void MCP23S17PI::writeRegisterWord(const uint8_t &regAddress, uint16_t &data) {
@@ -190,12 +193,12 @@ void MCP23S17PI::writeRegisterWord(const uint8_t &regAddress, uint16_t &data) {
 }
 
 uint8_t MCP23S17PI::readRegister(uint8_t regAddress) {
-  char spiData[3];
-  spiData[0] = MCP23S08_CMD_READ | ((_deviceID) << 1u);
-  spiData[1] = regAddress;
-//  bcm2835_spi_transfern(&spiData[0], 3);
-
-  return spiData[2];
+//  char spiData[3];
+//  spiData[0] = MCP23S08_CMD_READ | ((deviceID_) << 1u);
+//  spiData[1] = regAddress;
+////  bcm2835_spi_transfern(&spiData[0], 3);
+//  return spiData[2];
+  return mcp23s17_read_reg(regAddress, ((deviceID_) << 1u), spi_cs0_fd_);
 }
 
 uint16_t MCP23S17PI::readRegisterWord(uint8_t regAddress) {
@@ -210,4 +213,5 @@ uint16_t MCP23S17PI::readRegisterWord(uint8_t regAddress) {
 void MCP23S17PI::end() {
 //  bcm2835_spi_end();
 //  bcm2835_close();
+  close(spi_cs0_fd_);
 }
