@@ -184,7 +184,8 @@ void MCP23S17PI::writeRegister(uint8_t regAddress, uint8_t data) {
 //  spiData[1] = regAddress;
 //  spiData[2] = data;
 //  bcm2835_spi_transfern(&spiData[0], 3);
-  mcp23s17_write_reg(data, regAddress, ((deviceID_) << 1u), spi_cs0_fd_);
+//    mcp23s17_write_reg(data, regAddress, ((deviceID_) << 1u), spi_cs0_fd_);
+    mcp23s17_write_reg(data, regAddress, deviceID_, spi_cs0_fd_);
 }
 
 void MCP23S17PI::writeRegisterWord(const uint8_t &regAddress, uint16_t &data) {
@@ -198,7 +199,8 @@ uint8_t MCP23S17PI::readRegister(uint8_t regAddress) {
 //  spiData[1] = regAddress;
 ////  bcm2835_spi_transfern(&spiData[0], 3);
 //  return spiData[2];
-  return mcp23s17_read_reg(regAddress, ((deviceID_) << 1u), spi_cs0_fd_);
+//    return mcp23s17_read_reg(regAddress, ((deviceID_) << 1u), spi_cs0_fd_);
+    return mcp23s17_read_reg(regAddress, deviceID_, spi_cs0_fd_);
 }
 
 uint16_t MCP23S17PI::readRegisterWord(uint8_t regAddress) {
