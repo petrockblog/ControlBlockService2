@@ -7,7 +7,7 @@ if [[ "$(id -u)" -ne 0 ]]; then
 fi
 
 # ensure that all needed OS packages are installed
-apt-get install -y git cmake g++ doxygen || (c=$?; echo "Error during installation of APT packages"; (exit $c))
+apt-get install -y git cmake g++ doxygen libc6 libc6-dev || (c=$?; echo "Error during installation of APT packages"; (exit $c))
 
 # ensure that we are within the ControlBlockService2 directory
 currentDirectory=${PWD##*/}

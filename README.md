@@ -34,7 +34,7 @@ To be able to successfully build ControlBlockService you need to have certain AP
 ```bash
 sudo apt-get update
 sudo apt-get upgrade -y
-sudo apt-get install -y git cmake g++ doxygen
+sudo apt-get install -y git cmake g++ doxygen libc6 libc6-dev
 ```
 
 
