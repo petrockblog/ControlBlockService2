@@ -222,7 +222,8 @@ IDigitalIO::DIO_Level_e DigitalIO::getLevel(DIO_Channel_e channel) {
       break;
     case DIO_CHANNEL_P2_B: returnLevel = mcp2.digitalRead(8) == MCP23S17PI::LEVEL_HIGH ? DIO_LEVEL_LOW : DIO_LEVEL_HIGH;
       break;
-    default:throw 51;
+    default:
+      throw std::runtime_error("Unknown DIO CHannel value.");
   }
 
   return returnLevel;
@@ -238,9 +239,6 @@ void DigitalIO::setLevel(DIO_Channel_e channel, DIO_Level_e level) {
   }
 
   switch (channel) {
-    case DIO_CHANNEL_TOPOWERSWITCH:
-      // do nothing here
-      break;
     case DIO_CHANNEL_P1_RIGHT: mcp1.digitalWrite(0, mcpLevel);
       break;
     case DIO_CHANNEL_P1_LEFT: mcp1.digitalWrite(1, mcpLevel);
@@ -309,5 +307,7 @@ void DigitalIO::setLevel(DIO_Channel_e channel, DIO_Level_e level) {
       break;
     case DIO_CHANNEL_GENESIS_P2_SELECT: mcp1.digitalWrite(9, mcpLevel);
       break;
+    default:
+      throw std::runtime_error("Unknown DIO Channel value");
   }
 }

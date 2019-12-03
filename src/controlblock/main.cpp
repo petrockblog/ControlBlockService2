@@ -26,6 +26,7 @@
 #include <signal.h>
 #include "hal/mcp23s17pi.h"
 
+#include "app/Logger.h"
 #include "app/ControlBlock.h"
 #include "config/ControlBlockConfiguration.h"
 #include "uinput/UInputFactory.h"
@@ -62,6 +63,9 @@ void register_signalhandlers()
 
 int main(int argc, char** argv)
 {
+    Logger::init();
+    Logger::logMessage("Starting ControlBlock driver.");
+
     register_signalhandlers();
     MCP23S17PI::begin();
 
@@ -72,7 +76,7 @@ int main(int argc, char** argv)
 
         ControlBlock controlBlock{uiFactory, config, gamepadFactory};
         
-        std::cout << "[ControlBlockService] Starting gamepad polling ... " << std::endl;
+        Logger::logMessage("Starting gamepad polling ... ");
         while (doRun) {
             controlBlock.update();
             std::this_thread::sleep_for(std::chrono::milliseconds(25));
