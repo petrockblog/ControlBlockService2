@@ -21,6 +21,8 @@
  */
 
 #include <iostream>
+#include "../app/Logger.h"
+#include "fmt/format.h"
 #include "SingleConfiguration.h"
 
 SingleConfiguration::SingleConfiguration(bool enabled, uint8_t address, std::string pType, bool pwrSwitch,
@@ -54,10 +56,8 @@ SingleConfiguration::SingleConfiguration(bool enabled, uint8_t address, std::str
     {
         padType = InputDevice::GAMEPAD_GENESIS;
     }
-
-#ifndef NDEBUG
-    std::cout << "Created configuration. isEnabled: " << enabled << ", address: " << static_cast<int>(address) << ", pad type: " << pType << ", power switch: " << pwrSwitch << ", only one gamepad: " << oneGp << std::endl;
-#endif
+    const std::string configMessage = fmt::format("Created configuration. isEnabled: {}, address: {}, pad type: {}, power switch: {}, only one gamepad: {}", enabled, address, pType, pwrSwitch, oneGp);
+    Logger::logMessage(configMessage);
 }
 
 SingleConfiguration::~SingleConfiguration()

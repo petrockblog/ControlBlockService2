@@ -21,6 +21,7 @@
  */
 
 #include <stdlib.h>
+#include "fmt/format.h"
 #include "PowerSwitch.h"
 #include "Logger.h"
 
@@ -36,7 +37,7 @@ PowerSwitch::PowerSwitch(IDigitalIO& digitalIOReference, ShutdownActivated doShu
 
     setPowerSignal(PowerState::ON);
 
-    Logger::logMessage("Created PowerSwitch. doShutdown: " + static_cast<int>(doShutdownValue));
+    Logger::logMessage(fmt::format("Created PowerSwitch. doShutdown: {}", doShutdownValue));
 }
 
 void PowerSwitch::update()

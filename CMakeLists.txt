@@ -17,6 +17,7 @@ include_directories(src/lib/fmt/include)
 add_subdirectory(src/lib/jsoncpp)
 add_subdirectory(src/lib/LIO/src)
 add_subdirectory(src/lib/mcp23s17)
+add_subdirectory(src/lib/fmt)
 
 set(PLOG_BUILD_SAMPLES OFF)
 
@@ -29,7 +30,7 @@ add_subdirectory(src/controlblock/uinput)
 add_subdirectory(doc)  # Doxygen documentation target
 
 add_executable(${EXECUTABLE_NAME} "src/controlblock/main.cpp")
-target_link_libraries(${EXECUTABLE_NAME} controlblock-app controlblock-config controlblock-hal controlblock-gamepads controlblock-uinput LIOlib mcp23s17Lib)
+target_link_libraries(${EXECUTABLE_NAME} controlblock-app controlblock-config controlblock-hal controlblock-gamepads controlblock-uinput LIOlib mcp23s17Lib fmt)
 
 install(FILES ${CMAKE_BINARY_DIR}/${EXECUTABLE_NAME} DESTINATION /usr/bin
         PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ
