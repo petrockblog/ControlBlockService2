@@ -36,7 +36,7 @@ public:
     /**
      * Destructor
      */
-    virtual ~UInputGamepadNES();
+    ~UInputGamepadNES() override;
 };
 
 #endif

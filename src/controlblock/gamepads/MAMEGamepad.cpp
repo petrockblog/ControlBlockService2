@@ -143,7 +143,7 @@ void MAMEGamepad::update()
         keyboard->sync();
     }
     else {
-        throw 3;
+        throw std::runtime_error("Unknown channel");
     }
 }
 

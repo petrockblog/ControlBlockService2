@@ -22,13 +22,9 @@
 
 #include "NONEGamepad.h"
 
-NONEGamepad::NONEGamepad()
-{
-}
+NONEGamepad::NONEGamepad() = default;
 
-NONEGamepad::~NONEGamepad()
-{
-}
+NONEGamepad::~NONEGamepad() = default;
 
 void NONEGamepad::initialize(InputDevice::Channel_e channel)
 {

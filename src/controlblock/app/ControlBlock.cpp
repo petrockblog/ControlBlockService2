@@ -24,12 +24,12 @@
 
 #include "ControlBlock.h"
 #include "hal/DigitalIO.h"
+#include "Logger.h"
 
 ControlBlock::ControlBlock(IUInputFactory &uiFactoryRef,
                            IControlBlockConfiguration &configRef,
                            IGamepadFactory &gamepadFactory) :
-    m_numberOfGamepads(0u),
-    powerSwitch(NULL) {
+    m_numberOfGamepads(0u) {
   configRef.loadConfiguration();
 
   // initialize the controllers
@@ -55,8 +55,8 @@ ControlBlock::ControlBlock(IUInputFactory &uiFactoryRef,
       counter++;
       if (!configRef.getConfiguration(index).isOnlyOneGamepadEnabled()) {
         gamepads[counter] = gamepadFactory.createGamepad(type, *digitalIO[index]);
-        InputDevice::Channel_e channel = getInputDeviceChannel(counter);
-        gamepads[counter]->initialize(channel);
+        InputDevice::Channel_e counterChannel = getInputDeviceChannel(counter);
+        gamepads[counter]->initialize(counterChannel);
         counter++;
       }
     }
@@ -65,27 +65,23 @@ ControlBlock::ControlBlock(IUInputFactory &uiFactoryRef,
 
   // initialize the power switch
   if (configRef.getConfiguration(0).isEnabled() && configRef.getConfiguration(0).isPowerSwitchEnabled()) {
-    powerSwitch = new PowerSwitch(*digitalIO[0], PowerSwitch::SHUTDOWN_ACTIVATED);
+    powerSwitch = std::make_unique<PowerSwitch>(*digitalIO[0], PowerSwitch::ShutdownActivated::ACTIVATED);
   }
 }
 
 ControlBlock::~ControlBlock() {
-  if (powerSwitch != NULL) {
-    delete powerSwitch;
-  }
-
   for (auto mcp : mcp23s17) {
-    if (mcp != NULL) {
+    if (mcp != nullptr) {
       delete mcp;
     }
   }
   for (auto digIO : digitalIO) {
-    if (digIO != NULL) {
+    if (digIO != nullptr) {
       delete digIO;
     }
   }
   for (auto pad : gamepads) {
-    if (pad != NULL) {
+    if (pad != nullptr) {
       delete pad;
     }
   }
@@ -97,17 +93,17 @@ void ControlBlock::update() {
       gamepads[counter]->update();
     }
   }
-  catch (int errno) {
-    std::cout << "ControlBlock.cpp: Error while updating the gamepad devices. Error number: " << errno << std::endl;
+  catch (std::exception& exc) {
+    std::cout << "ControlBlock.cpp: Error while updating the gamepad devices. Error number: " << exc.what() << std::endl;
   }
 
   try {
-    if (powerSwitch != NULL) {
+    if (powerSwitch != nullptr) {
       powerSwitch->update();
     }
   }
-  catch (int errno) {
-    std::cout << "ControlBlock.cpp: Error while updating the power switch instance. Error number: " << errno
+  catch (std::exception& exc) {
+    std::cout << "ControlBlock.cpp: Error while updating the power switch instance. Error number: " << exc.what()
               << std::endl;
   }
 }
@@ -125,14 +121,14 @@ InputDevice::Channel_e ControlBlock::getInputDeviceChannel(int counterValue) {
       break;
     case 3:channel = InputDevice::CHANNEL_4;
       break;
-    default:std::cout << "ControlBlock.cpp: Unknown counter value" << std::endl;
-      throw 1;
+    default:
+      throw std::runtime_error("ControlBlock.cpp: Unknown counter value");
   }
   return channel;
 }
 
 void ControlBlock::configureDevice(IDigitalIO *digitalIO, InputDevice::GamepadType_e type) {
-  assert(digitalIO != NULL);
+  assert(digitalIO != nullptr);
 
   switch (type) {
     case InputDevice::GAMEPAD_ARCADE:digitalIO->configureDevice(IDigitalIO::DIO_DEVICE_ALLIN);
@@ -148,8 +144,8 @@ void ControlBlock::configureDevice(IDigitalIO *digitalIO, InputDevice::GamepadTy
     case InputDevice::GAMEPAD_NONE:
       // do nothing
       break;
-    default:std::cout << "ControlBlock.cpp: Unknown type" << std::endl;
-      throw 1;
+    default:
+      Logger::logMessage("ControlBlock.cpp: Unknown type");
   }
 
 }

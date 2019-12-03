@@ -45,8 +45,8 @@ public:
     NESGamepad(IUInputFactory& uiFactoryRef, IDigitalIO& digitalIORef);
     ~NESGamepad() = default;
 
-    virtual void initialize(InputDevice::Channel_e channel);
-    virtual void update();
+    void initialize(InputDevice::Channel_e channel) override;
+    void update() override;
 
 private:
     static const uint32_t STROBEDELAY_US = 4u;

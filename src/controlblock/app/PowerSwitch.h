@@ -24,6 +24,8 @@
 #define POWERSWITCH_H
 
 #include "hal/IDigitalIO.h"
+#include <OutputPort.h>
+#include <InputPort.h>
 
 /**
  * This class models the power switch functionalities of the ControlBlock.
@@ -34,28 +36,28 @@ public:
     /**
      * Power state identifiers
      */
-    enum PowerState_e
+    enum class PowerState
     {
-        STATE_OFF = 0,  //!< Power state is off
-        STATE_ON        //!< Power state is on
+        OFF,  //!< Power state is off
+        ON    //!< Power state is on
     };
 
     /**
      * Shutdown signal identifiers
      */
-    enum ShutdownSignal_e
+    enum class ShutdownSignal
     {
-        SHUTDOWN_FALSE = 0,  //!< Shutdown signal is not set
-        SHUTDOWN_TRUE        //!< Shutdown signal is set
+        DEACTIVATED,  //!< Shutdown signal is not set
+        ACTIVATED     //!< Shutdown signal is set
     };
 
     /**
      * Indicates whether the power switch functionality is enabled or not
      */
-    enum ShutdownActivated_e
+    enum class ShutdownActivated
     {
-        SHUTDOWN_DEACTIVATED = 0, //!< Power switch is disabled
-        SHUTDOWN_ACTIVATED        //!< Power switch is enabled
+        DEACTIVATED, //!< Power switch is disabled
+        ACTIVATED    //!< Power switch is enabled
     };
 
     /**
@@ -64,7 +66,7 @@ public:
      * @param digitalOutReference - Reference with IDigitalOut interface
      * @param doShutdownValue - Power switch function is enabled or not
      */
-    explicit PowerSwitch(IDigitalIO& digitalIOReference, ShutdownActivated_e doShutdownValue);
+    explicit PowerSwitch(IDigitalIO& digitalIOReference, ShutdownActivated doShutdownValue);
 
     /**
      * Destructor
@@ -86,12 +88,14 @@ public:
     bool isShutdownInitiated() const;
 
 private:
-    ShutdownActivated_e doShutdown;
+    ShutdownActivated doShutdown;
     bool isShutdownInitiatedValue;
     IDigitalIO& digitalIO;
+    std::shared_ptr<InputPort> powerSwitchIn_port_;
+    std::shared_ptr<OutputPort> powerSwitchOut_port_;
 
-    void setPowerSignal(PowerState_e state);
-    ShutdownSignal_e getShutdownSignal();
+    void setPowerSignal(PowerState state);
+    ShutdownSignal getShutdownSignal();
 
 };
 

@@ -20,49 +20,47 @@
  * in future versions.
  */
 
-#include <iostream>
+#include "../app/Logger.h"
+#include "fmt/format.h"
 #include "SingleConfiguration.h"
 
-SingleConfiguration::SingleConfiguration(bool enabled, uint8_t address, std::string pType, bool pwrSwitch,
+SingleConfiguration::SingleConfiguration(bool enabled, uint8_t address, const std::string& pType, bool pwrSwitch,
         bool oneGp) :
                 isEnabledValue(enabled),
                 deviceAddress(address),
                 isPowerSwitchEnabledValue(pwrSwitch),
                 isOnlyOneGamepadEnabledValue(oneGp)
 {
-    if (pType.compare("arcade") == 0)
+    if (pType == "arcade")
     {
         padType = InputDevice::GAMEPAD_ARCADE;
     }
-    else if (pType.compare("mame") == 0)
+    else if (pType == "mame")
     {
         padType = InputDevice::GAMEPAD_MAME;
     }
-    else if (pType.compare("snes") == 0)
+    else if (pType == "snes")
     {
         padType = InputDevice::GAMEPAD_SNES;
     }
-    else if (pType.compare("nes") == 0)
+    else if (pType == "nes")
     {
         padType = InputDevice::GAMEPAD_NES;
     }
-    else if (pType.compare("none") == 0)
+    else if (pType == "none")
     {
         padType = InputDevice::GAMEPAD_NONE;
     }
-    else if (pType.compare("genesis") == 0)
+    else if (pType == "genesis")
     {
         padType = InputDevice::GAMEPAD_GENESIS;
     }
-
-#ifndef NDEBUG
-    std::cout << "Created configuration. isEnabled: " << enabled << ", address: " << static_cast<int>(address) << ", pad type: " << pType << ", power switch: " << pwrSwitch << ", only one gamepad: " << oneGp << std::endl;
-#endif
+    const std::string configMessage = fmt::format("Created configuration. isEnabled: {}, address: {}, pad type: {}, power switch: {}, only one gamepad: {}", enabled, address, pType, pwrSwitch, oneGp);
+    Logger::logMessage(configMessage);
 }
 
 SingleConfiguration::~SingleConfiguration()
-{
-}
+= default;
 
 bool SingleConfiguration::isEnabled()
 {

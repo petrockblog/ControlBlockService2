@@ -52,12 +52,12 @@ public:
     /**
      * Implements \ref InputDevice::initialize
      */
-    virtual void initialize(InputDevice::Channel_e channel);
+    void initialize(InputDevice::Channel_e channel) override;
 
     /**
      * Implement \ref InputDevice::update()
      */
-    virtual void update();
+    void update() override;
 
 private:
     struct Input

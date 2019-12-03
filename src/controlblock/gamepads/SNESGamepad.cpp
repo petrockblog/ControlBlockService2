@@ -23,7 +23,6 @@
 #include <chrono>
 #include <thread>
 #include <assert.h>
-#include <iostream>
 #include "SNESGamepad.h"
 
 SNESGamepad::SNESGamepad(IUInputFactory& uiFactoryRef, IDigitalIO& digitalIORef) :
@@ -38,9 +37,6 @@ SNESGamepad::SNESGamepad(IUInputFactory& uiFactoryRef, IDigitalIO& digitalIORef)
 
 void SNESGamepad::initialize(InputDevice::Channel_e channel)
 {
-//    assert(digitalIn != NULL);
-//    assert(digitalOut != NULL);
-
     this->channel = channel;
 
     if (channel == InputDevice::CHANNEL_1) {

@@ -21,17 +21,7 @@
  */
 
 #include "mcp23s17pi.h"
-
-#include <fcntl.h>              //Needed for SPI port
-#include <sys/ioctl.h>          //Needed for SPI port
-#include <linux/spi/spidev.h>   //Needed for SPI port
 #include <unistd.h>             //Needed for SPI port
-#include <stdio.h>
-#include <stdlib.h>
-#include <string>
-#include <iostream>
-#include <unistd.h>
-#include <cstring>
 #include <iostream>
 
 bool MCP23S17PI::isBCM2835Initialized_ = false;
@@ -48,8 +38,7 @@ MCP23S17PI::MCP23S17PI(ChipSelectPin chipSelectPin, uint8_t deviceID) :
   writeRegister(MCP23S17PI_IOCON, IOCON_INIT);
 }
 
-MCP23S17PI::~MCP23S17PI() {
-}
+MCP23S17PI::~MCP23S17PI() = default;
 
 void MCP23S17PI::begin() {
   if (!isBCM2835Initialized_) {
@@ -123,8 +112,7 @@ MCP23S17PI::Level MCP23S17PI::digitalRead(uint8_t pin) {
       return LEVEL_LOW;
     }
   } else {
-    std::cout << "Error while MCP23S17PI::digitalRead call. pin=" << static_cast<int>(pin) << std::endl;
-    throw 11;
+    throw std::runtime_error("Error while MCP23S17PI::digitalRead call.");
   }
 }
 

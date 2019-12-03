@@ -26,11 +26,13 @@
 #include <signal.h>
 #include "hal/mcp23s17pi.h"
 
+#include "app/Logger.h"
 #include "app/ControlBlock.h"
 #include "config/ControlBlockConfiguration.h"
 #include "uinput/UInputFactory.h"
 #include "gamepads/GamepadFactory.h"
 
+static const int kWaitingTime_ms = 25;
 static volatile sig_atomic_t doRun = 1;
 
 extern "C" {
@@ -62,6 +64,9 @@ void register_signalhandlers()
 
 int main(int argc, char** argv)
 {
+    Logger::init();
+    Logger::logMessage("Starting ControlBlock driver.");
+
     register_signalhandlers();
     MCP23S17PI::begin();
 
@@ -72,14 +77,14 @@ int main(int argc, char** argv)
 
         ControlBlock controlBlock{uiFactory, config, gamepadFactory};
         
-        std::cout << "[ControlBlockService] Starting gamepad polling ... " << std::endl;
+        Logger::logMessage("Starting gamepad polling ... ");
         while (doRun) {
             controlBlock.update();
-            std::this_thread::sleep_for(std::chrono::milliseconds(25));
+            std::this_thread::sleep_for(std::chrono::milliseconds(kWaitingTime_ms));
         }
     }
-    catch (int errno) {
-        std::cout << "Error while running main loop. Error number: " << errno << std::endl;
+    catch (std::exception& exc) {
+        std::cout << "Error while running main loop. Error number: " << exc.what() << std::endl;
     }
 
     MCP23S17PI::end();

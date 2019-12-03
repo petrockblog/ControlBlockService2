@@ -76,5 +76,4 @@ UInputGamepadGenesis::UInputGamepadGenesis()
 }
 
 UInputGamepadGenesis::~UInputGamepadGenesis()
-{
-}
+= default;

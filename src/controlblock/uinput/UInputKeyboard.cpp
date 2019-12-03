@@ -22,8 +22,7 @@
 
 #include "UInputKeyboard.h"
 
-UInputKeyboard::UInputKeyboard()
-{
+UInputKeyboard::UInputKeyboard() {
     m_fileDescriptor = getHandle();
 
     struct uinput_user_dev uinp;
@@ -37,20 +36,15 @@ UInputKeyboard::UInputKeyboard()
     // Setup the uinput keyboard device
     ioctl(m_fileDescriptor, UI_SET_EVBIT, EV_KEY);
     ioctl(m_fileDescriptor, UI_SET_EVBIT, EV_REL);
-    for (uint32_t index = 0u; index < 256u; index++)
-    {
+    for (uint32_t index = 0u; index < 256u; index++) {
         ioctl(m_fileDescriptor, UI_SET_KEYBIT, index);
     }
 
     /* Create input device into input sub-system */
     write(m_fileDescriptor, &uinp, sizeof(uinp));
-    if (ioctl(m_fileDescriptor, UI_DEV_CREATE))
-    {
-        printf("[ControlBlockService] Unable to create UINPUT device.");
-        throw -1;
+    if (ioctl(m_fileDescriptor, UI_DEV_CREATE)) {
+        throw std::runtime_error("[ControlBlockService] Unable to create UINPUT device.");
     }
 }
 
-UInputKeyboard::~UInputKeyboard()
-{
-}
+UInputKeyboard::~UInputKeyboard() = default;

@@ -48,7 +48,7 @@ public:
     /**
      * Destructor
      */
-    virtual ~UInputDevice();
+    ~UInputDevice() override;
 
     /**
      * Sets the state of a key. To let the changes have an effect the method \ref sync() needs to be called.
@@ -56,16 +56,16 @@ public:
      * @param keyvalue
      * @param evtype
      */
-    virtual void setKeyState(uint16_t keycode, int16_t keyvalue, uint16_t evtype);
+    void setKeyState(uint16_t keycode, int16_t keyvalue, uint16_t evtype) override;
 
     /**
      * Sends all recent key state changes via \ref setKeyState() to the uinput device.
      */
-    virtual void sync();
+    void sync() override;
 
 protected:
     int32_t m_fileDescriptor;
-    int32_t getHandle();
+    static int32_t getHandle();
     void releaseHandle();
 };
 

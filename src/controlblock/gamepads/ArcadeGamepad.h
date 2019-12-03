@@ -50,12 +50,12 @@ public:
     /**
      * See \ref InputDevice::initialize()
      */
-    virtual void initialize(InputDevice::Channel_e channel);
+    void initialize(InputDevice::Channel_e channel) override;
 
     /**
      * See \ref InputDevice::update()
      */
-    virtual void update();
+    void update() override;
 
 private:
     InputDevice::Channel_e channel;

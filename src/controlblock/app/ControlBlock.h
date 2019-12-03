@@ -66,13 +66,13 @@ private:
     static const uint8_t MAX_NUMBER_OF_INPUTDEVICES = 2u * MAX_NUMBER_OF_CONTROLBLOCKS;
 
     uint8_t m_numberOfGamepads;
-    PowerSwitch* powerSwitch;
+    std::unique_ptr<PowerSwitch> powerSwitch;
     MCP23S17PI* mcp23s17[MAX_NUMBER_OF_INPUTDEVICES];
     IDigitalIO* digitalIO[MAX_NUMBER_OF_CONTROLBLOCKS];
 
     InputDevice* gamepads[MAX_NUMBER_OF_CONTROLBLOCKS];
-    InputDevice::Channel_e getInputDeviceChannel(int counterValue);
-    void configureDevice(IDigitalIO* digitalIO, InputDevice::GamepadType_e type);
+    static InputDevice::Channel_e getInputDeviceChannel(int counterValue);
+    static void configureDevice(IDigitalIO* digitalIO, InputDevice::GamepadType_e type);
 
 };
 

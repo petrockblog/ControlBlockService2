@@ -21,27 +21,32 @@
  */
 
 #include <stdlib.h>
-#include <iostream>
+#include "fmt/format.h"
 #include "PowerSwitch.h"
+#include "Logger.h"
 
-PowerSwitch::PowerSwitch(IDigitalIO& digitalIOReference, ShutdownActivated_e doShutdownValue) :
+PowerSwitch::PowerSwitch(IDigitalIO& digitalIOReference, ShutdownActivated doShutdownValue) :
         doShutdown(doShutdownValue),
         isShutdownInitiatedValue(false),
         digitalIO(digitalIOReference)
 {
     digitalIO.configureDevice(IDigitalIO::DIO_DEVICE_POWERSWITCH);
-    setPowerSignal(PowerSwitch::STATE_ON);
 
-#ifndef NDEBUG
-    std::cout << "Created PowerSwitch. doShutdown: " << doShutdownValue << std::endl;
-#endif
+    powerSwitchIn_port_ = std::make_shared<InputPort>(18);
+    powerSwitchOut_port_ = std::make_shared<OutputPort>(17);
+
+    setPowerSignal(PowerState::ON);
+
+    Logger::logMessage(fmt::format("Created PowerSwitch. doShutdown: {}", doShutdownValue));
 }
 
 void PowerSwitch::update()
 {
-    if ((doShutdown == SHUTDOWN_ACTIVATED) && (getShutdownSignal() == SHUTDOWN_TRUE)
+    if ((doShutdown == ShutdownActivated::ACTIVATED) && (getShutdownSignal() ==  ShutdownSignal::ACTIVATED)
             && (!isShutdownInitiatedValue)) {
-        system("/etc/controlblockswitchoff.sh &");
+        const std::string kShutdownCommand {"/etc/controlblockswitchoff.sh &"};
+        Logger::logMessage("Initiating shutdown. Calling");
+        system(kShutdownCommand.c_str());
         isShutdownInitiatedValue = true;
     }
 }
@@ -51,24 +56,26 @@ bool PowerSwitch::isShutdownInitiated() const
     return isShutdownInitiatedValue;
 }
 
-void PowerSwitch::setPowerSignal(PowerState_e state)
+void PowerSwitch::setPowerSignal(PowerState state)
 {
-    if (state == STATE_OFF) {
-        digitalIO.setLevel(IDigitalIO::DIO_CHANNEL_TOPOWERSWITCH, IDigitalIO::DIO_LEVEL_LOW);
+    if (state == PowerState::OFF) {
+        powerSwitchOut_port_->Write(false);
+        Logger::logMessage("Disabled power signal.");
     }
     else {
-        digitalIO.setLevel(IDigitalIO::DIO_CHANNEL_TOPOWERSWITCH, IDigitalIO::DIO_LEVEL_HIGH);
+      powerSwitchOut_port_->Write(true);
+        Logger::logMessage("Enabled power signal.");
     }
 }
 
-PowerSwitch::ShutdownSignal_e PowerSwitch::getShutdownSignal()
+PowerSwitch::ShutdownSignal PowerSwitch::getShutdownSignal()
 {
-    ShutdownSignal_e signal;
-    if (digitalIO.getLevel(IDigitalIO::DIO_CHANNEL_FROMPOWERSWITCH) == IDigitalIO::DIO_LEVEL_LOW) {
-        signal = SHUTDOWN_FALSE;
+    ShutdownSignal signal;
+    if (!powerSwitchIn_port_->Read()) {
+        signal = ShutdownSignal::DEACTIVATED;
     }
     else {
-        signal = SHUTDOWN_TRUE;
+        signal = ShutdownSignal::ACTIVATED;
     }
     return signal;
 }
