@@ -65,7 +65,7 @@ ControlBlock::ControlBlock(IUInputFactory &uiFactoryRef,
 
   // initialize the power switch
   if (configRef.getConfiguration(0).isEnabled() && configRef.getConfiguration(0).isPowerSwitchEnabled()) {
-    powerSwitch = new PowerSwitch(*digitalIO[0], PowerSwitch::SHUTDOWN_ACTIVATED);
+    powerSwitch = new PowerSwitch(*digitalIO[0], PowerSwitch::ShutdownActivated::ACTIVATED);
   }
 }
 
