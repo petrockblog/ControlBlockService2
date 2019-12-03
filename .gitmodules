@@ -7,3 +7,6 @@
 [submodule "src/lib/LIO"]
 	path = src/lib/LIO
 	url = https://github.com/petrockblog/LIO.git
+[submodule "src/lib/plog"]
+	path = src/lib/plog
+	url = https://github.com/SergiusTheBest/plog.git

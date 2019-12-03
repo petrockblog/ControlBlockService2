@@ -11,10 +11,13 @@ include_directories(src/controlblock)
 include_directories(src/lib/jsoncpp/include)
 include_directories(src/lib/LIO/src)
 include_directories(src/lib/mcp23s17)
+include_directories(src/lib/plog/include)
 
 add_subdirectory(src/lib/jsoncpp)
 add_subdirectory(src/lib/LIO/src)
 add_subdirectory(src/lib/mcp23s17)
+
+set(PLOG_BUILD_SAMPLES OFF)
 
 add_subdirectory(src/controlblock/app)
 add_subdirectory(src/controlblock/config)
