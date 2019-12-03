@@ -12,6 +12,7 @@ include_directories(src/lib/jsoncpp/include)
 include_directories(src/lib/LIO/src)
 include_directories(src/lib/mcp23s17)
 include_directories(src/lib/plog/include)
+include_directories(src/lib/fmt/include)
 
 add_subdirectory(src/lib/jsoncpp)
 add_subdirectory(src/lib/LIO/src)

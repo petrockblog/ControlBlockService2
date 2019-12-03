@@ -10,3 +10,6 @@
 [submodule "src/lib/plog"]
 	path = src/lib/plog
 	url = https://github.com/SergiusTheBest/plog.git
+[submodule "src/lib/fmt"]
+	path = src/lib/fmt
+	url = https://github.com/fmtlib/fmt.git
