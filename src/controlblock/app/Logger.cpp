@@ -7,17 +7,13 @@
 #include "Logger.h"
 
 
-Logger::Logger() {
+Logger::Logger() = default;
 
-}
-
-Logger::~Logger() {
-
-}
+Logger::~Logger() = default;
 
 void Logger::init() {
   plog::init(plog::debug, "/tmp/controlblock.log");
 }
-void Logger::logMessage(std::string message) {
+void Logger::logMessage(const std::string& message) {
   PLOGD << message;
 }

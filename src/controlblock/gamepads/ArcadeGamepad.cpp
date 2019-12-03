@@ -141,6 +141,6 @@ void ArcadeGamepad::update()
         gamepad->sync();
     }
     else {
-        throw -1;
+        throw std::runtime_error("Unknown channel.");
     }
 }

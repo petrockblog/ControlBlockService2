@@ -42,6 +42,6 @@ IUInputDevice* UInputFactory::getUInputDevice(IUInputDevice::DeviceType type)
     case IUInputDevice::TYPE_KEYBOARD:
         return new UInputKeyboard();
     default:
-        throw 1;
+        throw std::runtime_error("Unknown type.");
     }
 }

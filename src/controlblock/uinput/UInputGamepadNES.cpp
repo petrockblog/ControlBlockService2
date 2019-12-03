@@ -73,5 +73,4 @@ UInputGamepadNES::UInputGamepadNES()
 }
 
 UInputGamepadNES::~UInputGamepadNES()
-{
-}
+= default;

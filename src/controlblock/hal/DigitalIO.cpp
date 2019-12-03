@@ -119,8 +119,8 @@ void DigitalIO::configureDevice(DIO_Device mode) {
       mcp1.digitalWrite(9, MCP23S17PI::LEVEL_LOW);
 
       break;
-    default:std::cout << "DigitalIO: Unknown device type" << std::endl;
-      throw 50;
+    default:
+      throw std::runtime_error("DigitalIO: Unknown device type");
   }
 }
 

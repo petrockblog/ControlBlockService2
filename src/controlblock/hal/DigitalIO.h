@@ -29,9 +29,9 @@ class DigitalIO : public IDigitalIO {
 public:
     DigitalIO(MCP23S17PI& mcp1ref, MCP23S17PI& mcp2ref);
 
-    virtual void configureDevice(DIO_Device mode);
+    void configureDevice(DIO_Device mode) override;
 
-    virtual DIO_Level_e getLevel(DIO_Channel_e channel);
+    DIO_Level_e getLevel(DIO_Channel_e channel) override;
 
       /**
      * @brief Sets a logical signal level of a given channel
@@ -39,7 +39,7 @@ public:
      * @param channel The channel whose signal level should be set
      * @param level The signal level to be set
      */
-    virtual void setLevel(DIO_Channel_e channel, DIO_Level_e level);
+    void setLevel(DIO_Channel_e channel, DIO_Level_e level) override;
 
 private:
   MCP23S17PI& mcp1;

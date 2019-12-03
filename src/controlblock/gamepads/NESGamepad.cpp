@@ -23,7 +23,6 @@
 #include <chrono>
 #include <thread>
 #include <assert.h>
-#include <iostream>
 #include "NESGamepad.h"
 
 NESGamepad::NESGamepad(IUInputFactory& uiFactoryRef, IDigitalIO& digitalIORef) :

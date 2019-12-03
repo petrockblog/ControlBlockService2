@@ -10,8 +10,8 @@
 class GamepadFactory: public IGamepadFactory
 {
 public:
-    GamepadFactory(IUInputFactory& uiFactoryRef);
-    virtual InputDevice* createGamepad(InputDevice::GamepadType_e gamepadType, IDigitalIO& digitalIO);
+    explicit GamepadFactory(IUInputFactory& uiFactoryRef);
+    InputDevice* createGamepad(InputDevice::GamepadType_e gamepadType, IDigitalIO& digitalIO) override;
 
 private:
     IUInputFactory& uiFactory;

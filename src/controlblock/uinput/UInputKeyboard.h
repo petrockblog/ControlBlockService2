@@ -36,7 +36,7 @@ public:
     /**
      * Destructor
      */
-    virtual ~UInputKeyboard();
+    ~UInputKeyboard() override;
 };
 
 #endif

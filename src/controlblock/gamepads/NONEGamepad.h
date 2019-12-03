@@ -31,8 +31,8 @@ public:
     NONEGamepad();
     ~NONEGamepad();
 
-    virtual void initialize(InputDevice::Channel_e channel);
-    virtual void update();
+    void initialize(InputDevice::Channel_e channel) override;
+    void update() override;
 
 };
 

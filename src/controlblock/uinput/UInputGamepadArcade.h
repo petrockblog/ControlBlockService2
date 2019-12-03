@@ -36,7 +36,7 @@ public:
     /**
      * Destructor
      */
-    virtual ~UInputGamepadArcade();
+    ~UInputGamepadArcade() override;
 };
 
 #endif

@@ -46,14 +46,14 @@ public:
     /**
      * Loads the configuration from \ref CONFIGFILEPATH
      */
-    virtual void loadConfiguration();
+    void loadConfiguration() override;
 
     /**
      * Returns the configuration for a given ControlBlock ID
      * @param controlBlockID - The ID of the ControlBlock
      * @return Reference to the configuration of the given ControlBlock ID
      */
-    virtual SingleConfiguration& getConfiguration(int controlBlockID);
+    SingleConfiguration& getConfiguration(int controlBlockID) override;
 
 private:
     static const int MAX_CONTROLBLOCK_ID = 2u;

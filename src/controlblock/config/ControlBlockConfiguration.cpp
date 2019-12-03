@@ -29,16 +29,16 @@
 
 ControlBlockConfiguration::ControlBlockConfiguration() :
         hasLoadedConfiguration(false),
-        singleConfiguration{NULL}
+        singleConfiguration{nullptr}
 {
 }
 
 ControlBlockConfiguration::~ControlBlockConfiguration()
 {
     if (hasLoadedConfiguration) {
-        for (int index = 0; index < MAX_CONTROLBLOCK_ID; index++) {
-            if (singleConfiguration[index] != NULL) {
-                delete singleConfiguration[index];
+        for (auto & index : singleConfiguration) {
+            if (index != nullptr) {
+                delete index;
             }
         }
     }
@@ -56,8 +56,7 @@ void ControlBlockConfiguration::loadConfiguration()
         bool parsingSuccessful = reader.parse(config_doc, root);
         if (!parsingSuccessful) {
             // report to the user the failure and their locations in the document.
-            std::cout << "ControlBlockConfiguration: Failed to parse configuration\n" << reader.getFormattedErrorMessages();
-            throw (1);
+            throw std::runtime_error("ControlBlockConfiguration: Failed to parse configuration");
         }
 
         singleConfiguration[0] = new SingleConfiguration(root["controlblocks"][0]["enabled"].asBool(),
@@ -71,7 +70,7 @@ void ControlBlockConfiguration::loadConfiguration()
                 root["controlblocks"][1]["gamepadtype"].asString(), root["controlblocks"][1]["powerswitchOn"].asBool(),
                 root["controlblocks"][1]["onlyOneGamepad"].asBool());
     }
-    catch (int errno) {
+    catch (std::exception& exc) {
         std::cout << "ControlBlockConfiguration: Error while initializing ControlBlockConfiguration instance. Error number: " << errno
                   << std::endl;
     }

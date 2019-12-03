@@ -65,7 +65,7 @@ UInputGamepadArcade::UInputGamepadArcade()
     write(m_fileDescriptor, &uinp, sizeof(uinp));
     if (ioctl(m_fileDescriptor, UI_DEV_CREATE)) {
         printf("[ArcadeGamepad] Unable to create UINPUT device.");
-        throw -1;
+        throw std::runtime_error("Unable to create UINPUT device.");
     }
 
     setKeyState(ABS_X, 2, EV_ABS);
@@ -73,6 +73,4 @@ UInputGamepadArcade::UInputGamepadArcade()
     sync();
 }
 
-UInputGamepadArcade::~UInputGamepadArcade()
-{
-}
+UInputGamepadArcade::~UInputGamepadArcade() = default;

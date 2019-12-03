@@ -21,7 +21,6 @@
  */
 
 #include "HALFactory.h"
-#include <stddef.h>
 
 HALFactory::HALFactory() : mcp23s17_1(MCP23S17PI::CHIPSELECT_0, 0b000),
                            mcp23s17_2(MCP23S17PI::CHIPSELECT_0, 0b001),
@@ -37,8 +36,7 @@ void HALFactory::deinitialize() {
   MCP23S17PI::end();
 }
 
-HALFactory::~HALFactory() {
-}
+HALFactory::~HALFactory() = default;
 
 MCP23S17PI *HALFactory::getMCP23S17(MCPChannel channel) {
   if (channel == MCPCHANNEL_1) {

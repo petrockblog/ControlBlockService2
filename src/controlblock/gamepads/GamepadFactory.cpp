@@ -29,7 +29,6 @@ InputDevice* GamepadFactory::createGamepad(InputDevice::GamepadType_e gamepadTyp
     case InputDevice::GAMEPAD_NONE:
         return new NONEGamepad();
     default:
-        std::cout << "GamepadFactory: Error while configuring gamepad type ..." << std::endl;
-        throw 1;
+        throw std::runtime_error("GamepadFactory: Error while configuring gamepad type");
     }
 }

@@ -40,7 +40,7 @@ public:
      * @param pwrSwitch - Whether the power switch functionality is enabled (=true) or not (=false)
      * @param oneGp - Whether one (=true) or two (=false) gamepads should be registered
      */
-    SingleConfiguration(bool enabled, uint8_t address, std::string type, bool pwrSwitch, bool oneGp);
+    SingleConfiguration(bool enabled, uint8_t address, const std::string& type, bool pwrSwitch, bool oneGp);
 
     /**
      * Destructor

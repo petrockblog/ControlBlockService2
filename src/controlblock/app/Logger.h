@@ -13,7 +13,7 @@ class Logger {
   ~Logger();
 
   static void init();
-  static void logMessage(std::string message);
+  static void logMessage(const std::string& message);
 
 };
 
