@@ -5,8 +5,6 @@
 #include "IGamepadFactory.h"
 #include "InputDevice.h"
 #include "uinput/IUInputFactory.h"
-#include "hal/IDigitalIn.h"
-#include "hal/IDigitalOut.h"
 #include "hal/IDigitalIO.h"
 
 class GamepadFactory: public IGamepadFactory
