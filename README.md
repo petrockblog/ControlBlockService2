@@ -112,7 +112,7 @@ The default configuration file looks like this:
                 "SJ1" : 0,             // The hardware address solder-jumper SJ1. Options: 0, 1 
                 "SJ2" : 0              // The hardware address solder-jumper SJ2, Options: 0, 1
             },
-            "gamepadtype" : "arcade",  // Sets the gamepad type. Options: "arcade", "mame", "snes", "genesis", "none"
+            "gamepadtype" : "arcade",  // Sets the gamepad type. Options: "arcade", "mame", "snes", "nes", "genesis", "none"
             "onlyOneGamepad" : false,  // If true, registers only one gamepad instead of two
             "powerswitchOn" : true     // Enables (=true) the power switch functionality. Options: true, false
         },
@@ -122,7 +122,7 @@ The default configuration file looks like this:
                 "SJ1" : 1,              // The hardware address solder-jumper SJ1. Options: 0, 1 
                 "SJ2" : 0               // The hardware address solder-jumper SJ2, Options: 0, 1
             },
-            "gamepadtype" : "arcade",   // Sets the gamepad type. Options: "arcade", "mame", "snes", "none"
+            "gamepadtype" : "arcade",   // Sets the gamepad type. Options: "arcade", "mame", "snes", "nes", "genesis", "none"
             "onlyOneGamepad" : false    // If true, registers only one gamepad instead of two
         }
     ]
