@@ -5,6 +5,7 @@ project(ControlBlockService2)
 set(CMAKE_CXX_STANDARD 14)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3")
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS} -g")
 set(EXECUTABLE_NAME "controlblock")
 
 include_directories(src/controlblock)
