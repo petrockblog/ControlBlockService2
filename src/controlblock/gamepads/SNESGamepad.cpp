@@ -131,11 +131,14 @@ uint16_t SNESGamepad::getSNESControllerState()
 
     for (uint8_t i = 0u; i < NUMBER_OF_BUTTONS; i++) {
         IDigitalIO::DIO_Level_e curpin;
-        if (channel == InputDevice::CHANNEL_1) {
+        if ((channel == InputDevice::CHANNEL_1) || (channel == InputDevice::CHANNEL_3)) {
             curpin = digitalIO.getLevel(DIO_CHANNEL_P1_DATA);
         }
-        else {
+        else if ((channel == InputDevice::CHANNEL_2) || (channel == InputDevice::CHANNEL_4)){
             curpin = digitalIO.getLevel(DIO_CHANNEL_P2_DATA);
+        }
+        else {
+          throw std::runtime_error("Unknown channel.");
         }
 
         if (curpin == IDigitalIO::DIO_LEVEL_HIGH) {
