@@ -146,21 +146,6 @@ You can also connect a non-latching __reset button__ to `Player-1, Input B`. If 
  ![GenesisMapping](https://github.com/petrockblog/ControlBlockService2/raw/master/supplementary/ControlBlockLayoutGenesis.png)
 You can __switch to six-button__ controller by pressing the button combination `START, A, B, C, UP` at the same time.
 
-Here is an overview about the pins for all supported gamepad types:
-
-
-| Control<br>port<br>pin #	| Name	| Function | Cable Color | ControlBlock Port |
-| --- | --- | --- | --- | --- |
-| 1	| VCC	| +5v (Out) | Red | |
-| 2	| D1	| Data 1    | White | |
-| 3	| D0	| Data 0    | Yellow | |
-| 4	| S0	| Select 0  | Orange | |
-| 5	| S1	| Select 1  | Blue | |
-| 6	| 5v	| +5v (Inp) | Green | |
-| 7	| D3	| Data 3    | Brown | |
-| 8	| D2	| Data 2    | Black | |
-| 9	| GND	| Ground    | Purple | |
-
 ### Using Only one Gamepad
 
 If you want to connect only one gamepad to the ControlBlock you can set the element `onlyOneGamepad` to `true`: It enables only one gamepad in the system (e.g., if only Player-1 buttons are wired to the ControlBlock in your setup, this prevents a ghost gamepad from being selected as default player 2 in retroarch)

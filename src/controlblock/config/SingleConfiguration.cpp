@@ -55,10 +55,6 @@ SingleConfiguration::SingleConfiguration(bool enabled, uint8_t address, const st
     {
         padType = InputDevice::GAMEPAD_GENESIS;
     }
-    else if (pType == "saturn")
-    {
-        padType = InputDevice::GAMEPAD_SATURN;
-    }
     const std::string configMessage = fmt::format("Created configuration. isEnabled: {}, address: {}, pad type: {}, power switch: {}, only one gamepad: {}", enabled, address, pType, pwrSwitch, oneGp);
     Logger::logMessage(configMessage);
 }

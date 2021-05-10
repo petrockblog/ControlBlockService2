@@ -141,8 +141,6 @@ void ControlBlock::configureDevice(IDigitalIO *digitalIO, InputDevice::GamepadTy
       break;
     case InputDevice::GAMEPAD_GENESIS:digitalIO->configureDevice(IDigitalIO::DIO_DEVICE_GENESIS);
       break;
-    case InputDevice::GAMEPAD_SATURN:digitalIO->configureDevice(IDigitalIO::DIO_DEVICE_GENESIS);
-      break;
     case InputDevice::GAMEPAD_NONE:
       // do nothing
       break;
