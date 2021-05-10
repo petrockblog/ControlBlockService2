@@ -38,7 +38,8 @@ public:
         GAMEPAD_MAME,        //!< MAME gamepad type
         GAMEPAD_SNES,        //!< SNES gamepad type
         GAMEPAD_NES,        //!< SNES gamepad type
-        GAMEPAD_GENESIS,     //!< Genesis gamepad type
+        GAMEPAD_GENESIS,     //!< Sega Genesis gamepad type
+        GAMEPAD_SATURN,      //!< Sega Saturn gamepad type
         GAMEPAD_NONE         //!< Neutral gamepad type
     };
 
