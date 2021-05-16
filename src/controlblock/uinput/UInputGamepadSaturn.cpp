@@ -45,8 +45,9 @@ UInputGamepadSaturn::UInputGamepadSaturn()
     ioctl(m_fileDescriptor, UI_SET_KEYBIT, BTN_X);
     ioctl(m_fileDescriptor, UI_SET_KEYBIT, BTN_Y);
     ioctl(m_fileDescriptor, UI_SET_KEYBIT, BTN_Z);
+    ioctl(m_fileDescriptor, UI_SET_KEYBIT, BTN_TL);
+    ioctl(m_fileDescriptor, UI_SET_KEYBIT, BTN_TR);
     ioctl(m_fileDescriptor, UI_SET_KEYBIT, BTN_START);
-    ioctl(m_fileDescriptor, UI_SET_KEYBIT, BTN_MODE);
 
     // Add Absolute (D-pad) type
     ioctl(m_fileDescriptor, UI_SET_EVBIT, EV_ABS);
@@ -66,7 +67,7 @@ UInputGamepadSaturn::UInputGamepadSaturn()
     /* Create input device into input sub-system */
     write(m_fileDescriptor, &uinp, sizeof(uinp));
     if (ioctl(m_fileDescriptor, UI_DEV_CREATE)) {
-        printf("[Sega SaturnGamepad] Unable to create UINPUT device.");
+        printf("[Sega Saturn Gamepad] Unable to create UINPUT device.");
         // throw -1;
     }
 

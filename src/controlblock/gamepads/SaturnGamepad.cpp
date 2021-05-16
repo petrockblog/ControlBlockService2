@@ -28,34 +28,12 @@ const IDigitalIO::DIO_Channel_e SaturnGamepad::CHN_SELECT0[] = {IDigitalIO::DIO_
 const IDigitalIO::DIO_Channel_e SaturnGamepad::CHN_SELECT1[] = {IDigitalIO::DIO_CHANNEL_P2_DOWN,
                                                                 IDigitalIO::DIO_CHANNEL_P2_SW1};
 
-/**
- * Controller DB9 Pin to Button Flag Mappings
- * First column is the controller index, second column
- * is the input pin that the controller's DB9 pin is
- * attached to, remaing columns are the button flags
- */
-// const SaturnGamepad::Input SaturnGamepad::inputMap[] = {
-//         {0, IDigitalIO::DIO_CHANNEL_P1_RIGHT, UP,    UP,    Z}, // P0 DB9 Pin 1
-//         {0, IDigitalIO::DIO_CHANNEL_P1_LEFT,  DOWN,  DOWN,  Y}, // P0 DB9 Pin 2
-//         {0, IDigitalIO::DIO_CHANNEL_P1_UP,    ON,    LEFT,  X}, // P0 DB9 Pin 3
-//         {0, IDigitalIO::DIO_CHANNEL_P1_DOWN,  ON,    RIGHT, MODE}, // P0 DB9 Pin 4
-//         {0, IDigitalIO::DIO_CHANNEL_P1_SW2,   A,     B, 0}, // P0 DB9 Pin 6
-//         {0, IDigitalIO::DIO_CHANNEL_P1_SW5,   START, C, 0}, // P0 DB9 Pin 9
-//         {1, IDigitalIO::DIO_CHANNEL_P2_RIGHT, UP,    UP,    Z}, // P1 DB9 Pin 1
-//         {1, IDigitalIO::DIO_CHANNEL_P2_LEFT,  DOWN,  DOWN,  Y}, // P1 DB9 Pin 2
-//         {1, IDigitalIO::DIO_CHANNEL_P2_UP,    ON,    LEFT,  X}, // P1 DB9 Pin 3
-//         {1, IDigitalIO::DIO_CHANNEL_P2_DOWN,  ON,    RIGHT, MODE}, // P1 DB9 Pin 4
-//         {1, IDigitalIO::DIO_CHANNEL_P2_SW2,   A,     B, 0}, // P1 DB9 Pin 6
-//         {1, IDigitalIO::DIO_CHANNEL_P2_SW5,   START, C, 0}, // P1 DB9 Pin 9
-// };
-
-SaturnGamepad::SaturnGamepad(IUInputFactory& uiFactory, IDigitalIO& digitalIORef) :
-        channel(InputDevice::CHANNEL_UNDEFINED),
-        digitalIO(digitalIORef),
-        currentState(0u),
-        lastState(0xFFFF),
-        playerIndex(0u),
-        gamepad(uiFactory.getUInputDevice(IUInputDevice::TYPE_GAMEPAD_SATURN))
+SaturnGamepad::SaturnGamepad(IUInputFactory &uiFactory, IDigitalIO &digitalIORef) : channel(InputDevice::CHANNEL_UNDEFINED),
+                                                                                    digitalIO(digitalIORef),
+                                                                                    currentState(0u),
+                                                                                    lastState(0xFFFF),
+                                                                                    playerIndex_(0u),
+                                                                                    gamepad(uiFactory.getUInputDevice(IUInputDevice::TYPE_GAMEPAD_SATURN))
 {
 }
 
@@ -63,11 +41,11 @@ void SaturnGamepad::initialize(InputDevice::Channel_e channel)
 {
     if ((channel == InputDevice::CHANNEL_1) || (channel == InputDevice::CHANNEL_3))
     {
-        playerIndex = 0u;
+        playerIndex_ = 0u;
     }
     else if ((channel == InputDevice::CHANNEL_2) || (channel == InputDevice::CHANNEL_4))
     {
-        playerIndex = 1u;
+        playerIndex_ = 1u;
     }
 
     digitalIO.configureDevice(IDigitalIO::DIO_DEVICE_SATURN);
@@ -83,108 +61,115 @@ void SaturnGamepad::update()
 
 void SaturnGamepad::readButtons()
 {
-    resetState();
-    // if (isInSixButtonMode)
-    // {
-    //     read6buttons(playerIndex);
-    // }
-    // else
-    // {
-    //     read3buttons(playerIndex);
-    // }
-}
-
-void SaturnGamepad::resetState()
-{
     currentState = 0u;
+
+    if (playerIndex_ == 0u)
+    {
+        digitalIO.setLevel(CHN_SELECT0[playerIndex_], IDigitalIO::DIO_LEVEL_LOW);
+        digitalIO.setLevel(CHN_SELECT1[playerIndex_], IDigitalIO::DIO_LEVEL_LOW);
+
+        currentState |= (digitalIO.getLevel(IDigitalIO::DIO_CHANNEL_P1_UP) == IDigitalIO::DIO_LEVEL_HIGH ? SATURNBTN_Z : 0);
+        currentState |= (digitalIO.getLevel(IDigitalIO::DIO_CHANNEL_P1_LEFT) == IDigitalIO::DIO_LEVEL_HIGH ? SATURNBTN_Y : 0);
+        currentState |= (digitalIO.getLevel(IDigitalIO::DIO_CHANNEL_P1_SW4) == IDigitalIO::DIO_LEVEL_HIGH ? SATURNBTN_X : 0);
+        currentState |= (digitalIO.getLevel(IDigitalIO::DIO_CHANNEL_P1_SW5) == IDigitalIO::DIO_LEVEL_HIGH ? SATURNBTN_RIGHT : 0);
+
+        digitalIO.setLevel(CHN_SELECT0[playerIndex_], IDigitalIO::DIO_LEVEL_HIGH);
+        digitalIO.setLevel(CHN_SELECT1[playerIndex_], IDigitalIO::DIO_LEVEL_LOW);
+
+        currentState |= (digitalIO.getLevel(IDigitalIO::DIO_CHANNEL_P1_UP) == IDigitalIO::DIO_LEVEL_HIGH ? SATURNBTN_B : 0);
+        currentState |= (digitalIO.getLevel(IDigitalIO::DIO_CHANNEL_P1_LEFT) == IDigitalIO::DIO_LEVEL_HIGH ? SATURNBTN_C : 0);
+        currentState |= (digitalIO.getLevel(IDigitalIO::DIO_CHANNEL_P1_SW4) == IDigitalIO::DIO_LEVEL_HIGH ? SATURNBTN_A : 0);
+        currentState |= (digitalIO.getLevel(IDigitalIO::DIO_CHANNEL_P1_SW5) == IDigitalIO::DIO_LEVEL_HIGH ? SATURNBTN_START : 0);
+
+        digitalIO.setLevel(CHN_SELECT0[playerIndex_], IDigitalIO::DIO_LEVEL_LOW);
+        digitalIO.setLevel(CHN_SELECT1[playerIndex_], IDigitalIO::DIO_LEVEL_HIGH);
+
+        currentState |= (digitalIO.getLevel(IDigitalIO::DIO_CHANNEL_P1_UP) == IDigitalIO::DIO_LEVEL_HIGH ? SATURNBTN_UP : 0);
+        currentState |= (digitalIO.getLevel(IDigitalIO::DIO_CHANNEL_P1_LEFT) == IDigitalIO::DIO_LEVEL_HIGH ? SATURNBTN_DOWN : 0);
+        currentState |= (digitalIO.getLevel(IDigitalIO::DIO_CHANNEL_P1_SW4) == IDigitalIO::DIO_LEVEL_HIGH ? SATURNBTN_LT : 0);
+        currentState |= (digitalIO.getLevel(IDigitalIO::DIO_CHANNEL_P1_SW5) == IDigitalIO::DIO_LEVEL_HIGH ? SATURNBTN_RT : 0);
+
+        digitalIO.setLevel(CHN_SELECT0[playerIndex_], IDigitalIO::DIO_LEVEL_HIGH);
+        digitalIO.setLevel(CHN_SELECT1[playerIndex_], IDigitalIO::DIO_LEVEL_HIGH);
+
+        currentState |= (digitalIO.getLevel(IDigitalIO::DIO_CHANNEL_P1_SW5) == IDigitalIO::DIO_LEVEL_HIGH ? SATURNBTN_LEFT : 0);
+    }
+    else if (playerIndex_ == 1u)
+    {
+        digitalIO.setLevel(CHN_SELECT0[playerIndex_], IDigitalIO::DIO_LEVEL_LOW);
+        digitalIO.setLevel(CHN_SELECT1[playerIndex_], IDigitalIO::DIO_LEVEL_LOW);
+
+        currentState |= (digitalIO.getLevel(IDigitalIO::DIO_CHANNEL_P2_UP) == IDigitalIO::DIO_LEVEL_HIGH ? SATURNBTN_Z : 0);
+        currentState |= (digitalIO.getLevel(IDigitalIO::DIO_CHANNEL_P2_LEFT) == IDigitalIO::DIO_LEVEL_HIGH ? SATURNBTN_Y : 0);
+        currentState |= (digitalIO.getLevel(IDigitalIO::DIO_CHANNEL_P2_SW4) == IDigitalIO::DIO_LEVEL_HIGH ? SATURNBTN_X : 0);
+        currentState |= (digitalIO.getLevel(IDigitalIO::DIO_CHANNEL_P2_SW5) == IDigitalIO::DIO_LEVEL_HIGH ? SATURNBTN_RIGHT : 0);
+
+        digitalIO.setLevel(CHN_SELECT0[playerIndex_], IDigitalIO::DIO_LEVEL_HIGH);
+        digitalIO.setLevel(CHN_SELECT1[playerIndex_], IDigitalIO::DIO_LEVEL_LOW);
+
+        currentState |= (digitalIO.getLevel(IDigitalIO::DIO_CHANNEL_P2_UP) == IDigitalIO::DIO_LEVEL_HIGH ? SATURNBTN_B : 0);
+        currentState |= (digitalIO.getLevel(IDigitalIO::DIO_CHANNEL_P2_LEFT) == IDigitalIO::DIO_LEVEL_HIGH ? SATURNBTN_C : 0);
+        currentState |= (digitalIO.getLevel(IDigitalIO::DIO_CHANNEL_P2_SW4) == IDigitalIO::DIO_LEVEL_HIGH ? SATURNBTN_A : 0);
+        currentState |= (digitalIO.getLevel(IDigitalIO::DIO_CHANNEL_P2_SW5) == IDigitalIO::DIO_LEVEL_HIGH ? SATURNBTN_START : 0);
+
+        digitalIO.setLevel(CHN_SELECT0[playerIndex_], IDigitalIO::DIO_LEVEL_LOW);
+        digitalIO.setLevel(CHN_SELECT1[playerIndex_], IDigitalIO::DIO_LEVEL_HIGH);
+
+        currentState |= (digitalIO.getLevel(IDigitalIO::DIO_CHANNEL_P2_UP) == IDigitalIO::DIO_LEVEL_HIGH ? SATURNBTN_UP : 0);
+        currentState |= (digitalIO.getLevel(IDigitalIO::DIO_CHANNEL_P2_LEFT) == IDigitalIO::DIO_LEVEL_HIGH ? SATURNBTN_DOWN : 0);
+        currentState |= (digitalIO.getLevel(IDigitalIO::DIO_CHANNEL_P2_SW4) == IDigitalIO::DIO_LEVEL_HIGH ? SATURNBTN_LT : 0);
+        currentState |= (digitalIO.getLevel(IDigitalIO::DIO_CHANNEL_P2_SW5) == IDigitalIO::DIO_LEVEL_HIGH ? SATURNBTN_RT : 0);
+
+        digitalIO.setLevel(CHN_SELECT0[playerIndex_], IDigitalIO::DIO_LEVEL_HIGH);
+        digitalIO.setLevel(CHN_SELECT1[playerIndex_], IDigitalIO::DIO_LEVEL_HIGH);
+
+        currentState |= (digitalIO.getLevel(IDigitalIO::DIO_CHANNEL_P2_SW5) == IDigitalIO::DIO_LEVEL_HIGH ? SATURNBTN_LEFT : 0);
+    }
 }
-
-// void SaturnGamepad::read3buttons(int player)
-// {
-    // Set SELECT LOW and read lowFlag
-    // digitalIO.setLevel(CHN_SELECT[player], IDigitalIO::DIO_LEVEL_LOW);
-    // for (int i = 0; i < sizeof(inputMap) / sizeof(Input); i++) {
-    //     if ((inputMap[i].player == player)
-    //             && (digitalIO.getLevel(inputMap[i].inputChannel) == IDigitalIO::DIO_LEVEL_HIGH)) {
-    //         currentState |= inputMap[i].lowFlag;
-    //     }
-    // }
-
-    // // Set SELECT HIGH and read highFlag
-    // digitalIO.setLevel(CHN_SELECT[player], IDigitalIO::DIO_LEVEL_HIGH);
-    // for (int i = 0; i < sizeof(inputMap) / sizeof(Input); i++) {
-    //     if ((inputMap[i].player == player)
-    //             && (digitalIO.getLevel(inputMap[i].inputChannel) == IDigitalIO::DIO_LEVEL_HIGH)) {
-    //         currentState |= inputMap[i].highFlag;
-    //     }
-    // }
-
-    // const bool shouldSwitchTo6ButtonMode = ((currentState & (ON | START | A | B | C | UP)) == (ON | START | A | B | C | UP));
-    // if (shouldSwitchTo6ButtonMode)
-    // {
-    //     isInSixButtonMode = true;
-    // }
-    // // When a controller disconnects, revert to three-button polling
-    // else if ((currentState & ON) != ON)
-    // {
-    //    isInSixButtonMode = false;
-    // }
-// }
-
-// void SaturnGamepad::read6buttons(int player)
-// {
-//     // Poll for three-button states twice
-//     read3buttons(player);
-//     read3buttons(player);
-
-//     // After two three-button polls, pulse the SELECT line
-//     // so the six-button reports the higher button states
-//     digitalIO.setLevel(CHN_SELECT[player], IDigitalIO::DIO_LEVEL_LOW);
-//     digitalIO.setLevel(CHN_SELECT[player], IDigitalIO::DIO_LEVEL_HIGH);
-
-//     for (int i = 0; i < sizeof(inputMap) / sizeof(Input); i++) {
-//         if ((inputMap[i].player == player)
-//                 && (digitalIO.getLevel(inputMap[i].inputChannel) == IDigitalIO::DIO_LEVEL_HIGH)) {
-//             currentState |= inputMap[i].pulse3Flag;
-//         }
-//     }
-// }
 
 void SaturnGamepad::sendStates()
 {
     // Only report controller states if at least one has changed
-    if (currentState != lastState) {
+    if (currentState != lastState)
+    {
         // left-right axis
-        if ((currentState & LEFT) == LEFT) {
+        if ((currentState & SATURNBTN_LEFT) == SATURNBTN_LEFT)
+        {
             gamepad->setKeyState(ABS_X, 0, EV_ABS);
         }
-        else if ((currentState & RIGHT) == RIGHT) {
+        else if ((currentState & SATURNBTN_RIGHT) == SATURNBTN_RIGHT)
+        {
             gamepad->setKeyState(ABS_X, 4, EV_ABS);
         }
-        else {
+        else
+        {
             gamepad->setKeyState(ABS_X, 2, EV_ABS);
         }
 
         // up-down axis
-        if ((currentState & UP) == UP) {
+        if ((currentState & SATURNBTN_UP) == SATURNBTN_UP)
+        {
             gamepad->setKeyState(ABS_Y, 0, EV_ABS);
         }
-        else if ((currentState & DOWN) == DOWN) {
+        else if ((currentState & SATURNBTN_DOWN) == SATURNBTN_DOWN)
+        {
             gamepad->setKeyState(ABS_Y, 4, EV_ABS);
         }
-        else {
+        else
+        {
             gamepad->setKeyState(ABS_Y, 2, EV_ABS);
         }
 
         // buttons
-        gamepad->setKeyState(BTN_A, (currentState & A) == A ? 1 : 0, EV_KEY);
-        gamepad->setKeyState(BTN_B, (currentState & B) == B ? 1 : 0, EV_KEY);
-        gamepad->setKeyState(BTN_C, (currentState & C) == C ? 1 : 0, EV_KEY);
-        gamepad->setKeyState(BTN_X, (currentState & X) == X ? 1 : 0, EV_KEY);
-        gamepad->setKeyState(BTN_Y, (currentState & Y) == Y ? 1 : 0, EV_KEY);
-        gamepad->setKeyState(BTN_Z, (currentState & Z) == Z ? 1 : 0, EV_KEY);
-        gamepad->setKeyState(BTN_START, (currentState & START) == START ? 1 : 0, EV_KEY);
-        // gamepad->setKeyState(BTN_MODE, (currentState & MODE) == MODE ? 1 : 0, EV_KEY);
+        gamepad->setKeyState(BTN_A, (currentState & SATURNBTN_A) == SATURNBTN_A ? 1 : 0, EV_KEY);
+        gamepad->setKeyState(BTN_B, (currentState & SATURNBTN_B) == SATURNBTN_B ? 1 : 0, EV_KEY);
+        gamepad->setKeyState(BTN_C, (currentState & SATURNBTN_C) == SATURNBTN_C ? 1 : 0, EV_KEY);
+        gamepad->setKeyState(BTN_X, (currentState & SATURNBTN_X) == SATURNBTN_X ? 1 : 0, EV_KEY);
+        gamepad->setKeyState(BTN_Y, (currentState & SATURNBTN_Y) == SATURNBTN_Y ? 1 : 0, EV_KEY);
+        gamepad->setKeyState(BTN_Z, (currentState & SATURNBTN_Z) == SATURNBTN_Z ? 1 : 0, EV_KEY);
+        gamepad->setKeyState(BTN_TL, (currentState & SATURNBTN_LT) == SATURNBTN_LT ? 1 : 0, EV_KEY);
+        gamepad->setKeyState(BTN_TR, (currentState & SATURNBTN_RT) == SATURNBTN_RT ? 1 : 0, EV_KEY);
+        gamepad->setKeyState(BTN_START, (currentState & SATURNBTN_START) == SATURNBTN_START ? 1 : 0, EV_KEY);
 
         gamepad->sync();
     }
