@@ -146,8 +146,7 @@ You can also connect a non-latching __reset button__ to `Player-1, Input B`. If 
  ![GenesisMapping](https://github.com/petrockblog/ControlBlockService2/raw/master/supplementary/ControlBlockLayoutGenesis.png)
 You can __switch to six-button__ controller by pressing the button combination `START, A, B, C, UP` at the same time.
 
-Here is an overview about the pins for all supported gamepad types:
-
+This table shows the pin assignment for Sega Saturn controllers:
 
 | Control<br>port<br>pin #	| Name	| Function | Cable Color | ControlBlock Port |
 | --- | --- | --- | --- | --- |

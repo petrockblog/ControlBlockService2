@@ -5,5 +5,6 @@ add_library(controlblock-gamepads STATIC
         SNESGamepad.cpp
         NESGamepad.cpp
         GenesisGamepad.cpp
+        SaturnGamepad.cpp
         GamepadFactory.cpp
         )

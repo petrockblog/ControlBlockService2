@@ -4,6 +4,7 @@ add_library(controlblock-uinput STATIC
         UInputGamepadSNES.cpp
         UInputGamepadNES.cpp
         UInputGamepadGenesis.cpp
+        UInputGamepadSaturn.cpp
         UInputKeyboard.cpp
         UInputFactory.cpp
         )

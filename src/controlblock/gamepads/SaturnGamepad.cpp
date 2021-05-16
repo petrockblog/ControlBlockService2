@@ -34,29 +34,28 @@ const IDigitalIO::DIO_Channel_e SaturnGamepad::CHN_SELECT1[] = {IDigitalIO::DIO_
  * is the input pin that the controller's DB9 pin is
  * attached to, remaing columns are the button flags
  */
-const SaturnGamepad::Input SaturnGamepad::inputMap[] = {
-        {0, IDigitalIO::DIO_CHANNEL_P1_RIGHT, UP,    UP,    Z}, // P0 DB9 Pin 1
-        {0, IDigitalIO::DIO_CHANNEL_P1_LEFT,  DOWN,  DOWN,  Y}, // P0 DB9 Pin 2
-        {0, IDigitalIO::DIO_CHANNEL_P1_UP,    ON,    LEFT,  X}, // P0 DB9 Pin 3
-        {0, IDigitalIO::DIO_CHANNEL_P1_DOWN,  ON,    RIGHT, MODE}, // P0 DB9 Pin 4
-        {0, IDigitalIO::DIO_CHANNEL_P1_SW2,   A,     B, 0}, // P0 DB9 Pin 6
-        {0, IDigitalIO::DIO_CHANNEL_P1_SW5,   START, C, 0}, // P0 DB9 Pin 9
-        {1, IDigitalIO::DIO_CHANNEL_P2_RIGHT, UP,    UP,    Z}, // P1 DB9 Pin 1
-        {1, IDigitalIO::DIO_CHANNEL_P2_LEFT,  DOWN,  DOWN,  Y}, // P1 DB9 Pin 2
-        {1, IDigitalIO::DIO_CHANNEL_P2_UP,    ON,    LEFT,  X}, // P1 DB9 Pin 3
-        {1, IDigitalIO::DIO_CHANNEL_P2_DOWN,  ON,    RIGHT, MODE}, // P1 DB9 Pin 4
-        {1, IDigitalIO::DIO_CHANNEL_P2_SW2,   A,     B, 0}, // P1 DB9 Pin 6
-        {1, IDigitalIO::DIO_CHANNEL_P2_SW5,   START, C, 0}, // P1 DB9 Pin 9
-};
+// const SaturnGamepad::Input SaturnGamepad::inputMap[] = {
+//         {0, IDigitalIO::DIO_CHANNEL_P1_RIGHT, UP,    UP,    Z}, // P0 DB9 Pin 1
+//         {0, IDigitalIO::DIO_CHANNEL_P1_LEFT,  DOWN,  DOWN,  Y}, // P0 DB9 Pin 2
+//         {0, IDigitalIO::DIO_CHANNEL_P1_UP,    ON,    LEFT,  X}, // P0 DB9 Pin 3
+//         {0, IDigitalIO::DIO_CHANNEL_P1_DOWN,  ON,    RIGHT, MODE}, // P0 DB9 Pin 4
+//         {0, IDigitalIO::DIO_CHANNEL_P1_SW2,   A,     B, 0}, // P0 DB9 Pin 6
+//         {0, IDigitalIO::DIO_CHANNEL_P1_SW5,   START, C, 0}, // P0 DB9 Pin 9
+//         {1, IDigitalIO::DIO_CHANNEL_P2_RIGHT, UP,    UP,    Z}, // P1 DB9 Pin 1
+//         {1, IDigitalIO::DIO_CHANNEL_P2_LEFT,  DOWN,  DOWN,  Y}, // P1 DB9 Pin 2
+//         {1, IDigitalIO::DIO_CHANNEL_P2_UP,    ON,    LEFT,  X}, // P1 DB9 Pin 3
+//         {1, IDigitalIO::DIO_CHANNEL_P2_DOWN,  ON,    RIGHT, MODE}, // P1 DB9 Pin 4
+//         {1, IDigitalIO::DIO_CHANNEL_P2_SW2,   A,     B, 0}, // P1 DB9 Pin 6
+//         {1, IDigitalIO::DIO_CHANNEL_P2_SW5,   START, C, 0}, // P1 DB9 Pin 9
+// };
 
 SaturnGamepad::SaturnGamepad(IUInputFactory& uiFactory, IDigitalIO& digitalIORef) :
         channel(InputDevice::CHANNEL_UNDEFINED),
         digitalIO(digitalIORef),
-        isInSixButtonMode(false),
         currentState(0u),
         lastState(0xFFFF),
         playerIndex(0u),
-        gamepad(uiFactory.getUInputDevice(IUInputDevice::TYPE_GAMEPAD_GENESIS))
+        gamepad(uiFactory.getUInputDevice(IUInputDevice::TYPE_GAMEPAD_SATURN))
 {
 }
 
@@ -71,7 +70,7 @@ void SaturnGamepad::initialize(InputDevice::Channel_e channel)
         playerIndex = 1u;
     }
 
-    digitalIO.configureDevice(IDigitalIO::DIO_DEVICE_SATRUN);
+    digitalIO.configureDevice(IDigitalIO::DIO_DEVICE_SATURN);
 
     this->channel = channel;
 }
@@ -85,14 +84,14 @@ void SaturnGamepad::update()
 void SaturnGamepad::readButtons()
 {
     resetState();
-    if (isInSixButtonMode)
-    {
-        read6buttons(playerIndex);
-    }
-    else
-    {
-        read3buttons(playerIndex);
-    }
+    // if (isInSixButtonMode)
+    // {
+    //     read6buttons(playerIndex);
+    // }
+    // else
+    // {
+    //     read3buttons(playerIndex);
+    // }
 }
 
 void SaturnGamepad::resetState()
@@ -100,56 +99,56 @@ void SaturnGamepad::resetState()
     currentState = 0u;
 }
 
-void SaturnGamepad::read3buttons(int player)
-{
+// void SaturnGamepad::read3buttons(int player)
+// {
     // Set SELECT LOW and read lowFlag
-    digitalIO.setLevel(CHN_SELECT[player], IDigitalIO::DIO_LEVEL_LOW);
-    for (int i = 0; i < sizeof(inputMap) / sizeof(Input); i++) {
-        if ((inputMap[i].player == player)
-                && (digitalIO.getLevel(inputMap[i].inputChannel) == IDigitalIO::DIO_LEVEL_HIGH)) {
-            currentState |= inputMap[i].lowFlag;
-        }
-    }
+    // digitalIO.setLevel(CHN_SELECT[player], IDigitalIO::DIO_LEVEL_LOW);
+    // for (int i = 0; i < sizeof(inputMap) / sizeof(Input); i++) {
+    //     if ((inputMap[i].player == player)
+    //             && (digitalIO.getLevel(inputMap[i].inputChannel) == IDigitalIO::DIO_LEVEL_HIGH)) {
+    //         currentState |= inputMap[i].lowFlag;
+    //     }
+    // }
 
-    // Set SELECT HIGH and read highFlag
-    digitalIO.setLevel(CHN_SELECT[player], IDigitalIO::DIO_LEVEL_HIGH);
-    for (int i = 0; i < sizeof(inputMap) / sizeof(Input); i++) {
-        if ((inputMap[i].player == player)
-                && (digitalIO.getLevel(inputMap[i].inputChannel) == IDigitalIO::DIO_LEVEL_HIGH)) {
-            currentState |= inputMap[i].highFlag;
-        }
-    }
+    // // Set SELECT HIGH and read highFlag
+    // digitalIO.setLevel(CHN_SELECT[player], IDigitalIO::DIO_LEVEL_HIGH);
+    // for (int i = 0; i < sizeof(inputMap) / sizeof(Input); i++) {
+    //     if ((inputMap[i].player == player)
+    //             && (digitalIO.getLevel(inputMap[i].inputChannel) == IDigitalIO::DIO_LEVEL_HIGH)) {
+    //         currentState |= inputMap[i].highFlag;
+    //     }
+    // }
 
-    const bool shouldSwitchTo6ButtonMode = ((currentState & (ON | START | A | B | C | UP)) == (ON | START | A | B | C | UP));
-    if (shouldSwitchTo6ButtonMode)
-    {
-        isInSixButtonMode = true;
-    }
-    // When a controller disconnects, revert to three-button polling
-    else if ((currentState & ON) != ON)
-    {
-       isInSixButtonMode = false;
-    }
-}
+    // const bool shouldSwitchTo6ButtonMode = ((currentState & (ON | START | A | B | C | UP)) == (ON | START | A | B | C | UP));
+    // if (shouldSwitchTo6ButtonMode)
+    // {
+    //     isInSixButtonMode = true;
+    // }
+    // // When a controller disconnects, revert to three-button polling
+    // else if ((currentState & ON) != ON)
+    // {
+    //    isInSixButtonMode = false;
+    // }
+// }
 
-void SaturnGamepad::read6buttons(int player)
-{
-    // Poll for three-button states twice
-    read3buttons(player);
-    read3buttons(player);
+// void SaturnGamepad::read6buttons(int player)
+// {
+//     // Poll for three-button states twice
+//     read3buttons(player);
+//     read3buttons(player);
 
-    // After two three-button polls, pulse the SELECT line
-    // so the six-button reports the higher button states
-    digitalIO.setLevel(CHN_SELECT[player], IDigitalIO::DIO_LEVEL_LOW);
-    digitalIO.setLevel(CHN_SELECT[player], IDigitalIO::DIO_LEVEL_HIGH);
+//     // After two three-button polls, pulse the SELECT line
+//     // so the six-button reports the higher button states
+//     digitalIO.setLevel(CHN_SELECT[player], IDigitalIO::DIO_LEVEL_LOW);
+//     digitalIO.setLevel(CHN_SELECT[player], IDigitalIO::DIO_LEVEL_HIGH);
 
-    for (int i = 0; i < sizeof(inputMap) / sizeof(Input); i++) {
-        if ((inputMap[i].player == player)
-                && (digitalIO.getLevel(inputMap[i].inputChannel) == IDigitalIO::DIO_LEVEL_HIGH)) {
-            currentState |= inputMap[i].pulse3Flag;
-        }
-    }
-}
+//     for (int i = 0; i < sizeof(inputMap) / sizeof(Input); i++) {
+//         if ((inputMap[i].player == player)
+//                 && (digitalIO.getLevel(inputMap[i].inputChannel) == IDigitalIO::DIO_LEVEL_HIGH)) {
+//             currentState |= inputMap[i].pulse3Flag;
+//         }
+//     }
+// }
 
 void SaturnGamepad::sendStates()
 {
@@ -185,7 +184,7 @@ void SaturnGamepad::sendStates()
         gamepad->setKeyState(BTN_Y, (currentState & Y) == Y ? 1 : 0, EV_KEY);
         gamepad->setKeyState(BTN_Z, (currentState & Z) == Z ? 1 : 0, EV_KEY);
         gamepad->setKeyState(BTN_START, (currentState & START) == START ? 1 : 0, EV_KEY);
-        gamepad->setKeyState(BTN_MODE, (currentState & MODE) == MODE ? 1 : 0, EV_KEY);
+        // gamepad->setKeyState(BTN_MODE, (currentState & MODE) == MODE ? 1 : 0, EV_KEY);
 
         gamepad->sync();
     }

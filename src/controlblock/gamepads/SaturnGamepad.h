@@ -86,7 +86,7 @@ private:
 
     static const IDigitalIO::DIO_Channel_e CHN_SELECT0[];
     static const IDigitalIO::DIO_Channel_e CHN_SELECT1[];
-    static const Input inputMap[];
+    // static const Input inputMap[];
 
     static const uint32_t SHORTDELAY = 20u;
     static const uint32_t LONGDELAY = 1000u;
@@ -95,15 +95,13 @@ private:
     IUInputDevice* gamepad;
     IDigitalIO& digitalIO;
 
-    bool isInSixButtonMode;
     uint32_t currentState;
     uint32_t lastState;
     uint32_t playerIndex;
 
     void readButtons();
     void resetState();
-    void read3buttons(int player);
-    void read6buttons(int player);
+    // void read3buttons(int player);
     void sendStates();
 };
 
