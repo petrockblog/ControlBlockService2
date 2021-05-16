@@ -69,7 +69,6 @@ public:
       DIO_CHANNEL_TOPOWERSWITCH,
       DIO_CHANNEL_GENESIS_P1_SELECT,  //!< Select signal for Genesis controller, player 1
       DIO_CHANNEL_GENESIS_P2_SELECT,  //!< Select signal for Genesis controller, player 2
-
     };
 
     /**
@@ -99,6 +98,7 @@ public:
       DIO_DEVICE_POWERSWITCH, //!< PowerBlock communication pins
       DIO_DEVICE_SNES,        //!< SNES controller device
       DIO_DEVICE_GENESIS,     //!< Genesis controller device
+      DIO_DEVICE_SATURN,
     };
 
     static const uint8_t TOTAL_NUMBER_OF_CHANNELS = 16u;

@@ -23,8 +23,10 @@
 #include <iostream>
 #include "SaturnGamepad.h"
 
-const IDigitalIO::DIO_Channel_e SaturnGamepad::CHN_SELECT[] = {IDigitalIO::DIO_CHANNEL_GENESIS_P1_SELECT,
-                                                                IDigitalIO::DIO_CHANNEL_GENESIS_P2_SELECT};  //!< Controller DB9 Pin 7 Mapping
+const IDigitalIO::DIO_Channel_e SaturnGamepad::CHN_SELECT0[] = {IDigitalIO::DIO_CHANNEL_P1_DOWN,
+                                                                IDigitalIO::DIO_CHANNEL_P1_SW1};
+const IDigitalIO::DIO_Channel_e SaturnGamepad::CHN_SELECT1[] = {IDigitalIO::DIO_CHANNEL_P2_DOWN,
+                                                                IDigitalIO::DIO_CHANNEL_P2_SW1};
 
 /**
  * Controller DB9 Pin to Button Flag Mappings
@@ -69,7 +71,7 @@ void SaturnGamepad::initialize(InputDevice::Channel_e channel)
         playerIndex = 1u;
     }
 
-    digitalIO.configureDevice(IDigitalIO::DIO_DEVICE_GENESIS);
+    digitalIO.configureDevice(IDigitalIO::DIO_DEVICE_SATRUN);
 
     this->channel = channel;
 }

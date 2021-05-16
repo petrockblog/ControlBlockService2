@@ -70,21 +70,22 @@ private:
     };
 
     // Controller Button Flags
-    static const uint32_t ON    = 0x0001;
-    static const uint32_t UP    = 0x0002;
-    static const uint32_t DOWN  = 0x0004;
-    static const uint32_t LEFT  = 0x0008;
-    static const uint32_t RIGHT = 0x0010;
-    static const uint32_t START = 0x0020;
-    static const uint32_t A     = 0x0040;
-    static const uint32_t B     = 0x0080;
-    static const uint32_t C     = 0x0100;
-    static const uint32_t X     = 0x0200;
-    static const uint32_t Y     = 0x0400;
-    static const uint32_t Z     = 0x0800;
-    static const uint32_t MODE  = 0x1000;
+    static const uint32_t UP    = 0x0001;
+    static const uint32_t DOWN  = 0x0002;
+    static const uint32_t LEFT  = 0x0004;
+    static const uint32_t RIGHT = 0x0008;
+    static const uint32_t START = 0x0010;
+    static const uint32_t A     = 0x0020;
+    static const uint32_t B     = 0x0040;
+    static const uint32_t C     = 0x0080;
+    static const uint32_t X     = 0x0100;
+    static const uint32_t Y     = 0x0200;
+    static const uint32_t Z     = 0x0400;
+    static const uint32_t LT    = 0x0800;
+    static const uint32_t RT    = 0x1000;
 
-    static const IDigitalIO::DIO_Channel_e CHN_SELECT[];
+    static const IDigitalIO::DIO_Channel_e CHN_SELECT0[];
+    static const IDigitalIO::DIO_Channel_e CHN_SELECT1[];
     static const Input inputMap[];
 
     static const uint32_t SHORTDELAY = 20u;
