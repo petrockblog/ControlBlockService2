@@ -32,6 +32,7 @@
 /**
  * Models a Sega Saturn gamepad. Polls the controller and sends the corresponding
  * user inputs to the uinput device.
+ * Followed instructions from https://www.acidmods.com/forum/index.php/topic,42733.0.html
  */
 class SaturnGamepad: public InputDevice
 {
@@ -60,15 +61,6 @@ public:
     void update() override;
 
 private:
-    struct Input
-    {
-        int player;
-        IDigitalIO::DIO_Channel_e inputChannel;
-        int lowFlag;
-        int highFlag;
-        int pulse3Flag;
-    };
-
     // Controller Button Flags
     static const uint32_t SATURNBTN_UP    = 0x0001;
     static const uint32_t SATURNBTN_DOWN  = 0x0002;

@@ -27,6 +27,7 @@
 #include "UInputGamepadSNES.h"
 #include "UInputGamepadNES.h"
 #include "UInputGamepadGenesis.h"
+#include "UInputGamepadSaturn.h"
 
 IUInputDevice* UInputFactory::getUInputDevice(IUInputDevice::DeviceType type)
 {
@@ -39,6 +40,8 @@ IUInputDevice* UInputFactory::getUInputDevice(IUInputDevice::DeviceType type)
         return new UInputGamepadNES();
     case IUInputDevice::TYPE_GAMEPAD_GENESIS:
         return new UInputGamepadGenesis();
+    case IUInputDevice::TYPE_GAMEPAD_SATURN:
+        return new UInputGamepadSaturn();        
     case IUInputDevice::TYPE_KEYBOARD:
         return new UInputKeyboard();
     default:

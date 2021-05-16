@@ -5,6 +5,7 @@
 #include "NESGamepad.h"
 #include "MAMEGamepad.h"
 #include "GenesisGamepad.h"
+#include "SaturnGamepad.h"
 #include "NONEGamepad.h"
 
 GamepadFactory::GamepadFactory(IUInputFactory& uiFactoryRef) :
@@ -26,6 +27,8 @@ InputDevice* GamepadFactory::createGamepad(InputDevice::GamepadType_e gamepadTyp
         return new MAMEGamepad(uiFactory, digitalIO);
     case InputDevice::GAMEPAD_GENESIS:
         return new GenesisGamepad(uiFactory, digitalIO);
+    case InputDevice::GAMEPAD_SATURN:
+        return new SaturnGamepad(uiFactory, digitalIO);        
     case InputDevice::GAMEPAD_NONE:
         return new NONEGamepad();
     default:
