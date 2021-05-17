@@ -178,8 +178,8 @@ You can __switch to six-button__ controller by pressing the button combination `
 | 1 | VCC | +5v (Out) | Red | right |
 | 2 | D1 | Data 1    | White | left |
 | 3 | D0 | Data 0    | Yellow | up |
-| 4 | S0 | Select 0  | Orange |  down |
-| 5 | S1 | Select 1  | Blue | sw1 |
+| 4 | S0 | Select 1  | Orange |  down |
+| 5 | S1 | Select 0  | Blue | sw1 |
 | 6 | 5v | +5v (Inp) | Green | sw2|
 | 7 | D3 | Data 3    | Brown | sw3 |
 | 8 | D2 | Data 2    | Black | sw4 |
@@ -187,7 +187,7 @@ You can __switch to six-button__ controller by pressing the button combination `
 
 The Control port pins of the connector are assigned as follows:
 
-```
+```plain
       /                /
      -----------------    /
    /                   \ / 
