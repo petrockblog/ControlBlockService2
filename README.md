@@ -9,23 +9,31 @@ This is the driver for the petrockblock.com ControlBlock, which is an extension 
 
 ## Contents
 
-
-
- - [Prerequisites](#prerequisites)
- - [Downloading](#downloading) 
- - [Quick Installation](#quick-installation)
- - [Building and Installation](#building-and-installation)
- - [Make the Driver Start at Boot](#installation-as-service)
- - [Uninstalling the driver and the service](#uninstalling-the-service-andor-the-binary)
- - [Configuration](#configuration)
-    - [Setting the Type of Game Pad](#setting-the-type-of-gamepad)
-    - [Using only One Game Pad](#using-only-one-game-pad)
+- [ControlBlockService2](#controlblockservice2)
+  - [Contents](#contents)
+  - [Prerequisites](#prerequisites)
+  - [Downloading](#downloading)
+  - [Quick Installation](#quick-installation)
+  - [Building and Installation](#building-and-installation)
+  - [Installation as Service](#installation-as-service)
+  - [Uninstalling the service and/or the binary](#uninstalling-the-service-andor-the-binary)
+  - [Configuration](#configuration)
+    - [Setting the Type of Gamepad](#setting-the-type-of-gamepad)
+      - [Arcade](#arcade)
+      - [MAME](#mame)
+      - [SNES / NES](#snes--nes)
+      - [Genesis / Megadrive](#genesis--megadrive)
+      - [Saturn](#saturn)
+    - [Using Only one Gamepad](#using-only-one-gamepad)
     - [Enabling or Disabling the Power Switch Functionality](#enabling-or-disabling-the-power-switch-functionality)
- - [Custom Actions at Shutdown](#custom-actions-at-shutdown)
- - [4-Player Extension with two ControlBlocks](#4-player-extension-with-two-controlblocks)
-     + [Four Player Hardware Setup Example](#four-player-hardware-setup-example)
- - [Troubleshooting](#troubleshooting)
-
+    - [Custom Actions at Shutdown](#custom-actions-at-shutdown)
+    - [4-Player Extension with two ControlBlocks](#4-player-extension-with-two-controlblocks)
+      - [Setting Base Address with the Solder Jumpers](#setting-base-address-with-the-solder-jumpers)
+      - [Interrupting the Signal Lines for the Power Switch on the Second ControlBlock](#interrupting-the-signal-lines-for-the-power-switch-on-the-second-controlblock)
+      - [Adapting the Configuration File for Four Players](#adapting-the-configuration-file-for-four-players)
+      - [Four Player Hardware Setup Example](#four-player-hardware-setup-example)
+  - [Troubleshooting](#troubleshooting)
+    - [Checking the Raw GPIO of the Raspberry](#checking-the-raw-gpio-of-the-raspberry)
 
 ## Prerequisites
 
@@ -37,10 +45,10 @@ sudo apt-get upgrade -y
 sudo apt-get install -y git cmake g++ doxygen libc6 libc6-dev
 ```
 
-
 ## Downloading
 
 If you would like to download the latest version of _controlblock_ from [its Github repository](https://github.com/petrockblog/ControlBlockService2), you can use this command:
+
 ```bash
 git clone --recursive https://github.com/petrockblog/ControlBlockService2.git
 ```
@@ -49,7 +57,7 @@ Note that the above command also takes care for downloading the included Git sub
 
 ## Quick Installation
 
-There comes an installation script with this reposity that does all the steps described below: `install.sh` This script compiles the driver, installs the binary and configuration files, and installs the ControlBlock service. 
+There comes an installation script with this reposity that does all the steps described below: `install.sh` This script compiles the driver, installs the binary and configuration files, and installs the ControlBlock service.
 
 To run the quick installation, you just need to call this one line from the Raspbian console
 
@@ -64,6 +72,7 @@ Here is a video of a typical quick installation procedure:
 ## Building and Installation
 
 To build _controlblock_ follow these commands:
+
 ```bash
 cd ControlBlockService2
 mkdir build
@@ -73,6 +82,7 @@ make
 ```
 
 If everything went fine you can install the driver from within the folder `build` with the command
+
 ```bash
 sudo make install
 ```
@@ -80,19 +90,23 @@ sudo make install
 ## Installation as Service
 
 You can install _controlblock_ as daemon from within the folder `build` with this command:
+
 ```bash
 sudo make installservice
 ```
+
 It might be that you need to **restart** your Raspberry afterwards to have all needed services running.
 
 ## Uninstalling the service and/or the binary
 
 You can uninstall the daemon from within the folder `build` with this command:
+
 ```bash
 sudo make uninstallservice
 ```
 
 You can uninstall the binary from within the folder `build` with this command:
+
 ```bash
 sudo make uninstall
 ```
@@ -129,58 +143,78 @@ The default configuration file looks like this:
 }
 ```
 
-
 ### Setting the Type of Gamepad
 
 To set the type of the gamepad you need to set the value of the element `gamepadtype`. You can choose between these values:
 
- - ```arcade```: Enables two game pads in the system and maps the GPIOs of the ControlBlock to these game pads.<br>
+#### Arcade
+
+- ```arcade```: Enables two game pads in the system and maps the GPIOs of the ControlBlock to these game pads.<br>
  ![ArcadeMapping](https://github.com/petrockblog/ControlBlockService2/raw/master/supplementary/ControlBlockLayoutArcade.png)
- - ```mame```: Enables a virtual keyboard and maps the GPIOs of the ControlBlock to this keyboard with a MAME layout.<br>
+
+#### MAME
+
+- ```mame```: Enables a virtual keyboard and maps the GPIOs of the ControlBlock to this keyboard with a MAME layout.<br>
  ![MAMEMapping](https://github.com/petrockblog/ControlBlockService2/raw/master/supplementary/ControlBlockLayoutMAME.png)
- - ```snes```: Enables two game pads in the system and maps the attached SNES/NES controllers accordingly.<br>
+
+#### SNES / NES
+
+- ```snes```: Enables two game pads in the system and maps the attached SNES/NES controllers accordingly.<br>
  ![SNESMapping](https://github.com/petrockblog/ControlBlockService2/raw/master/supplementary/ControlBlockLayoutSNES.png)
 You can also connect a non-latching __reset button__ to `Player-1, Input B`. If the button is pressed a virtual ESC-key press will be triggered as well as a simultaneous press of the start and select buttons for player 1.
 
- - ```genesis```: Enables two game pads in the system and maps the attached Genesis/Megadrive/Atari controllers accordingly.<br>
+#### Genesis / Megadrive
+
+- ```genesis```: Enables two game pads in the system and maps the attached Genesis/Megadrive/Atari controllers accordingly.<br>
  ![GenesisMapping](https://github.com/petrockblog/ControlBlockService2/raw/master/supplementary/ControlBlockLayoutGenesis.png)
 You can __switch to six-button__ controller by pressing the button combination `START, A, B, C, UP` at the same time.
 
-This table shows the pin assignment for Sega Saturn controllers:
+#### Saturn
 
-| Control<br>port<br>pin #	| Name	| Function | Cable Color | ControlBlock Port |
+- ```saturn```: Enables two gamepads in the system and maps the attached Sega Saturn controllers accordingly. This table shows the pin assignment for Sega Saturn controllers:
+
+| Control<br>port<br>pin # | Name | Function | Cable Color | ControlBlock<br>Port |
 | --- | --- | --- | --- | --- |
-| 1	| VCC	| +5v (Out) | Red | right |
-| 2	| D1	| Data 1    | White | left |
-| 3	| D0	| Data 0    | Yellow | up |
-| 4	| S0	| Select 1  | Orange |  down |
-| 5	| S1	| Select 0  | Blue | sw1 |
-| 6	| 5v	| +5v (Inp) | Green | sw2|
-| 7	| D3	| Data 3    | Brown | sw3 |
-| 8	| D2	| Data 2    | Black | sw4 |
-| 9	| GND	| Ground    | Purple | sw5 |
+| 1 | VCC | +5v (Out) | Red | right |
+| 2 | D1 | Data 1    | White | left |
+| 3 | D0 | Data 0    | Yellow | up |
+| 4 | S0 | Select 1  | Orange |  down |
+| 5 | S1 | Select 0  | Blue | sw1 |
+| 6 | 5v | +5v (Inp) | Green | sw2|
+| 7 | D3 | Data 3    | Brown | sw3 |
+| 8 | D2 | Data 2    | Black | sw4 |
+| 9 | GND | Ground    | Purple | sw5 |
+
+The Control port pins of the connector are assigned as follows:
+
+```plain
+      /                /
+     -----------------    /
+   /                   \ / 
+  |  1 2 3 4 5 6 7 8 9  |  /
+  |                     | /
+  -----------------------
+     Front / Outside
+```
 
 ### Using Only one Gamepad
 
 If you want to connect only one gamepad to the ControlBlock you can set the element `onlyOneGamepad` to `true`: It enables only one gamepad in the system (e.g., if only Player-1 buttons are wired to the ControlBlock in your setup, this prevents a ghost gamepad from being selected as default player 2 in retroarch)
 
-
 ### Enabling or Disabling the Power Switch Functionality
 
 To enable or disable the power switch functionality you can set the element `powerswitchOn` to `true` or `false`:
 
- - ```true```: Activates the handling of the power switch signals of the ControlBlock.
- - ```false```: Deactivates the handling of the power switch signals of the ControlBlock.
-
+- ```true```: Activates the handling of the power switch signals of the ControlBlock.
+- ```false```: Deactivates the handling of the power switch signals of the ControlBlock.
 
 ### Custom Actions at Shutdown
 
 When the driver observes a shutdown signal from the ControlBlock, a shutdown Bash script is called. You can find and edit it at `/etc/controlblockswitchoff.sh`.
 
-
 ### 4-Player Extension with two ControlBlocks
 
-The driver can handle up to two ControlBlocks. This means that you can stack two ControlBlock on top of each other to have inputs for four players. 
+The driver can handle up to two ControlBlocks. This means that you can stack two ControlBlock on top of each other to have inputs for four players.
 
 #### Setting Base Address with the Solder Jumpers
 
@@ -196,12 +230,12 @@ It is important that you interrupt the signal lines for the power switch to the 
 
 ![Bending pins for 4-player functionality, view 2](https://github.com/petrockblog/ControlBlockService2/raw/master/supplementary/4playerCB2.jpg)
 
-
 #### Adapting the Configuration File for Four Players
 
 The values of the solder jumpers have to be set in the configuration file with the elements `SJ1` and `SJ2`. Also, you have to enable the second ControlBlock by setting the element `enabled` for the second ControlBlock to `true`.
 
 If you have set the solder jumper SJ1 to 1, a usual 4-player configuration that enables two ControlBlocks with arcade mode would look like this:
+
 ```
 {
     "controlblocks" : [
@@ -228,7 +262,6 @@ If you have set the solder jumper SJ1 to 1, a usual 4-player configuration that 
 }
 ```
 
-
 #### Four Player Hardware Setup Example
 
 Here is an image that shows an exemplary 4-player hardware setup:
@@ -252,7 +285,6 @@ If you find that every input pin is working as expected start with connecting th
 ### Checking the Raw GPIO of the Raspberry
 
 To check that the GPIOs of the Raspberry Pi itself are working correctly, you can use the bash script `scripts/testRPiGPIO.sh`). You can start it with `./scripts/testRPiGPIO.sh`. Please follow the instructions that are printed to the shell.
-
 
 <br><br>
 __Have fun!__
