@@ -1,8 +1,6 @@
 ControlBlockService2
 ====================
 
-[![Build Status](https://travis-ci.org/petrockblog/ControlBlockService2.svg?branch=master)](https://travis-ci.org/petrockblog/ControlBlockService2)
-
 This is the driver for the petrockblock.com ControlBlock, which is an extension board for the Raspberry Pi (TM). The driver itself is denoted as _controlblock_ in the following. The driver provides a service for interacting with the power button signals as well as for mapping attached game controllers to corresponding game pad devices on the Raspberry Pi.
 
 **Please note that this is the driver for revision 2.X of the ControlBlock. If you have a revision 1.X board, you need to use the [driver for that revision series](https://github.com/petrockblog/ControlBlockService).**
