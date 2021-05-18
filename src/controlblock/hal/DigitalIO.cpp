@@ -147,10 +147,6 @@ void DigitalIO::configureDevice(DIO_Device mode)
     mcp1.setPullupMode(4, MCP23S17PI::PULLUP_DISABLED);
     mcp1.digitalWrite(4, MCP23S17PI::LEVEL_LOW);
 
-    // VCC Player 1 (in) - sw2
-    mcp1.setPinMode(5, MCP23S17PI::DIR_OUTPUT);
-    mcp1.setPullupMode(5, MCP23S17PI::PULLUP_DISABLED);
-    mcp1.digitalWrite(5, MCP23S17PI::LEVEL_HIGH);
 
     // GND Player 1
     mcp2.setPinMode(0, MCP23S17PI::DIR_OUTPUT);
@@ -173,11 +169,6 @@ void DigitalIO::configureDevice(DIO_Device mode)
     mcp1.setPinMode(11, MCP23S17PI::DIR_OUTPUT);
     mcp1.setPullupMode(11, MCP23S17PI::PULLUP_DISABLED);
     mcp1.digitalWrite(11, MCP23S17PI::LEVEL_LOW);
-
-    // VCC Player 2 (in) - sw2
-    mcp1.setPinMode(10, MCP23S17PI::DIR_OUTPUT);
-    mcp1.setPullupMode(10, MCP23S17PI::PULLUP_DISABLED);
-    mcp1.digitalWrite(10, MCP23S17PI::LEVEL_HIGH);
 
     // GND Player 2
     mcp2.setPinMode(15, MCP23S17PI::DIR_OUTPUT);
