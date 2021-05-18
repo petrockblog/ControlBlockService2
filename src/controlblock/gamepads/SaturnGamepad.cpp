@@ -68,8 +68,8 @@ void SaturnGamepad::readButtons()
 
     if (playerIndex_ == 0u)
     {
-        digitalIO.setLevel(CHN_SELECT1[playerIndex_], IDigitalIO::DIO_LEVEL_HIGH);
-        digitalIO.setLevel(CHN_SELECT0[playerIndex_], IDigitalIO::DIO_LEVEL_HIGH);
+        digitalIO.setLevel(CHN_SELECT1[playerIndex_], IDigitalIO::DIO_LEVEL_LOW);
+        digitalIO.setLevel(CHN_SELECT0[playerIndex_], IDigitalIO::DIO_LEVEL_LOW);
 
         currentState |= (digitalIO.getLevel(IDigitalIO::DIO_CHANNEL_P1_UP) == IDigitalIO::DIO_LEVEL_HIGH ? SATURNBTN_Z : 0);
         currentState |= (digitalIO.getLevel(IDigitalIO::DIO_CHANNEL_P1_LEFT) == IDigitalIO::DIO_LEVEL_HIGH ? SATURNBTN_Y : 0);
@@ -92,43 +92,42 @@ void SaturnGamepad::readButtons()
         currentState |= (digitalIO.getLevel(IDigitalIO::DIO_CHANNEL_P1_SW4) == IDigitalIO::DIO_LEVEL_HIGH ? SATURNBTN_LEFT : 0);
         currentState |= (digitalIO.getLevel(IDigitalIO::DIO_CHANNEL_P1_SW3) == IDigitalIO::DIO_LEVEL_HIGH ? SATURNBTN_RIGHT : 0);
 
-        digitalIO.setLevel(CHN_SELECT1[playerIndex_], IDigitalIO::DIO_LEVEL_LOW);
-        digitalIO.setLevel(CHN_SELECT0[playerIndex_], IDigitalIO::DIO_LEVEL_LOW);
+        digitalIO.setLevel(CHN_SELECT1[playerIndex_], IDigitalIO::DIO_LEVEL_HIGH);
+        digitalIO.setLevel(CHN_SELECT0[playerIndex_], IDigitalIO::DIO_LEVEL_HIGH);
 
         currentState |= (digitalIO.getLevel(IDigitalIO::DIO_CHANNEL_P1_SW3) == IDigitalIO::DIO_LEVEL_HIGH ? SATURNBTN_LT : 0);
 
-        // continue here. Button mapping is not 100% yet
     }
     else if (playerIndex_ == 1u)
     {
         digitalIO.setLevel(CHN_SELECT1[playerIndex_], IDigitalIO::DIO_LEVEL_LOW);
         digitalIO.setLevel(CHN_SELECT0[playerIndex_], IDigitalIO::DIO_LEVEL_LOW);
-        std::this_thread::sleep_for(dura);
+        
         currentState |= (digitalIO.getLevel(IDigitalIO::DIO_CHANNEL_P2_UP) == IDigitalIO::DIO_LEVEL_HIGH ? SATURNBTN_Z : 0);
         currentState |= (digitalIO.getLevel(IDigitalIO::DIO_CHANNEL_P2_LEFT) == IDigitalIO::DIO_LEVEL_HIGH ? SATURNBTN_Y : 0);
         currentState |= (digitalIO.getLevel(IDigitalIO::DIO_CHANNEL_P2_SW4) == IDigitalIO::DIO_LEVEL_HIGH ? SATURNBTN_X : 0);
-        currentState |= (digitalIO.getLevel(IDigitalIO::DIO_CHANNEL_P2_SW3) == IDigitalIO::DIO_LEVEL_HIGH ? SATURNBTN_RIGHT : 0);
+        currentState |= (digitalIO.getLevel(IDigitalIO::DIO_CHANNEL_P2_SW3) == IDigitalIO::DIO_LEVEL_HIGH ? SATURNBTN_RT : 0);
 
-        digitalIO.setLevel(CHN_SELECT1[playerIndex_], IDigitalIO::DIO_LEVEL_LOW);
-        digitalIO.setLevel(CHN_SELECT0[playerIndex_], IDigitalIO::DIO_LEVEL_HIGH);
-        std::this_thread::sleep_for(dura);
+        digitalIO.setLevel(CHN_SELECT1[playerIndex_], IDigitalIO::DIO_LEVEL_HIGH);
+        digitalIO.setLevel(CHN_SELECT0[playerIndex_], IDigitalIO::DIO_LEVEL_LOW);
+        
         currentState |= (digitalIO.getLevel(IDigitalIO::DIO_CHANNEL_P2_UP) == IDigitalIO::DIO_LEVEL_HIGH ? SATURNBTN_B : 0);
         currentState |= (digitalIO.getLevel(IDigitalIO::DIO_CHANNEL_P2_LEFT) == IDigitalIO::DIO_LEVEL_HIGH ? SATURNBTN_C : 0);
         currentState |= (digitalIO.getLevel(IDigitalIO::DIO_CHANNEL_P2_SW4) == IDigitalIO::DIO_LEVEL_HIGH ? SATURNBTN_A : 0);
         currentState |= (digitalIO.getLevel(IDigitalIO::DIO_CHANNEL_P2_SW3) == IDigitalIO::DIO_LEVEL_HIGH ? SATURNBTN_START : 0);
 
-        digitalIO.setLevel(CHN_SELECT1[playerIndex_], IDigitalIO::DIO_LEVEL_HIGH);
-        digitalIO.setLevel(CHN_SELECT0[playerIndex_], IDigitalIO::DIO_LEVEL_LOW);
-        std::this_thread::sleep_for(dura);
+        digitalIO.setLevel(CHN_SELECT1[playerIndex_], IDigitalIO::DIO_LEVEL_LOW);
+        digitalIO.setLevel(CHN_SELECT0[playerIndex_], IDigitalIO::DIO_LEVEL_HIGH);
+        
         currentState |= (digitalIO.getLevel(IDigitalIO::DIO_CHANNEL_P2_UP) == IDigitalIO::DIO_LEVEL_HIGH ? SATURNBTN_UP : 0);
         currentState |= (digitalIO.getLevel(IDigitalIO::DIO_CHANNEL_P2_LEFT) == IDigitalIO::DIO_LEVEL_HIGH ? SATURNBTN_DOWN : 0);
-        currentState |= (digitalIO.getLevel(IDigitalIO::DIO_CHANNEL_P2_SW4) == IDigitalIO::DIO_LEVEL_HIGH ? SATURNBTN_LT : 0);
-        currentState |= (digitalIO.getLevel(IDigitalIO::DIO_CHANNEL_P2_SW3) == IDigitalIO::DIO_LEVEL_HIGH ? SATURNBTN_RT : 0);
+        currentState |= (digitalIO.getLevel(IDigitalIO::DIO_CHANNEL_P2_SW4) == IDigitalIO::DIO_LEVEL_HIGH ? SATURNBTN_LEFT : 0);
+        currentState |= (digitalIO.getLevel(IDigitalIO::DIO_CHANNEL_P2_SW3) == IDigitalIO::DIO_LEVEL_HIGH ? SATURNBTN_RIGHT : 0);
 
         digitalIO.setLevel(CHN_SELECT1[playerIndex_], IDigitalIO::DIO_LEVEL_HIGH);
         digitalIO.setLevel(CHN_SELECT0[playerIndex_], IDigitalIO::DIO_LEVEL_HIGH);
-        std::this_thread::sleep_for(dura);
-        currentState |= (digitalIO.getLevel(IDigitalIO::DIO_CHANNEL_P2_SW3) == IDigitalIO::DIO_LEVEL_HIGH ? SATURNBTN_LEFT : 0);
+        
+        currentState |= (digitalIO.getLevel(IDigitalIO::DIO_CHANNEL_P2_SW3) == IDigitalIO::DIO_LEVEL_HIGH ? SATURNBTN_LT : 0);
     }
     else
     {
