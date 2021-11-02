@@ -15,7 +15,7 @@ if [[ $currentDirectory != "ControlBlockService2" ]]; then
     if [[ -d ControlBlockService2 ]]; then
         rm -rf ControlBlockService2
     fi
-    git clone --recursive git://github.com/petrockblog/ControlBlockService2
+    git clone --recursive https://github.com/petrockblog/ControlBlockService2
     cd ControlBlockService2
 fi
 
