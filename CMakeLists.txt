@@ -50,7 +50,6 @@ add_custom_target(uninstall
 
 add_custom_target(installservice
         COMMAND chmod +x insertLine.sh
-        COMMAND chmod +x controlblockservice
         COMMAND ./insertLine.sh
         WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/scripts
         COMMENT "Installing service."
