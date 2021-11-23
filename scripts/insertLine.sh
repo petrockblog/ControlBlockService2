@@ -12,6 +12,5 @@ sed -i -e "s|^blacklist spi-bcm2708|#blacklist spi-bcm2708|g" /etc/modprobe.d/ra
 addSPIBcmModule
 
 # install ControlBlockService files
-install -m 0755 controlblockservice /etc/init.d
-update-rc.d controlblockservice defaults
-/etc/init.d/controlblockservice start
+install -m 0755 controlblock.service /etc/systemd/system/
+systemctl enable --now controlblock.service

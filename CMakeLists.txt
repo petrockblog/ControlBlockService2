@@ -59,9 +59,8 @@ add_custom_target(installservice
         )
 
 add_custom_target(uninstallservice
-        COMMAND /etc/init.d/controlblockservice stop
-        COMMAND update-rc.d controlblockservice remove
-        COMMAND rm /etc/init.d/controlblockservice
+        systemctl disable --now controlblock.service
+        COMMAND rm /etc/systemd/system/controlblock.service
         WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/../scripts
         COMMENT "Uninstalling service."
         )
