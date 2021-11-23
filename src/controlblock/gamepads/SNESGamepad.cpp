@@ -23,6 +23,7 @@
 #include <chrono>
 #include <thread>
 #include <assert.h>
+#include <stdexcept>
 #include "SNESGamepad.h"
 
 SNESGamepad::SNESGamepad(IUInputFactory& uiFactoryRef, IDigitalIO& digitalIORef) :

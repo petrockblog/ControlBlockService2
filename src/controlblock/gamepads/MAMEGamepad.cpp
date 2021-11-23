@@ -20,6 +20,7 @@
  * in future versions.
  */
 
+#include <stdexcept>
 #include "MAMEGamepad.h"
 
 MAMEGamepad::MAMEGamepad(IUInputFactory& uiFactory, IDigitalIO& digitalIORef) :

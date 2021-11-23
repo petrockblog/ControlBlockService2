@@ -20,6 +20,7 @@
  * in future versions.
  */
 
+#include <stdexcept>
 #include "ArcadeGamepad.h"
 
 ArcadeGamepad::ArcadeGamepad(IUInputFactory& uiFactory, IDigitalIO& digitalIORef) :

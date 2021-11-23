@@ -23,9 +23,8 @@
 #ifndef POWERSWITCH_H
 #define POWERSWITCH_H
 
+#include <gpiod.hpp>
 #include "hal/IDigitalIO.h"
-#include <OutputPort.h>
-#include <InputPort.h>
 
 /**
  * This class models the power switch functionalities of the ControlBlock.
@@ -91,8 +90,8 @@ private:
     ShutdownActivated doShutdown;
     bool isShutdownInitiatedValue;
     IDigitalIO& digitalIO;
-    std::shared_ptr<InputPort> powerSwitchIn_port_;
-    std::shared_ptr<OutputPort> powerSwitchOut_port_;
+    std::shared_ptr<::gpiod::line> powerSwitchIn_port_;
+    std::shared_ptr<::gpiod::line> powerSwitchOut_port_;
 
     void setPowerSignal(PowerState state);
     ShutdownSignal getShutdownSignal();
