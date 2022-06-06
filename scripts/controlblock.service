@@ -1,9 +1,10 @@
 [Unit]
 Description=ControlBlock Service
+Documentation=https://www.petrockblock.com
 
 [Service]
 Type=oneshot
-ExecStart=/usr/bin/controlblock
+ExecStart=/usr/bin/controlblock-start.sh
 
 [Install]
 WantedBy=multi-user.target
