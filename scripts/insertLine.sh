@@ -13,5 +13,4 @@ addSPIBcmModule
 
 # install ControlBlockService files
 install -m 0755 controlblock.service /etc/systemd/system/
-install -m 0755 controlblock-start.sh /usr/bin/
 systemctl enable --now controlblock.service

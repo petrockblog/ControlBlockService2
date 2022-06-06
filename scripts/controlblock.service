@@ -3,8 +3,8 @@ Description=ControlBlock Service
 Documentation=https://www.petrockblock.com
 
 [Service]
-Type=oneshot
-ExecStart=/usr/bin/controlblock-start.sh
+Type=simple
+ExecStart=/usr/bin/controlblock
 
 [Install]
 WantedBy=multi-user.target
