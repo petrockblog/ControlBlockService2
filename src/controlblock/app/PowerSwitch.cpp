@@ -57,8 +57,7 @@ bool PowerSwitch::isRPi5()
     bool isRaspberryPi5 = false;
 
     while (std::getline(cpuinfo, line))
-    {
-        std::cout << line << std::endl;
+    {        
         if (std::regex_search(line, match, raspberryPiVersionPattern))
         {
             isRaspberryPi5 = true;
