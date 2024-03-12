@@ -21,33 +21,59 @@
  */
 
 #include <stdlib.h>
+#include <fstream>
+#include <regex>
+#include <iostream>
 #include "fmt/format.h"
 #include "PowerSwitch.h"
 #include "Logger.h"
 
-PowerSwitch::PowerSwitch(IDigitalIO& digitalIOReference, ShutdownActivated doShutdownValue) :
-        doShutdown(doShutdownValue),
-        isShutdownInitiatedValue(false),
-        digitalIO(digitalIOReference)
+PowerSwitch::PowerSwitch(IDigitalIO &digitalIOReference, ShutdownActivated doShutdownValue) : doShutdown(doShutdownValue),
+                                                                                              isShutdownInitiatedValue(false),
+                                                                                              digitalIO(digitalIOReference)
 {
     digitalIO.configureDevice(IDigitalIO::DIO_DEVICE_POWERSWITCH);
 
-    ::gpiod::chip chip("gpiochip0");
+    const bool kIsRPi5 = isRPi5();
+    Logger::logMessage(fmt::format("Determined RPi model {}", kIsRPi5 ? ">=5" : "<5"));
+    ::gpiod::chip chip(kIsRPi5 ? "gpiochip4" : "gpiochip0");
 
     powerSwitchIn_port_ = std::make_shared<::gpiod::line>(chip.get_line(18));
     powerSwitchIn_port_->request({"gpiochip0", ::gpiod::line_request::DIRECTION_INPUT, 0}, 0);
-    
-	powerSwitchOut_port_ = std::make_shared<::gpiod::line>(chip.get_line(17));
+
+    powerSwitchOut_port_ = std::make_shared<::gpiod::line>(chip.get_line(17));
     setPowerSignal(PowerState::ON);
 
     Logger::logMessage(fmt::format("Created PowerSwitch. doShutdown: {}", doShutdownValue));
 }
 
+bool PowerSwitch::isRPi5()
+{
+    // Determine Raspberry Pi version
+    std::ifstream cpuinfo("/proc/cpuinfo");
+    std::string line;
+    std::regex raspberryPiVersionPattern("Raspberry Pi 5");
+    std::smatch match;
+    bool isRaspberryPi5 = false;
+
+    while (std::getline(cpuinfo, line))
+    {
+        std::cout << line << std::endl;
+        if (std::regex_search(line, match, raspberryPiVersionPattern))
+        {
+            isRaspberryPi5 = true;
+            break;
+        }
+    }
+
+    return isRaspberryPi5;
+}
+
 void PowerSwitch::update()
 {
-    if ((doShutdown == ShutdownActivated::ACTIVATED) && (getShutdownSignal() ==  ShutdownSignal::ACTIVATED)
-            && (!isShutdownInitiatedValue)) {
-        const std::string kShutdownCommand {"/etc/controlblockswitchoff.sh &"};
+    if ((doShutdown == ShutdownActivated::ACTIVATED) && (getShutdownSignal() == ShutdownSignal::ACTIVATED) && (!isShutdownInitiatedValue))
+    {
+        const std::string kShutdownCommand{"/etc/controlblockswitchoff.sh &"};
         Logger::logMessage("Initiating shutdown. Calling");
         system(kShutdownCommand.c_str());
         isShutdownInitiatedValue = true;
@@ -61,12 +87,14 @@ bool PowerSwitch::isShutdownInitiated() const
 
 void PowerSwitch::setPowerSignal(PowerState state)
 {
-    if (state == PowerState::OFF) {
+    if (state == PowerState::OFF)
+    {
         powerSwitchOut_port_->request({"gpiochip0", ::gpiod::line_request::DIRECTION_OUTPUT, 0}, 0);
         Logger::logMessage("Disabled power signal.");
     }
-    else {
-      powerSwitchOut_port_->request({"gpiochip0", ::gpiod::line_request::DIRECTION_OUTPUT, 0}, 1);
+    else
+    {
+        powerSwitchOut_port_->request({"gpiochip0", ::gpiod::line_request::DIRECTION_OUTPUT, 0}, 1);
         Logger::logMessage("Enabled power signal.");
     }
 }
@@ -74,10 +102,12 @@ void PowerSwitch::setPowerSignal(PowerState state)
 PowerSwitch::ShutdownSignal PowerSwitch::getShutdownSignal()
 {
     ShutdownSignal signal;
-    if (!powerSwitchIn_port_->get_value()) {
+    if (!powerSwitchIn_port_->get_value())
+    {
         signal = ShutdownSignal::DEACTIVATED;
     }
-    else {
+    else
+    {
         signal = ShutdownSignal::ACTIVATED;
     }
     return signal;
