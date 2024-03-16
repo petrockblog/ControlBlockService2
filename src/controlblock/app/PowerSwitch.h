@@ -95,7 +95,7 @@ private:
 
     void setPowerSignal(PowerState state);
     ShutdownSignal getShutdownSignal();
-    bool PowerSwitch::isRPi5();
+    bool isRPi5();
 
 };
 
