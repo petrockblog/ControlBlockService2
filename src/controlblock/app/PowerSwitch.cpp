@@ -47,27 +47,6 @@ PowerSwitch::PowerSwitch(IDigitalIO &digitalIOReference, ShutdownActivated doShu
     Logger::logMessage(fmt::format("Created PowerSwitch. doShutdown: {}", doShutdownValue));
 }
 
-bool PowerSwitch::isRPi5()
-{
-    // Determine Raspberry Pi version
-    std::ifstream cpuinfo("/proc/cpuinfo");
-    std::string line;
-    std::regex raspberryPiVersionPattern("Raspberry Pi 5");
-    std::smatch match;
-    bool isRaspberryPi5 = false;
-
-    while (std::getline(cpuinfo, line))
-    {        
-        if (std::regex_search(line, match, raspberryPiVersionPattern))
-        {
-            isRaspberryPi5 = true;
-            break;
-        }
-    }
-
-    return isRaspberryPi5;
-}
-
 void PowerSwitch::update()
 {
     if ((doShutdown == ShutdownActivated::ACTIVATED) && (getShutdownSignal() == ShutdownSignal::ACTIVATED) && (!isShutdownInitiatedValue))
@@ -110,4 +89,25 @@ PowerSwitch::ShutdownSignal PowerSwitch::getShutdownSignal()
         signal = ShutdownSignal::ACTIVATED;
     }
     return signal;
+}
+
+bool PowerSwitch::isRPi5()
+{
+    // Determine Raspberry Pi version
+    std::ifstream cpuinfo("/proc/cpuinfo");
+    std::string line;
+    std::regex raspberryPiVersionPattern("Raspberry Pi 5");
+    std::smatch match;
+    bool isRaspberryPi5 = false;
+
+    while (std::getline(cpuinfo, line))
+    {
+        if (std::regex_search(line, match, raspberryPiVersionPattern))
+        {
+            isRaspberryPi5 = true;
+            break;
+        }
+    }
+
+    return isRaspberryPi5;
 }
