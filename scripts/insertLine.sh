@@ -9,6 +9,7 @@ function addSPIBcmModule() {
 # enable spi kernel module
 touch /etc/modprobe.d/raspi-blacklist.conf
 sed -i -e "s|^blacklist spi-bcm2708|#blacklist spi-bcm2708|g" /etc/modprobe.d/raspi-blacklist.conf
+dtparam spi=on
 addSPIBcmModule
 
 # install ControlBlockService files
