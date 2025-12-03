@@ -106,6 +106,7 @@ private:
     std::optional<::gpiod::line_request> powerSwitchOut_port_;
 #else
     // libgpiod v1.x API
+    std::unique_ptr<::gpiod::chip> chip_;
     std::shared_ptr<::gpiod::line> powerSwitchIn_port_;
     std::shared_ptr<::gpiod::line> powerSwitchOut_port_;
 #endif

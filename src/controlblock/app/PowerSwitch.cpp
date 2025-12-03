@@ -52,12 +52,12 @@ PowerSwitch::PowerSwitch(IDigitalIO &digitalIOReference, ShutdownActivated doShu
     setPowerSignal(PowerState::ON);
 #else
     // libgpiod v1.x API
-    ::gpiod::chip chip(kIsRPi5 ? "gpiochip4" : "gpiochip0");
+    chip_ = std::make_unique<::gpiod::chip>(kIsRPi5 ? "gpiochip4" : "gpiochip0");
 
-    powerSwitchIn_port_ = std::make_shared<::gpiod::line>(chip.get_line(18));
+    powerSwitchIn_port_ = std::make_shared<::gpiod::line>(chip_->get_line(18));
     powerSwitchIn_port_->request({"gpiochip0", ::gpiod::line_request::DIRECTION_INPUT, 0}, 0);
 
-    powerSwitchOut_port_ = std::make_shared<::gpiod::line>(chip.get_line(17));
+    powerSwitchOut_port_ = std::make_shared<::gpiod::line>(chip_->get_line(17));
     setPowerSignal(PowerState::ON);
 #endif
 

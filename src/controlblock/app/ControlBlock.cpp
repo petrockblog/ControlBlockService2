@@ -29,7 +29,10 @@
 ControlBlock::ControlBlock(IUInputFactory &uiFactoryRef,
                            IControlBlockConfiguration &configRef,
                            IGamepadFactory &gamepadFactory) :
-    m_numberOfGamepads(0u) {
+    m_numberOfGamepads(0u),
+    mcp23s17{},
+    digitalIO{},
+    gamepads{} {
   configRef.loadConfiguration();
 
   // initialize the controllers
