@@ -36,6 +36,22 @@ PowerSwitch::PowerSwitch(IDigitalIO &digitalIOReference, ShutdownActivated doShu
 
     const bool kIsRPi5 = isRPi5();
     Logger::logMessage(fmt::format("Determined RPi model {}", kIsRPi5 ? ">=5" : "<5"));
+
+#ifdef GPIOD_VERSION_2X
+    // libgpiod v2.x API
+    chip_ = std::make_unique<::gpiod::chip>(kIsRPi5 ? "gpiochip4" : "gpiochip0");
+
+    // Configure input line (GPIO 18)
+    auto request_builder = chip_->prepare_request();
+    request_builder.set_consumer("controlblock-powerin");
+    request_builder.add_line_settings(18, ::gpiod::line_settings()
+            .set_direction(::gpiod::line::direction::INPUT));
+    powerSwitchIn_port_ = request_builder.do_request();
+
+    // Configure output line (GPIO 17) - will be set in setPowerSignal
+    setPowerSignal(PowerState::ON);
+#else
+    // libgpiod v1.x API
     ::gpiod::chip chip(kIsRPi5 ? "gpiochip4" : "gpiochip0");
 
     powerSwitchIn_port_ = std::make_shared<::gpiod::line>(chip.get_line(18));
@@ -43,6 +59,7 @@ PowerSwitch::PowerSwitch(IDigitalIO &digitalIOReference, ShutdownActivated doShu
 
     powerSwitchOut_port_ = std::make_shared<::gpiod::line>(chip.get_line(17));
     setPowerSignal(PowerState::ON);
+#endif
 
     Logger::logMessage(fmt::format("Created PowerSwitch. doShutdown: {}", doShutdownValue));
 }
@@ -65,6 +82,21 @@ bool PowerSwitch::isShutdownInitiated() const
 
 void PowerSwitch::setPowerSignal(PowerState state)
 {
+#ifdef GPIOD_VERSION_2X
+    // libgpiod v2.x API
+    int value = (state == PowerState::ON) ? 1 : 0;
+
+    // Reconfigure output line with new value
+    auto request_builder = chip_->prepare_request();
+    request_builder.set_consumer("controlblock-powerout");
+    request_builder.add_line_settings(17, ::gpiod::line_settings()
+            .set_direction(::gpiod::line::direction::OUTPUT)
+            .set_output_value(::gpiod::line::value(value)));
+    powerSwitchOut_port_ = request_builder.do_request();
+
+    Logger::logMessage(value ? "Enabled power signal." : "Disabled power signal.");
+#else
+    // libgpiod v1.x API
     if (state == PowerState::OFF)
     {
         powerSwitchOut_port_->request({"gpiochip0", ::gpiod::line_request::DIRECTION_OUTPUT, 0}, 0);
@@ -75,11 +107,26 @@ void PowerSwitch::setPowerSignal(PowerState state)
         powerSwitchOut_port_->request({"gpiochip0", ::gpiod::line_request::DIRECTION_OUTPUT, 0}, 1);
         Logger::logMessage("Enabled power signal.");
     }
+#endif
 }
 
 PowerSwitch::ShutdownSignal PowerSwitch::getShutdownSignal()
 {
     ShutdownSignal signal;
+
+#ifdef GPIOD_VERSION_2X
+    // libgpiod v2.x API
+    auto value = powerSwitchIn_port_->get_value(18);
+    if (value == ::gpiod::line::value::INACTIVE)
+    {
+        signal = ShutdownSignal::DEACTIVATED;
+    }
+    else
+    {
+        signal = ShutdownSignal::ACTIVATED;
+    }
+#else
+    // libgpiod v1.x API
     if (!powerSwitchIn_port_->get_value())
     {
         signal = ShutdownSignal::DEACTIVATED;
@@ -88,6 +135,8 @@ PowerSwitch::ShutdownSignal PowerSwitch::getShutdownSignal()
     {
         signal = ShutdownSignal::ACTIVATED;
     }
+#endif
+
     return signal;
 }
 

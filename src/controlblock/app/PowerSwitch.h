@@ -23,8 +23,16 @@
 #ifndef POWERSWITCH_H
 #define POWERSWITCH_H
 
+#include <memory>
+#include <optional>
 #include <gpiod.hpp>
 #include "hal/IDigitalIO.h"
+
+// Detect libgpiod version at compile time
+// libgpiod v2.x defines GPIOD_CXX_API and uses gpiodcxx/ headers, v1.x does not
+#if defined(GPIOD_CXX_API) || defined(__LIBGPIOD_GPIOD_CXX_HPP__)
+    #define GPIOD_VERSION_2X
+#endif
 
 /**
  * This class models the power switch functionalities of the ControlBlock.
@@ -90,8 +98,17 @@ private:
     ShutdownActivated doShutdown;
     bool isShutdownInitiatedValue;
     IDigitalIO& digitalIO;
+
+#ifdef GPIOD_VERSION_2X
+    // libgpiod v2.x API
+    std::unique_ptr<::gpiod::chip> chip_;
+    std::optional<::gpiod::line_request> powerSwitchIn_port_;
+    std::optional<::gpiod::line_request> powerSwitchOut_port_;
+#else
+    // libgpiod v1.x API
     std::shared_ptr<::gpiod::line> powerSwitchIn_port_;
     std::shared_ptr<::gpiod::line> powerSwitchOut_port_;
+#endif
 
     void setPowerSignal(PowerState state);
     ShutdownSignal getShutdownSignal();
