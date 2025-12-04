@@ -2,8 +2,16 @@
 
 function addSPIBcmModule() {
     echo -e "Making sure that SPI interface is enabled"
-    grep -qxF 'dtparam=spi=on' /boot/config.txt || echo 'dtparam=spi=on' >> /boot/config.txt
-    modprobe spi_bcm2835
+
+    # RPi 5 uses /boot/firmware/config.txt, older versions use /boot/config.txt
+    if [ -f /boot/firmware/config.txt ]; then
+        CONFIG_FILE="/boot/firmware/config.txt"
+    else
+        CONFIG_FILE="/boot/config.txt"
+    fi
+
+    grep -qxF 'dtparam=spi=on' "$CONFIG_FILE" || echo 'dtparam=spi=on' >> "$CONFIG_FILE"
+    modprobe spi_bcm2835 2>/dev/null || true  # May not exist on RPi 5
 }
 
 # enable spi kernel module

@@ -10,18 +10,25 @@ check_sudo() {
 
 # Function to update boot configuration
 update_boot_config() {
-    local FILE="/boot/config.txt"
+    # RPi 5 uses /boot/firmware/config.txt, older versions use /boot/config.txt
+    local FILE
+    if [[ -f /boot/firmware/config.txt ]]; then
+        FILE="/boot/firmware/config.txt"
+    else
+        FILE="/boot/config.txt"
+    fi
+
     local LINE_TO_ENSURE="usb_max_current_enable=1"
     local LINE_TO_REPLACE="usb_max_current_enable=0"
 
     if grep -Fxq "$LINE_TO_ENSURE" "$FILE"; then
-        echo "/boot/config.txt is up-to-date, no action taken."
+        echo "$FILE is up-to-date, no action taken."
     elif grep -Fxq "$LINE_TO_REPLACE" "$FILE"; then
         sed -i "s/^$LINE_TO_REPLACE/$LINE_TO_ENSURE/" "$FILE"
-        echo "/boot/config.txt updated."
+        echo "$FILE updated."
     else
         echo "$LINE_TO_ENSURE" | sudo tee -a "$FILE"
-        echo "/boot/config.txt updated."
+        echo "$FILE updated."
     fi
 }
 
