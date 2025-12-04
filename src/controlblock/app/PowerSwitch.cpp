@@ -39,7 +39,8 @@ PowerSwitch::PowerSwitch(IDigitalIO &digitalIOReference, ShutdownActivated doShu
 
 #ifdef GPIOD_VERSION_2X
     // libgpiod v2.x API
-    chip_ = std::make_unique<::gpiod::chip>(kIsRPi5 ? "gpiochip4" : "gpiochip0");
+    // Note: RPi 5 uses gpiochip0 for main GPIO, libgpiod v2.x requires full path
+    chip_ = std::make_unique<::gpiod::chip>("/dev/gpiochip0");
 
     // Configure input line (GPIO 18)
     auto request_builder = chip_->prepare_request();
@@ -52,7 +53,7 @@ PowerSwitch::PowerSwitch(IDigitalIO &digitalIOReference, ShutdownActivated doShu
     setPowerSignal(PowerState::ON);
 #else
     // libgpiod v1.x API
-    chip_ = std::make_unique<::gpiod::chip>(kIsRPi5 ? "gpiochip4" : "gpiochip0");
+    chip_ = std::make_unique<::gpiod::chip>("gpiochip0");
 
     powerSwitchIn_port_ = std::make_shared<::gpiod::line>(chip_->get_line(18));
     powerSwitchIn_port_->request({"gpiochip0", ::gpiod::line_request::DIRECTION_INPUT, 0}, 0);
