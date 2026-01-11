@@ -29,9 +29,14 @@
 #include "hal/IDigitalIO.h"
 
 // Detect libgpiod version at compile time
-// libgpiod v2.x defines GPIOD_CXX_API and uses gpiodcxx/ headers, v1.x does not
-#if defined(GPIOD_CXX_API) || defined(__LIBGPIOD_GPIOD_CXX_HPP__)
-    #define GPIOD_VERSION_2X
+// libgpiod v2.x uses gpiod::chip::prepare_request() which doesn't exist in v1.x
+// v1.x uses gpiod::chip::get_line() with line_request struct
+// The most reliable check is for GPIOD_API_VERSION which is defined in libgpiod v2.x
+#if __has_include(<gpiod.h>)
+    #include <gpiod.h>
+    #if defined(GPIOD_API_VERSION) && GPIOD_API_VERSION >= 0x00020000
+        #define GPIOD_VERSION_2X
+    #endif
 #endif
 
 /**
