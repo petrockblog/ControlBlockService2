@@ -40,7 +40,7 @@ sudo make uninstallservice
 sudo make uninstall
 ```
 
-**Quick install**: `wget -O - https://raw.githubusercontent.com/petrockblog/ControlBlockService2/master/install.sh | sudo bash`
+**Quick install**: `curl -fsSL https://raw.githubusercontent.com/petrockblog/ControlBlockService2/master/install.sh -o install.sh && sudo bash install.sh`
 
 ## Project-Specific Conventions
 

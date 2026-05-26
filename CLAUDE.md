@@ -162,7 +162,7 @@ All submodules are included in the repository.
 5. Installs service to systemd
 6. Configures USB max current in `/boot/config.txt`
 
-Quick install: `wget -O - https://raw.githubusercontent.com/petrockblog/ControlBlockService2/master/install.sh | sudo bash`
+Quick install (download first so the sudo password prompt stays visible): `curl -fsSL https://raw.githubusercontent.com/petrockblog/ControlBlockService2/master/install.sh -o install.sh && sudo bash install.sh`
 
 ## Systemd Service
 

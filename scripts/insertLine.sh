@@ -13,11 +13,13 @@ function addSPIBcmModule() {
     fi
 
     # Ensure dtparam=spi=on is in the config file
-    if grep -qxF 'dtparam=spi=on' "$CONFIG_FILE"; then
+    if grep -Eq '^[[:space:]]*dtparam=spi=on' "$CONFIG_FILE"; then
         echo "SPI already enabled in $CONFIG_FILE"
     else
         echo "Adding dtparam=spi=on to $CONFIG_FILE"
-        echo 'dtparam=spi=on' >> "$CONFIG_FILE"
+        # Append under an explicit [all] header so the setting is not swallowed
+        # by a preceding conditional filter section (e.g. [pi4], [cm4]).
+        printf '\n[all]\ndtparam=spi=on\n' >> "$CONFIG_FILE"
     fi
 
     # Try to load kernel modules (older RPi models)
