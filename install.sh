@@ -79,7 +79,7 @@ install_packages() {
     fi
 
     info "Installing build and runtime dependencies..."
-    apt-get install -y git cmake g++ doxygen libc6 libc6-dev libgpiod-dev gpiod \
+    apt-get install -y git cmake g++ doxygen libc6 libc6-dev libgpiod-dev gpiod joystick \
         || die "Installation of APT packages failed."
 }
 

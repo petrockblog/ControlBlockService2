@@ -148,7 +148,7 @@ All submodules are included in the repository.
 
 - **Target**: Raspberry Pi (requires SPI and GPIO access)
 - **OS**: Raspbian/Raspberry Pi OS
-- **System dependencies**: `git cmake g++ doxygen libc6 libc6-dev libgpiod-dev gpiod`
+- **System dependencies**: `git cmake g++ doxygen libc6 libc6-dev libgpiod-dev gpiod joystick`
 - **SPI interface**: Must be enabled on Raspberry Pi (`dtparam=spi=on`)
 - **Permissions**: Requires root for GPIO/uinput access (runs as systemd service)
 
