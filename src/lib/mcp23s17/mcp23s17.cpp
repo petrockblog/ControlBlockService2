@@ -8,7 +8,6 @@
 #include <sys/types.h>
 #include <sys/ioctl.h>
 #include <linux/spi/spidev.h>
-#include <dirent.h>
 #include "mcp23s17.h"
 
 
@@ -17,50 +16,29 @@ static const uint8_t spi_bpw = 8; // bits per word
 static const uint32_t spi_speed = 3900000; // 10MHz
 static const uint16_t spi_delay = 0;
 
-// Auto-detect SPI bus numbers at runtime (for RPi 5 compatibility)
-static int spi_bus_numbers[2] = {-1, -1};
-static char spidev_paths[2][2][32] = {{{0}}};
-
-// Auto-detect available SPI devices (handles RPi 5's spi10 vs older RPi's spi0)
-static void detect_spi_devices(void)
+#ifdef MCP23S17_TESTING
+int mcp23s17_build_spidev_path(int bus,
+                               int chip_select,
+                               char *path,
+                               size_t path_size)
+#else
+static int mcp23s17_build_spidev_path(int bus,
+                                      int chip_select,
+                                      char *path,
+                                      size_t path_size)
+#endif
 {
-    static int detected = 0;
-    if (detected) return;
-    detected = 1;
-
-    DIR *dir = opendir("/dev");
-    if (!dir) {
-        fprintf(stderr, "detect_spi_devices: Failed to open /dev directory\n");
-        return;
+    if (bus < 0 || chip_select < 0 || chip_select > 1 || path == NULL || path_size == 0) {
+        return -1;
     }
 
-    struct dirent *entry;
-    int bus_index = 0;
+    int written = snprintf(path, path_size, "/dev/spidev%d.%d", bus, chip_select);
 
-    while ((entry = readdir(dir)) != NULL && bus_index < 2) {
-        // Look for spidevX.0 devices
-        if (strncmp(entry->d_name, "spidev", 6) == 0) {
-            int bus_num, chip_sel;
-            if (sscanf(entry->d_name, "spidev%d.%d", &bus_num, &chip_sel) == 2) {
-                if (chip_sel == 0) {
-                    // Found a bus with chip select 0
-                    spi_bus_numbers[bus_index] = bus_num;
-                    snprintf(spidev_paths[bus_index][0], sizeof(spidev_paths[bus_index][0]),
-                             "/dev/spidev%d.0", bus_num);
-                    snprintf(spidev_paths[bus_index][1], sizeof(spidev_paths[bus_index][1]),
-                             "/dev/spidev%d.1", bus_num);
-                    fprintf(stderr, "detect_spi_devices: Found SPI bus %d at %s\n",
-                            bus_index, spidev_paths[bus_index][0]);
-                    bus_index++;
-                }
-            }
-        }
+    if (written < 0 || (size_t) written >= path_size) {
+        return -1;
     }
-    closedir(dir);
 
-    if (bus_index == 0) {
-        fprintf(stderr, "detect_spi_devices: WARNING - No SPI devices found\n");
-    }
+    return 0;
 }
 
 // epoll related vars
@@ -79,30 +57,20 @@ static int init_epoll(void);
 int mcp23s17_open(int bus, int chip_select)
 {
     int fd;
+    char spidev_path[32];
 
-    // Auto-detect SPI devices on first call
-    detect_spi_devices();
-
-    // Validate bus and chip_select
-    if (bus < 0 || bus >= 2 || chip_select < 0 || chip_select >= 2) {
+    if (mcp23s17_build_spidev_path(bus, chip_select, spidev_path, sizeof(spidev_path)) < 0) {
         fprintf(stderr,
                 "mcp23s17_open: ERROR Invalid bus (%d) or chip_select (%d).\n",
                 bus, chip_select);
         return -1;
     }
 
-    if (spidev_paths[bus][chip_select][0] == '\0') {
-        fprintf(stderr,
-                "mcp23s17_open: ERROR No SPI device found for bus %d chip_select %d.\n",
-                bus, chip_select);
-        return -1;
-    }
-
     // open
-    if ((fd = open(spidev_paths[bus][chip_select], O_RDWR)) < 0) {
+    if ((fd = open(spidev_path, O_RDWR)) < 0) {
         fprintf(stderr,
                 "mcp23s17_open: ERROR Could not open SPI device (%s).\n",
-                spidev_paths[bus][chip_select]);
+                spidev_path);
         return -1;
     }
 

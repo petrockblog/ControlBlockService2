@@ -78,7 +78,7 @@ extern "C" {
  * Returns a file descriptor for the SPI device through which the
  * MCP23S17 port expander can be accessed.
  *
- * @param bus The SPI bus.
+ * @param bus The Linux SPI bus number, e.g. 0 for /dev/spidev0.*.
  * @param chip_select The SPI chip select.
  */
 int mcp23s17_open(int bus, int chip_select);
