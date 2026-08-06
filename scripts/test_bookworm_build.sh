@@ -21,5 +21,6 @@ docker run --rm --platform linux/arm64 \
     echo "=== Building project ==="
     rm -rf build && mkdir build && cd build
     cmake .. && make -j$(nproc)
+    ctest --output-on-failure
     echo "=== Build successful! ==="
   '
